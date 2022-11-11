@@ -14,11 +14,11 @@ import java.util.Collection;
 public class Sequence {
     @Getter
     private Row[] _rows;
-    // 起点
+    // 起点 - rows数组index
     protected int first = 0;
-    // 终点
+    // 终点 - rows数组index
     protected int end = 0;
-    // point对应着rows数组的行号，调用next行号+1
+    // 当前point对应的rows数组index，调用next行号+1
     @Getter
     protected int point = -1;
 
