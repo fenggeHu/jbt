@@ -1,5 +1,7 @@
 package jbt;
 
+import jbt.data.local.DataFeeder;
+import jbt.data.local.LocalCsvStoreFeeder;
 import jbt.event.Event;
 import jbt.model.Row;
 import jbt.model.Sequence;
@@ -19,7 +21,7 @@ public class EngineTests {
     @Test
     public void testREnginePlay() {
         String symbol = "SZ300760";
-        LocalCsvFeeder localCsvFeeder = new LocalCsvFeeder(localFolder);
+        LocalCsvStoreFeeder localCsvFeeder = new LocalCsvStoreFeeder(localFolder);
         Collection<Row> reads1 = localCsvFeeder.get(symbol, "2022-01-10", "2022-01-31");
         Collection<Row> reads2 = localCsvFeeder.get(symbol, "2022-02-01", "2022-10-31");
         for (Row r : reads2) {
@@ -34,7 +36,7 @@ public class EngineTests {
     @Test
     public void testREnginePlay2() {
         String symbol = "SZ300760";
-        LocalCsvFeeder localCsvFeeder = new LocalCsvFeeder(localFolder);
+        LocalCsvStoreFeeder localCsvFeeder = new LocalCsvStoreFeeder(localFolder);
         Collection<Row> reads1 = localCsvFeeder.get(symbol, "2022-01-10", "2022-01-31");
         REngine engine = REngine.build(new RocketReadyStrategy(), Sequence.build(reads1));
         Collection<Row> reads2 = localCsvFeeder.get(symbol, "2022-02-01", "2022-10-31");
@@ -48,7 +50,7 @@ public class EngineTests {
     @Test
     public void testEngine() {
         String symbol = "SZ300760";
-        LocalCsvFeeder localCsvFeeder = new LocalCsvFeeder(localFolder);
+        DataFeeder localCsvFeeder = new LocalCsvStoreFeeder(localFolder);
         Engine engine = new Engine(new MyStrategy());
         Collection<Row> reads1 = localCsvFeeder.get(symbol, "2022-01-01", "2022-06-31");
         Collection<Row> reads2 = localCsvFeeder.get(symbol, "2022-07-01", "2022-10-31");
@@ -63,7 +65,7 @@ public class EngineTests {
     @Test
     public void testEngine2() {
         String symbol = "SZ300760";
-        LocalCsvFeeder localCsvFeeder = new LocalCsvFeeder(localFolder);
+        LocalCsvStoreFeeder localCsvFeeder = new LocalCsvStoreFeeder(localFolder);
         Collection<Row> reads = localCsvFeeder.get(symbol, "2022-01-01", "2022-06-31");
 //        Engine engine = new Engine(new MyStrategy(), Sequence.build(reads));
         // 测试回测起始时间和结束时间
@@ -75,7 +77,7 @@ public class EngineTests {
     @Test
     public void testStrategy() {
         String symbol = "SZ300760";
-        LocalCsvFeeder localCsvFeeder = new LocalCsvFeeder(localFolder);
+        LocalCsvStoreFeeder localCsvFeeder = new LocalCsvStoreFeeder(localFolder);
         Collection<Row> reads = localCsvFeeder.get(symbol, "2022-01-01", "2022-06-31");
         Engine engine = new Engine(new MyStrategy());
         Stats stats = engine.run(Sequence.build(reads));
