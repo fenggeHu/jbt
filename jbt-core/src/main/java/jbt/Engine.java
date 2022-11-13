@@ -48,7 +48,15 @@ public class Engine {
     private TradeHandler tradeHandler;
 
     // get engine
-    public static Engine build(Strategy strategy, Sequence data, String start, String end) {
+    public static Engine build(Strategy strategy, String start, String end) {
+        Engine engine = new Engine(strategy);
+        engine.setStart(start);
+        engine.setEnd(end);
+        return engine;
+    }
+
+    // get engine
+    public static Engine build(Strategy strategy, String start, String end, Sequence data) {
         Engine engine = new Engine(strategy, data);
         engine.setStart(start);
         engine.setEnd(end);

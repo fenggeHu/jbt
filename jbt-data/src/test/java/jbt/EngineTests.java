@@ -69,7 +69,7 @@ public class EngineTests {
         Collection<Row> reads = localCsvFeeder.get(symbol, "2022-01-01", "2022-06-31");
 //        Engine engine = new Engine(new MyStrategy(), Sequence.build(reads));
         // 测试回测起始时间和结束时间
-        Engine engine = Engine.build(new MyStrategy(), Sequence.build(reads), "2022-04-28", "2022-05-31");
+        Engine engine = Engine.build(new MyStrategy(), "2022-04-28", "2022-05-31", Sequence.build(reads));
         Stats stats = engine.run();
         log.info("Data1-->Returns: {}, Percent:{}", stats.getPosition().getReturns(), stats.getPosition().getPercent());
     }
