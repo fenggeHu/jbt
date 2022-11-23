@@ -1,6 +1,7 @@
 package jbt.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
@@ -12,6 +13,9 @@ import java.util.Collection;
  **/
 @Slf4j
 public class Sequence {
+    // 默认忽略0值 - 针对无效的double/long为0的值
+    @Setter
+    private boolean ignoreZero = true;
     @Getter
     private Row[] _rows;
     // 起点 - rows数组index
@@ -177,7 +181,12 @@ public class Sequence {
             if (null != startDatetime && startDatetime.compareTo(_rows[i].datetime) > 0) {
                 continue;
             }
-            if (!_rows[i].extNaN()) {    // 判断扩展属性是否有null
+            if (ignoreZero) {  // 忽略扩展属性的null和0
+                if (!_rows[i].extNaNOrZero()) {
+                    start = i;
+                    break;
+                }
+            } else if (!_rows[i].extNaN()) {    // 判断扩展属性是否有null
                 start = i;
                 break;
             }
