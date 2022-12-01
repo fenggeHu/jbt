@@ -14,6 +14,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import utils.ClassUtils;
+import utils.DatetimeUtils;
 
 /**
  * 执行引擎
@@ -46,6 +47,9 @@ public class Engine {
     @Setter
     @Getter
     private TradeHandler tradeHandler;
+    @Setter
+    @Getter
+    private Stats stats;
 
     // get engine
     public static Engine build(Strategy strategy, String start, String end) {
@@ -118,7 +122,9 @@ public class Engine {
         //
         this.preNext();
         //
-        Stats stats = new Stats();
+        if (null == stats) {
+            stats = new Stats();
+        }
         Row r1 = this.data.row(1);
         stats.setStart(r1.getDatetime());
         // run strategy
@@ -132,12 +138,16 @@ public class Engine {
         // 收集信息
         Row end = this.data.get();
         stats.setEnd(end.getDatetime());
-//        long d1 = DateUtils.parseDate(stats.getStart(), datetimeFormat).getTime();
-//        long d2 = DateUtils.parseDate(stats.getEnd(), datetimeFormat).getTime();
-//        stats.setDuration((d2 - d1) / 86400000.00); // days
-        Position pos = tradeHandler.getPosition().compute(data.get().getClose());
-        stats.setPosition(pos);
-        // todo
+        long d1 = DatetimeUtils.parseDate(stats.getStart()).getTime();
+        long d2 = DatetimeUtils.parseDate(stats.getEnd()).getTime();
+        stats.setDuration((d2 - d1) / 86400000.00); // days
+        if (null != this.tradeHandler) {
+            Position pos = tradeHandler.getPosition().compute(data.get().getClose());
+            stats.setPosition(pos);
+            stats.setTrades(pos.getBills().size());
+            stats.setTotalReturn(pos.getPercent());
+        }
+
         return stats;
     }
 
@@ -171,13 +181,22 @@ public class Engine {
 
     // 读取数据行，执行策略逻辑
     protected boolean next() {
-        if (null == data.next()) {
+        Row row = data.next();
+        if (null == row) {
             log.info("Engine run out");
             return false;
         }
         // 操作信号
         if (null != this.strategy) {
             strategy.next();
+        }
+        // 计算stats
+        if (null != this.stats) {
+            if (null != this.tradeHandler) {
+                Position position = this.tradeHandler.getPosition().compute(row.getClose());
+                double maxDraw = this.stats.getMaxDrawdown();
+                this.stats.setMaxDrawdown(Math.min(maxDraw, position.getPercent()));
+            }
         }
 
         return true;
