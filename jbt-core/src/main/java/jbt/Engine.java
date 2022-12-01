@@ -143,8 +143,8 @@ public class Engine {
         stats.setDuration((d2 - d1) / 86400000.00); // days
         if (null != this.tradeHandler) {
             Position pos = tradeHandler.getPosition().compute(data.get().getClose());
-            stats.setPosition(pos);
-            stats.setTrades(pos.getBills().size());
+            stats.setBills(pos);
+            stats.setTrades(stats.getBills().size());
             stats.setTotalReturn(pos.getPercent());
         }
 
