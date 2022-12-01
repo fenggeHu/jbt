@@ -5,6 +5,7 @@ import jbt.account.Position;
 import lombok.Data;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 收集结果
@@ -80,6 +81,7 @@ public class Stats {
     private Position position;
 
     public List<Bill> bills() {
-        return position.getBills();
+        // 过滤无效订单
+        return position.getBills().stream().filter(e -> e.getTotal() > 0).collect(Collectors.toList());
     }
 }
