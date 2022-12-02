@@ -122,9 +122,7 @@ public class Engine {
         //
         this.preNext();
         //
-        if (null == stats) {
-            stats = new Stats();
-        }
+        stats = new Stats();
         Row r1 = this.data.row(1);
         stats.setStart(r1.getDatetime());
         // run strategy
@@ -194,8 +192,10 @@ public class Engine {
         if (null != this.stats) {
             if (null != this.tradeHandler) {
                 Position position = this.tradeHandler.getPosition().compute(row.getClose());
-                double maxDraw = this.stats.getMaxDrawdown();
-                this.stats.setMaxDrawdown(Math.min(maxDraw, position.getPercent()));
+                if (position.getQuantity() > 0) {
+                    double maxDraw = this.stats.getMaxDrawdown();
+                    this.stats.setMaxDrawdown(Math.min(maxDraw, position.getPercent()));
+                }
             }
         }
 
