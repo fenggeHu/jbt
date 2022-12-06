@@ -1,5 +1,6 @@
 package jbt;
 
+import jbt.account.Position;
 import jbt.event.Event;
 import jbt.event.EventQueue;
 import jbt.event.OrderEvent;
@@ -26,6 +27,17 @@ public class Strategy {
     @Getter
     private Sequence _data;
     private EventQueue _eventQueue;
+    private Position _position;
+
+    public Position position() {
+        return this._position;
+    }
+
+    public Position position(double price) {    // 传入价格计算
+        this._position.compute(price);
+        return this._position;
+    }
+
     // 非Sequence的扩展属性
     private Map<String, Object> _ext = new HashMap<>();
 

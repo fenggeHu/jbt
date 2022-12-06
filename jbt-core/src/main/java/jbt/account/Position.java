@@ -20,6 +20,8 @@ public class Position {
     double value; // 最新价值
     double returns; // 收益金额
     double percent; // 收益百分比 x%
+    double maxDrawdown; //最大回撤 %
+    double maxProfit; //最大盈利 %
 
     public Position(double principal) {
         this.principal = principal;
@@ -50,6 +52,13 @@ public class Position {
         this.value = this.quantity * price;
         this.returns = this.value + this.balance - this.principal;
         this.percent = 100 * this.returns / this.principal;
+        // 计算回撤和收益
+        if (this.percent < 0) {
+            this.maxDrawdown = Math.min(this.maxDrawdown, this.percent);
+        } else if (this.percent > 0) {
+            this.maxProfit = Math.max(this.maxProfit, this.percent);
+        }
+
         return this;
     }
 }

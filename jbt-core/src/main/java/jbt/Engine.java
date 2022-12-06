@@ -164,6 +164,7 @@ public class Engine {
             // 注入属性到strategy
             ClassUtils.silencedInjection(strategy, "_data", data);
             ClassUtils.silencedInjection(strategy, "_eventQueue", eventQueue);
+            ClassUtils.silencedInjection(strategy, "_position", tradeHandler.getPosition());
         }
     }
 
