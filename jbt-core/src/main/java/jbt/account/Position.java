@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author jinfeng.hu  @Date 2022/10/10
@@ -34,10 +35,15 @@ public class Position {
         return this;
     }
 
+    // remove blank bills
+    public void trim() {
+        List<Bill> valid = this.getBills().stream().filter(e -> e.getTotal() > 0).collect(Collectors.toList());
+        this.bills.clear();
+        this.bills.addAll(valid);
+    }
+
     /**
      * 按价格计算总价值
-     *
-     * @param price
      */
     public Position compute(double price) {
         // 最新价值
