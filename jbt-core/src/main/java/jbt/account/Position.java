@@ -38,10 +38,11 @@ public class Position {
     }
 
     // remove blank bills
-    public void trim() {
+    public Position trim() {
         List<Bill> valid = this.getBills().stream().filter(e -> e.getTotal() > 0).collect(Collectors.toList());
         this.bills.clear();
         this.bills.addAll(valid);
+        return this;
     }
 
     /**
