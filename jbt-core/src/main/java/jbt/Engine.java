@@ -60,6 +60,18 @@ public class Engine {
     }
 
     // get engine
+    public static Engine build(Strategy strategy, String start, String end, double principal) {
+        Engine engine = new Engine(strategy);
+        engine.setStart(start);
+        engine.setEnd(end);
+        if (principal > 0) {
+            engine.account = new Account();
+            engine.account.setPrincipal(principal);
+        }
+        return engine;
+    }
+
+    // get engine
     public static Engine build(Strategy strategy, String start, String end, Sequence data) {
         Engine engine = new Engine(strategy, data);
         engine.setStart(start);
