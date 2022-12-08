@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class Account {
     // 本金
-    double principal = 1000000.00;
+    double principal = 200000.00;
     // 买入费率
     double openCost = 0.003;
     // 卖出费率
