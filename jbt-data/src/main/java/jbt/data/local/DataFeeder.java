@@ -5,7 +5,7 @@ import jbt.model.Row;
 import java.util.Collection;
 
 /**
- * @author jinfeng.hu  @Date 2022/10/9
+ * @author jinfeng.hu  @date 2022/10/9
  **/
 public interface DataFeeder {
     // 读数据

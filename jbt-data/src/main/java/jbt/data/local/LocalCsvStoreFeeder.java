@@ -15,7 +15,7 @@ import java.util.*;
  * datetime,O,H,L,C,V,...
  * 时间存储按datetime顺序，第一行是title
  *
- * @author jinfeng.hu  @Date 2022/10/9
+ * @author jinfeng.hu  @date 2022/10/9
  **/
 @Slf4j
 public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {

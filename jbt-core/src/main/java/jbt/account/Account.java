@@ -3,7 +3,7 @@ package jbt.account;
 import lombok.Data;
 
 /**
- * @author jinfeng.hu  @Date 2022/10/10
+ * @author jinfeng.hu  @date 2022/10/10
  **/
 @Data
 public class Account {

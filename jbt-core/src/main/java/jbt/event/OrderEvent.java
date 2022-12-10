@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 /**
  * 订单信号
  *
- * @author jinfeng.hu  @Date 2022/10/14
+ * @author jinfeng.hu  @date 2022/10/14
  **/
 @Data
 @Builder

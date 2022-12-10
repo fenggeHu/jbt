@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * strategy bean
  *
- * @author jinfeng.hu  @Date 2022/10/27
+ * @author jinfeng.hu  @date 2022/10/27
  **/
 @Slf4j
 public class Strategy {

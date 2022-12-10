@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * _trades  Size  EntryB...
  * dtype: object
  *
- * @author jinfeng.hu  @Date 2022/10/28
+ * @author jinfeng.hu  @date 2022/10/28
  **/
 @Data
 public class Stats {
