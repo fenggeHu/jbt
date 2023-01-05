@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author jinfeng.hu  @Date 2022/10/10
+ * @author jinfeng.hu  @date 2022/10/10
  **/
 @Data
 public class Position {

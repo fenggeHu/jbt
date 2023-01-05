@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author jinfeng.hu  @Date 2022/12/1
+ * @author jinfeng.hu  @date 2022/12/1
  **/
 public class DatetimeUtils {
     public static String defaultFormat = "yyyy-MM-dd HH:mm:ss";

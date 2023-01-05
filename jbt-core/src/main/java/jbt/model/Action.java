@@ -3,7 +3,7 @@ package jbt.model;
 /**
  * Description:
  *
- * @author jinfeng.hu  @Date 2022-10-06
+ * @author jinfeng.hu  @date 2022-10-06
  **/
 public enum Action {
     SELL(-1),

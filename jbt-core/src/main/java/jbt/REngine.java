@@ -9,7 +9,7 @@ import jbt.model.Sequence;
  * run最新数据的策略 - 增加或更新最后1行
  * 可用于实时触发和最新数据寻找机会
  *
- * @author jinfeng.hu  @Date 2022/10/31
+ * @author jinfeng.hu  @date 2022/10/31
  **/
 public class REngine extends Engine {
 

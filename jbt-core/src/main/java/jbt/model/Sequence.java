@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * 数据序列
  *
- * @author jinfeng.hu  @Date 2022/10/18
+ * @author jinfeng.hu  @date 2022/10/18
  **/
 @Slf4j
 public class Sequence {

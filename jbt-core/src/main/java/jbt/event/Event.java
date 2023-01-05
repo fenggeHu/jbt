@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * 事件
- * @author jinfeng.hu  @Date 2022/10/18
+ * @author jinfeng.hu  @date 2022/10/18
  **/
 @Data
 public class Event {
