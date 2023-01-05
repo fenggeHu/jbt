@@ -28,6 +28,21 @@ public class Position {
         this.balance = principal;
     }
 
+    // 平仓 TODO
+    public void close(String date, double price, double fee) {
+        if (this.quantity == 0) {
+            return;
+        }
+        Bill bill = Bill.builder().datetime(date)
+                .price(price).fee(fee)
+                .build();
+        if (this.quantity > 0) {
+
+        } else {
+
+        }
+    }
+
     // add bill
     public Position addBill(Bill b) {
         this.bills.add(b);
