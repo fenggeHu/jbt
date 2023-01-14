@@ -195,7 +195,7 @@ public class Engine {
     protected boolean next() {
         Row row = data.next();
         if (null == row) {
-            log.info("Engine run out");
+            log.debug("Engine run out");
             return false;
         }
         // 操作信号
