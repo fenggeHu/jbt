@@ -168,7 +168,8 @@ public class Sequence {
     public Row row(int i) {
         int index = point + first + i;
         if (index < 0 || index >= this._rows.length) {
-            log.warn("index out of _rows range(0~{}). index: {}", this._rows.length, index);
+            // warn -> debug
+            log.debug("index out of _rows range(0~{}). index: {}", this._rows.length, index);
             return null;
         }
         return _rows[index];
