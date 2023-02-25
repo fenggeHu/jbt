@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * @Author hujinfeng  @Date 2020/11/28
+ * @author hujinfeng  @Date 2020/11/28
  **/
 public class NameStringUtils {
 

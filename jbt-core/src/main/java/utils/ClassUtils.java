@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @Description:
- * @Author jinfeng.hu  @Date 2022/8/29
+ * @author jinfeng.hu  @Date 2022/8/29
  **/
 @Slf4j
 public class ClassUtils {
