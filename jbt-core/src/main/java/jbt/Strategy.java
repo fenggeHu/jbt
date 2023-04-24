@@ -122,8 +122,8 @@ public class Strategy {
     protected void buy(double ratio, int limit) {
         log.debug("buy: {} - ratio: {}% - limit: {}", _data.get().datetime, ratio * 100, limit);
         Row row = get();
-        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY).price(row.getClose())
-                .ratio(ratio).limit(limit).build();
+        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY)
+                .price(row.getClose()).ratio(ratio).limit(limit).build();
         event.setRow(row);
         _eventQueue.offer(event);
     }
@@ -142,8 +142,46 @@ public class Strategy {
     protected void sell(double ratio, int limit) {
         log.debug("sell: {} - ratio: {}% - limit: {}", _data.get().datetime, ratio * 100, limit);
         Row row = get();
-        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL).price(row.getClose())
-                .ratio(ratio).limit(limit).build();
+        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
+                .price(row.getClose()).ratio(ratio).limit(limit).build();
+        event.setRow(row);
+        _eventQueue.offer(event);
+    }
+
+    /**
+     * 平仓
+     */
+    protected void close() {
+        log.debug("close: {}", _data.get().datetime);
+        Row row = get();
+        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CLOSE)
+                .price(row.getClose()).build();
+        event.setRow(row);
+        _eventQueue.offer(event);
+    }
+
+    /**
+     * 取消订单 - 如果已经提交的订单还未成交则取消该订单
+     */
+    protected void cancel() {
+        log.debug("cancel: {}", _data.get().datetime);
+        Row row = get();
+        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CANCEL)
+                .price(row.getClose()).build();
+        event.setRow(row);
+        _eventQueue.offer(event);
+    }
+
+    /**
+     * 调仓到目标比例
+     *
+     * @param percent 取值[0,1]
+     */
+    protected void targetPercent(double percent) {
+        log.debug("target percent: {} - {}", _data.get().datetime, percent);
+        Row row = get();
+        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.TARGET)
+                .price(row.getClose()).targetPercent(percent).build();
         event.setRow(row);
         _eventQueue.offer(event);
     }

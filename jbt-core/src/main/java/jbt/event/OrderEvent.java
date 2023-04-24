@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 订单信号
+ * 订单信号和参数
  *
  * @author jinfeng.hu  @date 2022/10/14
  **/
@@ -26,4 +26,6 @@ public class OrderEvent extends Event {
     public double ratio;
 
     public int limit;
+    // 目标比例 - 取值[0,1]
+    public double targetPercent;
 }
