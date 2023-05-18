@@ -2,6 +2,7 @@ package utils;
 
 import lombok.SneakyThrows;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,5 +22,27 @@ public class DatetimeUtils {
             return new SimpleDateFormat(yyyy_MM_dd).parse(ds);
         }
         return new SimpleDateFormat(defaultFormat).parse(ds);
+    }
+
+    /**
+     * TODO 时区问题
+     *
+     * @return ms
+     */
+    public static long parseTimestampMs(Date date) {
+        return date.getTime();
+    }
+
+    public static long parseTimestampMs(String ds) {
+        Date date = parseDate(ds);
+        return parseTimestampMs(date);
+    }
+
+    /**
+     * @param ds
+     * @return ns
+     */
+    public static long parseTimestampNs(String ds) {
+        return parseTimestampMs(ds) * 1000000;
     }
 }
