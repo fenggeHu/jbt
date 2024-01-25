@@ -85,7 +85,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
             file.getParentFile().mkdirs();
             file.createNewFile();
         }
-        log.info("{}: store to ", symbol, file.getPath());
+        log.info("{}: store to {}", symbol, file.getPath());
         //数据顺序 - 按datetime顺序
         Map<String, String> treeMap = new TreeMap<>();
         String title = null;
