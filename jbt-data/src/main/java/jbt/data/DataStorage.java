@@ -9,6 +9,11 @@ import java.util.Collection;
  * @author jinfeng.hu  @date 2022/10/9
  **/
 public interface DataStorage {
-    // 数据存储
-    void store(String symbol, Collection<Row> chartRow);
+    /**
+     * 数据存储
+     * @param symbol
+     * @param chartRow
+     * @param overwrite 是否重写
+     */
+    void store(String symbol, Collection<Row> chartRow, boolean overwrite);
 }

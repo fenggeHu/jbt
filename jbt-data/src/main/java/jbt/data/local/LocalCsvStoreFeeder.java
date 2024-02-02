@@ -79,7 +79,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
 
     @SneakyThrows
     @Override
-    public void store(String symbol, Collection<Row> chartRow) {
+    public void store(String symbol, Collection<Row> chartRow, boolean overwrite) {
         File file = getFile(symbol);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -89,19 +89,21 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
         //数据顺序 - 按datetime顺序
         Map<String, String> treeMap = new TreeMap<>();
         String title = null;
-        try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (null == title) {
-                    title = line;
-                    continue;
+        if (!overwrite) { // 如果要放弃历史数据就不读入历史数据
+            try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (null == title) {
+                        title = line;
+                        continue;
+                    }
+                    String[] row = line.split(",");
+                    String datetime = row[0];
+                    treeMap.put(datetime, line + "\n");
                 }
-                String[] row = line.split(",");
-                String datetime = row[0];
-                treeMap.put(datetime, line + "\n");
+            } catch (Exception e) {
+                log.error("{}: read file", symbol, e);
             }
-        } catch (Exception e) {
-            log.error("{}: read file", symbol, e);
         }
         // 数据整合重写
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
