@@ -25,6 +25,8 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
     private String localFolder = "~/.tibet";
     @Setter
     private String region = "cn";
+    // 不可变空List
+    private List EmptyList = Collections.unmodifiableList(new ArrayList<>(0));
 
     public LocalCsvStoreFeeder() {
     }
@@ -53,7 +55,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
         File file = getFile(symbol);
         if (!file.exists()) {
             log.warn("file is not exists: {}", file.getPath());
-            return null;
+            return EmptyList;
         }
         String title = null;
         try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
@@ -84,7 +86,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
         } catch (Exception e) {
             log.error("LocalFeeder.read", e);
         }
-        return null;
+        return EmptyList;
     }
 
     @SneakyThrows
