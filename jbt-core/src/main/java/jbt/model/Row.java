@@ -1,5 +1,6 @@
 package jbt.model;
 
+import jbt.constant.RowPropertyEnum;
 import lombok.Data;
 import utils.PrimitiveValueUtil;
 
@@ -48,15 +49,15 @@ public class Row {
      * get object
      */
     public Object o(String key) {
-        if (key.equals("open")) {
+        if (RowPropertyEnum.O.getKey().equals(key)) {
             return open;
-        } else if (key.equals("high")) {
+        } else if (RowPropertyEnum.H.getKey().equals(key)) {
             return high;
-        } else if (key.equals("low")) {
+        } else if (RowPropertyEnum.L.getKey().equals(key)) {
             return low;
-        } else if (key.equals("close")) {
+        } else if (RowPropertyEnum.C.getKey().equals(key)) {
             return close;
-        } else if (key.equals("volume")) {
+        } else if (RowPropertyEnum.V.getKey().equals(key)) {
             return volume;
         }
         return _ext.containsKey(key) ? _ext.get(key) : null;
@@ -88,6 +89,6 @@ public class Row {
     }
 
     public String title() {
-        return "datetime,open,high,low,close,volume";
+        return RowPropertyEnum.basicTitle();
     }
 }
