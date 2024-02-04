@@ -39,6 +39,16 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
     }
 
     @Override
+    public Collection<String> getLocalSymbols() {
+        String features = String.format("%s/%s/features/", localFolder, region);
+        File file = new File(features);
+        if (file.exists() && file.isDirectory()) {
+            return Arrays.asList(file.list());
+        }
+        return new ArrayList<>(0);
+    }
+
+    @Override
     public Collection<Row> get(String symbol, String start, String end) {
         File file = getFile(symbol);
         if (!file.exists()) {
