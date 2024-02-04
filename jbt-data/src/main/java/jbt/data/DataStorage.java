@@ -3,6 +3,7 @@ package jbt.data;
 import jbt.model.Row;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * k线存储
@@ -22,5 +23,5 @@ public interface DataStorage {
     /**
      * 读取本地存储的symbol
      */
-    Collection<String> getLocalSymbols();
+    List<String> getLocalSymbols();
 }

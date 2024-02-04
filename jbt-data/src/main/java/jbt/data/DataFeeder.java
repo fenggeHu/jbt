@@ -2,7 +2,7 @@ package jbt.data;
 
 import jbt.model.Row;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * k线查询
@@ -10,5 +10,5 @@ import java.util.Collection;
  **/
 public interface DataFeeder {
     // 读数据
-    Collection<Row> get(String symbol, String start, String end);
+    List<Row> get(String symbol, String start, String end);
 }
