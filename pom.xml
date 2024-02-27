@@ -6,7 +6,7 @@
     <groupId>io.github.fenggehu</groupId>
     <artifactId>jbt</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOOT</version>
     <modules>
         <module>jbt-core</module>
         <module>jbt-data</module>

@@ -25,6 +25,19 @@ public class Row {
     // 自定义的扩展属性
     private Map<String, Object> _ext = new HashMap<>();
 
+    public Row() {
+    }
+
+    // 构造函数
+    public Row(String datetime, double open, double high, double low, double close, long volume) {
+        this.datetime = datetime;
+        this.open = open;
+        this.high = high;
+        this.low = low;
+        this.close = close;
+        this.volume = volume;
+    }
+
     public void setExt(String key, Object obj) {
         this._ext.put(key, obj);
     }
