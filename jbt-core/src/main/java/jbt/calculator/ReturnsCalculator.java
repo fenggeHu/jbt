@@ -6,13 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 评估策略表现 - 计算各种指标，例如收益曲线、最大回撤、夏普比率等。
+ * 收益相关的指标 - 例如收益率、收益曲线、最大回撤、夏普比率等。
  * returns参数表示策略每日的收益率序列。收益率是衡量投资绩效的一种指标，通常用百分比表示。具体来说，每日收益率的计算方式是：
- * Daily Return = (今日收盘价 − 昨日收盘价)/ 昨日收盘价
+ * Daily Return = (今日收盘价 − 昨日收盘价) / 昨日收盘价
  *
  * @author max.hu  @date 2024/02/27
  **/
-public class StrategyCalculator {
+public class ReturnsCalculator {
 
     /**
      * 计算收益率
@@ -33,15 +33,24 @@ public class StrategyCalculator {
     }
 
     /**
-     * 计算每日收益率
+     * 计算收益率
      */
-    private static double dailyReturn(Row currentRow, Row previousRow) {
-        if (previousRow == null || previousRow.getClose() <= 0) {
+    public static double dailyReturn(Row currentRow, Row previousRow) {
+        if (previousRow == null) {
             return 0.0; // 第一天的收益率为零或未定义
         }
 
-        // 计算每日收益率
-        return (currentRow.close - previousRow.close) / previousRow.close;
+        return dailyReturn(currentRow.close, previousRow.close);
+    }
+
+    /**
+     * Daily Return = (今日收盘价 − 昨日收盘价) / 昨日收盘价
+     */
+    public static double dailyReturn(double currentPrice, double previousPrice) {
+        if (previousPrice <= 0) {
+            return 0.0;
+        }
+        return (currentPrice - previousPrice) / previousPrice;
     }
 
     /**

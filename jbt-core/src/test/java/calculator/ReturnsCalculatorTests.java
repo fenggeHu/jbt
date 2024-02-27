@@ -1,6 +1,6 @@
 package calculator;
 
-import jbt.calculator.StrategyCalculator;
+import jbt.calculator.ReturnsCalculator;
 import jbt.model.Row;
 import org.junit.Test;
 
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author max.hu  @date 2024/02/27
  **/
-public class StrategyCalculatorTests {
+public class ReturnsCalculatorTests {
 
     @Test
     public void testCalculator() throws Exception {
@@ -21,7 +21,7 @@ public class StrategyCalculatorTests {
         };
 
         // 计算收益率序列
-        List<Double> returns = StrategyCalculator.dailyReturns(rows);
+        List<Double> returns = ReturnsCalculator.dailyReturns(rows);
 
         // 打印收益率序列
         System.out.println("Daily Returns: " + returns);
