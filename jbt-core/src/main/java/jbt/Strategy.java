@@ -88,13 +88,12 @@ public class Strategy {
         return _data.row(index);
     }
 
-    protected void add(String indicator, double[] values) {
+    protected void add(String indicator, Object[] values) {
         if (null != indicator && null != values) {
             _data.addExt(indicator, values);
         }
     }
-
-    protected void add(String indicator, Double[] values) {
+    protected void add(String indicator, double[] values) {
         if (null != indicator && null != values) {
             _data.addExt(indicator, values);
         }
