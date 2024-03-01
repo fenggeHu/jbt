@@ -53,7 +53,10 @@ public class Row {
     // 判断 _ext是否存在null或为0
     public boolean extNaNOrZero() {
         for (Object o : _ext.values()) {
-            if (PrimitiveValueUtil.getAsDouble(o, 0) == 0) return true;
+            if (null == o) return true;
+            if (o instanceof Number) {
+                if (PrimitiveValueUtil.getAsDouble(o, 0) == 0) return true;
+            }
         }
         return false;
     }
