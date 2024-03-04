@@ -9,6 +9,13 @@ import java.util.List;
  * @author jinfeng.hu  @date 2022/10/9
  **/
 public interface DataFeeder {
-    // 读数据
+    // 按时间周期读数据
     List<Row> get(String symbol, String start, String end);
+    // 读取最近n条数据
+    List<Row> get(String symbol, int count);
+
+    /**
+     * 读取本地存储的symbol
+     */
+    List<String> getSymbols();
 }

@@ -19,9 +19,4 @@ public interface DataStorage {
      * @param overwrite 是否重写
      */
     void store(String symbol, Collection<Row> chartRow, boolean overwrite);
-
-    /**
-     * 读取本地存储的symbol
-     */
-    List<String> getLocalSymbols();
 }

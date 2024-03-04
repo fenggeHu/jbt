@@ -21,6 +21,10 @@ import java.util.*;
  **/
 @Slf4j
 public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
+    // 换行符
+    private char newlineChar = '\n';
+    // 文件头起始字符串
+    private String titleStart = "datetime";
     @Setter
     private String localFolder = "~/.tibet";
     @Setter
@@ -41,7 +45,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
     }
 
     @Override
-    public List<String> getLocalSymbols() {
+    public List<String> getSymbols() {
         String features = String.format("%s/%s/features/", localFolder, region);
         File file = new File(features);
         if (file.exists() && file.isDirectory()) {
@@ -60,17 +64,18 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
         String title = null;
         try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
             String line;
-            List<Row> barList = new LinkedList<>();
+            List<Row> ret = new LinkedList<>();
             while ((line = br.readLine()) != null) {
-                if (null == title) {
+                if (null == line || line.length() == 0) {
+                    continue;
+                }
+                if (null == title && line.startsWith(titleStart)) {
                     title = line;
                     continue;
                 }
+
                 String[] row = line.split(",");
                 String datetime = row[0];
-                if (datetime.compareTo(end) > 0) {
-                    break;
-                }
                 if (datetime.compareTo(start) >= 0 && datetime.compareTo(end) <= 0) {
                     Row bar = new Row();
                     bar.setDatetime(datetime);
@@ -79,14 +84,68 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
                     bar.setLow(PrimitiveValueUtil.getAsDouble(row[3]));
                     bar.setClose(PrimitiveValueUtil.getAsDouble(row[4]));
                     bar.setVolume(PrimitiveValueUtil.getAsLong(row[5]));
-                    barList.add(bar);
+                    ret.add(bar);
                 }
             }
-            return barList;
+            return ret;
         } catch (Exception e) {
             log.error("LocalFeeder.read", e);
         }
         return EmptyList;
+    }
+
+    private Row toRow(String line) {
+        String[] vs = line.split(",");
+        Row row = new Row();
+        row.setDatetime(vs[0]);
+        row.setOpen(PrimitiveValueUtil.getAsDouble(vs[1]));
+        row.setHigh(PrimitiveValueUtil.getAsDouble(vs[2]));
+        row.setLow(PrimitiveValueUtil.getAsDouble(vs[3]));
+        row.setClose(PrimitiveValueUtil.getAsDouble(vs[4]));
+        row.setVolume(PrimitiveValueUtil.getAsLong(vs[5]));
+        return row;
+    }
+
+    @Override
+    public List<Row> get(String symbol, int n) {
+        File file = getFile(symbol);
+        if (!file.exists()) {
+            log.warn("file is not exists: {}", file.getPath());
+            return EmptyList;
+        }
+        List<Row> ret = new LinkedList<>();
+        String title = null;
+        // 使用 RandomAccessFile 读取文件
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            // 使用双端队列（Deque）保存最后n行的内容
+            Deque<String> lastNLines = new ArrayDeque<>(n);
+            // 逐行读取文件内容
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (null == line || line.length() == 0) {
+                    continue;
+                }
+                if (null == title && line.startsWith(titleStart)) {
+                    title = line;
+                    continue;
+                }
+                // 将当前行加入队列
+                lastNLines.addLast(line);
+
+                // 如果队列大小超过n，移除队首元素
+                if (lastNLines.size() > n) {
+                    lastNLines.removeFirst();
+                }
+            }
+            // to row
+            if (lastNLines.size() > 0) {
+                lastNLines.forEach(s -> ret.add(toRow(s)));
+            }
+        } catch (Exception e) {
+            log.error("get local day data error: " + symbol, e);
+        }
+
+        return ret;
     }
 
     @SneakyThrows
@@ -111,7 +170,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
                     }
                     String[] row = line.split(",");
                     String datetime = row[0];
-                    treeMap.put(datetime, line + "\n");
+                    treeMap.put(datetime, line + newlineChar);
                 }
             } catch (Exception e) {
                 log.error("{}: read file", symbol, e);
@@ -129,11 +188,11 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
                         .append(bar.getHigh()).append(",")
                         .append(bar.getLow()).append(",")
                         .append(bar.getClose()).append(",")
-                        .append(bar.getVolume()).append("\n");
+                        .append(bar.getVolume()).append(newlineChar);
                 treeMap.put(bar.getDatetime(), sb.toString());
             }
             if (null != title) {
-                bw.append(title + "\n");
+                bw.append(title + newlineChar);
             }
             for (String value : treeMap.values()) {
                 bw.append(value);
