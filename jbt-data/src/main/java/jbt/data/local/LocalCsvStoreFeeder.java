@@ -1,5 +1,6 @@
 package jbt.data.local;
 
+import jbt.constant.RowPropertyEnum;
 import jbt.data.DataFeeder;
 import jbt.data.DataStorage;
 import jbt.model.Row;
@@ -24,7 +25,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
     // 换行符
     private char newlineChar = '\n';
     // 文件头起始字符串
-    private String titleStart = "datetime";
+    private String titleStart = RowPropertyEnum.D.getKey();
     @Setter
     private String localFolder = "~/.tibet";
     @Setter

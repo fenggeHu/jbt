@@ -9,7 +9,7 @@ import lombok.Getter;
  **/
 public enum RowPropertyEnum {
     /**
-     * basic - row基本必须的属性
+     * basic - row基本必须的属性。 D-OHLCV
      */
     D("datetime"), O("open"), H("high"), L("low"), C("close"), V("volume"),
     /**
