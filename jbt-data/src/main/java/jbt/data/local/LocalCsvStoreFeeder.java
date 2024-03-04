@@ -58,7 +58,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
     public List<Row> get(String symbol, String start, String end) {
         File file = getFile(symbol);
         if (!file.exists()) {
-            log.warn("file is not exists: {}", file.getPath());
+            log.debug("file is not exists: {}", file.getPath());
             return EmptyList;
         }
         String title = null;
@@ -110,7 +110,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
     public List<Row> get(String symbol, int n) {
         File file = getFile(symbol);
         if (!file.exists()) {
-            log.warn("file is not exists: {}", file.getPath());
+            log.debug("file is not exists: {}", file.getPath());
             return EmptyList;
         }
         List<Row> ret = new LinkedList<>();
