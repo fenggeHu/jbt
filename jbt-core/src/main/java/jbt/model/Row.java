@@ -25,7 +25,7 @@ public class Row {
     public double close;
     public double high;
     public double low;
-    // size or money
+    // size or money - default money/turnover
     public long volume;
     // 自定义的扩展属性
     @Builder.Default        // 避免在使用build时此属性未被初始化
