@@ -79,28 +79,10 @@ public class RealtimeRow extends Row {
     public double askPrice;
     List<VolumePrice> asks; // 卖档
     List<VolumePrice> bids; // 买档
-//    // 卖5档行情 - 从高到低卖价/卖量 f31~f40
-//    public double askPrice1;    // f31
-//    public long askVolume1;     // f32
-//    public double askPrice2;    // f33
-//    public long askVolume2;     // f34
-//    public double askPrice3;    // f35
-//    public long askVolume3; // f36
-//    public double askPrice4;    // f37
-//    public long askVolume4; // f38
-//    public double askPrice5;    // f39
-//    public long askVolume5; // f40
-//    // 买5档行情 - 从高到低买价/买量 f19~f11
-//    public double bidPrice1;    // f19
-//    public long bidVolume1;     // f20
-//    public double bidPrice2;    // f17
-//    public long bidVolume2;     // f18
-//    public double bidPrice3;    // f15
-//    public long bidVolume3;     // f16
-//    public double bidPrice4;    // f13
-//    public long bidVolume4;     // f14
-//    public double bidPrice5;    // f11
-//    public long bidVolume5;     // f12
+
+    // 特殊值
+    // eastmoney内部的市场代码-secid值前的市场代码 f107
+    public int eastmoneyMarketCode;
 
     /**
      * 前n档卖金额
