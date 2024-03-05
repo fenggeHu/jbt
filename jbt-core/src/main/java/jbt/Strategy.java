@@ -69,6 +69,14 @@ public class Strategy {
         return _data.d(key);
     }
 
+    protected double[] highs() {
+        return _data.highs();
+    }
+
+    protected double[] lows() {
+        return _data.lows();
+    }
+
     protected double[] closes() {
         return _data.closes();
     }
@@ -93,6 +101,7 @@ public class Strategy {
             _data.addExt(indicator, values);
         }
     }
+
     protected void add(String indicator, double[] values) {
         if (null != indicator && null != values) {
             _data.addExt(indicator, values);

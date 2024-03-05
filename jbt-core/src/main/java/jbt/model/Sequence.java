@@ -101,6 +101,14 @@ public class Sequence {
         return ret;
     }
 
+    public double[] highs() {
+        return d("high");
+    }
+
+    public double[] lows() {
+        return d("low");
+    }
+
     public double[] closes() {
         return d("close");
     }
