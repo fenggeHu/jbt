@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.List;
 
 /**
+ * 补充一些详细信息的Row
  * 注释中的f标记来自eastmoney接口的对应关系
  *
  * @author max.hu  @date 2024/03/04
@@ -15,7 +16,7 @@ import java.util.List;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class RealtimeRow extends Row {
+public class DetailRow extends Row {
     // 成交额(元) - f48  -->同时写入 super.volume
     public double turnover;
     // row.volume 可能是成交额，所以使用realVolume存成交量

@@ -1,6 +1,6 @@
 package enhancement;
 
-import jbt.enhancement.RealtimeRow;
+import jbt.enhancement.DetailRow;
 import jbt.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * @author max.hu  @date 2024/03/04
  **/
-public class RealtimeRowTests {
+public class DetailRowTests {
 
     @Test
     public void testCreate() {
@@ -17,9 +17,9 @@ public class RealtimeRowTests {
         row = Row.builder().build();
         Assert.assertNotNull(row.get_ext());
 
-        row = new RealtimeRow();
+        row = new DetailRow();
         Assert.assertNotNull(row.get_ext());
-        row = RealtimeRow.builder().build();
+        row = DetailRow.builder().build();
         Assert.assertNotNull(row.get_ext());
     }
 }
