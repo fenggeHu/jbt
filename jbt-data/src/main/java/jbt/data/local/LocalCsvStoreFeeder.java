@@ -1,9 +1,9 @@
 package jbt.data.local;
 
+import com.google.gson.reflect.TypeToken;
 import jbt.constant.RowPropertyEnum;
 import jbt.data.DataFeeder;
 import jbt.data.DataStorage;
-import jbt.data.feature.Record;
 import jbt.data.utils.JsonUtil;
 import jbt.model.Row;
 import lombok.Setter;
@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import utils.PrimitiveValueUtil;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -214,92 +216,59 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
 
     @SneakyThrows
     @Override
-    public boolean writeRecord(String type, String id, Record content) {
-        if (null == type || type.trim().length() == 0 || null == id || id.contains(delimiter) || null == content) {
+    public void write(String type, String id, Object obj) {
+        if (null == type || type.trim().length() == 0 || null == id || id.contains(delimiter) || null == obj) {
             throw new RuntimeException("Invalid type/id/content. type=" + type + ", id=" + id);
         }
         recordLock.writeLock().lock();
         try {
-            File file = getRecordFile(type);
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
+            Map<String, Object> result;
+            File file = getJsonFile(type);
+            if (file.exists()) {
+                // 读取整个文件的字节数组
+                byte[] fileBytes = Files.readAllBytes(file.toPath());
+                // 将字节数组转换为字符串（根据文件编码）
+                String txt = new String(fileBytes);
+                result = JsonUtil.toObject(txt, Map.class);
+            } else {
+                result = new HashMap<>();
             }
-            File tempFile = File.createTempFile(type, id + ".txt.tmp");
-
-            // 读写数据
-            try (BufferedReader reader = new BufferedReader(new FileReader(file));
-                 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    int index = line.indexOf(delimiter);
-                    String oid = line.substring(0, index);
-                    if (id.equals(oid)) {
-                        String json = line.substring(index + 1);
-                        Record ord = JsonUtil.toObject(json, Record.class);
-                        content.setCreatedAt(ord.getCreatedAt());
-                    } else {
-                        writer.write(line);
-                    }
-                }
-                if (content.getCreatedAt() <= 0) {
-                    content.setCreatedAt(System.currentTimeMillis());
-                }
-                content.setUpdatedAt(System.currentTimeMillis());
-                line = id + delimiter + JsonUtil.toJson(content);
-                writer.write(line);
-                // 将临时文件替换原文件
-                if (!file.delete()) {
-                    log.error("Could not delete old file. {}", file.getPath());
-                    return false;
-                }
-                if (!tempFile.renameTo(file)) {
-                    log.error("Could not write file.{}", file.getPath());
-                }
-            } catch (Exception e) {
-                log.error("{}: read history data", type, e);
-            }
+            result.put(id, obj);
+            String json = JsonUtil.toJson(result);
+            Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
         } catch (Exception e) {
             throw new RuntimeException(e);  // 未知错误
         } finally {
             recordLock.writeLock().unlock();
         }
-        return true;
     }
 
     @SneakyThrows
     @Override
-    public Map<String, Record> readRecord(String type, String id) {
+    public Map<String, Object> read(String type) {
         if (null == type || type.trim().length() == 0) {
             throw new RuntimeException("Invalid type");
         }
-        File file = getRecordFile(type);
+        File file = getJsonFile(type);
         if (!file.exists()) {
             log.debug("record file is not exists: {}", file.getPath());
             return new HashMap<>(0);
         }
-        Map<String, Record> records = new HashMap<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                int index = line.indexOf(delimiter);
-                String oid = line.substring(0, index);
-                String json = line.substring(index + 1);
-                Record ord = JsonUtil.toObject(json, Record.class);
-                if (oid.equals(id)) {
-                    records.clear();
-                    records.put(oid, ord);
-                    return records;     // 精确匹配到了立即返回
-                } else {
-                    records.put(oid, ord);
-                }
-            }
-        }
-        return records;
+
+        // 读取整个文件的字节数组
+        byte[] fileBytes = Files.readAllBytes(file.toPath());
+        // 将字节数组转换为字符串（根据文件编码）
+        String content = new String(fileBytes);
+        return JsonUtil.toObject(content, new TypeToken<Map<String, Object>>() {
+        }.getType());
+    }
+    // 读type文件，取id的值
+    public Object readOne(String type, String id) {
+        return read(type).get(id);
     }
 
-    private File getRecordFile(String type) {
-        String filename = String.format("%s/%s/features/%s.txt", localFolder, region, type);
+    private File getJsonFile(String type) {
+        String filename = String.format("%s/%s/features/%s.json", localFolder, region, type);
         File file = new File(filename);
         return file;
     }

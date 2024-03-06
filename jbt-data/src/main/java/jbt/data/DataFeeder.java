@@ -1,6 +1,5 @@
 package jbt.data;
 
-import jbt.data.feature.Record;
 import jbt.model.Row;
 
 import java.util.List;
@@ -27,8 +26,7 @@ public interface DataFeeder {
      * 读取记录
      *
      * @param type 类型
-     * @param id 数据id
      * @return Map<id, Record>
      */
-    Map<String, Record> readRecord(String type, String id);
+    Map<String, Object> read(String type);
 }

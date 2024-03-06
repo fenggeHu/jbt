@@ -1,6 +1,5 @@
 package jbt.data;
 
-import jbt.data.feature.Record;
 import jbt.model.Row;
 
 import java.util.Collection;
@@ -21,10 +20,11 @@ public interface DataStorage {
     void store(String symbol, Collection<Row> chartRow, boolean overwrite);
 
     /**
-     * 写记录
+     * 写配置/文件
      *
-     * @param type    记录类型
+     * @param type    记录类型 - 配置
+     * @param id      记录id - 配置内唯一
      * @param content 记录内容
      */
-    boolean writeRecord(String type, String id, final Record content);
+    void write(String type, String id, final Object content);
 }
