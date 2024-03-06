@@ -3,7 +3,6 @@ package jbt.data;
 import jbt.model.Row;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * k线查询
@@ -25,8 +24,7 @@ public interface DataFeeder {
     /**
      * 读取记录
      *
-     * @param type 类型
-     * @return Map<id, Record>
+     * @param name 类型
      */
-    Map<String, Object> read(String type);
+    String read(String name);
 }

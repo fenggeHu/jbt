@@ -5,8 +5,8 @@ import jbt.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author max.hu  @date 2024/03/04
@@ -27,12 +27,26 @@ public class LocalCsvStoreFeederTests {
 
     @Test
     public void testRWFile() {
+        usLocalCsvFeeder.write("update", null);
         Row data = Row.builder().datetime("2013-01-01").open(3.13)
                 .build();
         usLocalCsvFeeder.write("update", "AAPL", data);
-        Map r = usLocalCsvFeeder.read("update");
+        Object r = usLocalCsvFeeder.read("update");
         Assert.assertNotNull(r);
-        Object n = usLocalCsvFeeder.readOne("update", "MSFT");
-        Assert.assertNull(n);
+        usLocalCsvFeeder.write("update", data);
+        Object r2 = usLocalCsvFeeder.read("update");
+        Assert.assertNotNull(r2);
+        usLocalCsvFeeder.write("update", null);
+        Object r3 = usLocalCsvFeeder.read("update");
+        Assert.assertNull(r3);
+    }
+
+    @Test
+    public void testFileAttribute(){
+        usLocalCsvFeeder.write("real_time_monitoring","{}");
+        BasicFileAttributes fileAttributes = usLocalCsvFeeder.getConfigAttributes("real_time_monitoring");
+
+        System.out.println("Creation Time: " + fileAttributes.creationTime());
+        System.out.println("Last Modified Time: " + fileAttributes.lastModifiedTime().toMillis());
     }
 }

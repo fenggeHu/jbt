@@ -21,10 +21,8 @@ public interface DataStorage {
 
     /**
      * 写配置/文件
-     *
-     * @param type    记录类型 - 配置
-     * @param id      记录id - 配置内唯一
-     * @param content 记录内容
+     * @param name
+     * @param content
      */
-    void write(String type, String id, final Object content);
+    void write(String name, final Object content);
 }
