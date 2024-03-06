@@ -214,10 +214,11 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
 
     private static final ReadWriteLock recordLock = new ReentrantReadWriteLock();
 
+    // 当obj为空时删除改id
     @SneakyThrows
     @Override
     public void write(String type, String id, Object obj) {
-        if (null == type || type.trim().length() == 0 || null == id || id.contains(delimiter) || null == obj) {
+        if (null == type || type.trim().length() == 0 || null == id || id.contains(delimiter)) {
             throw new RuntimeException("Invalid type/id/content. type=" + type + ", id=" + id);
         }
         recordLock.writeLock().lock();
@@ -233,9 +234,17 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
             } else {
                 result = new HashMap<>();
             }
-            result.put(id, obj);
-            String json = JsonUtil.toJson(result);
-            Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            if (null == obj) { // 当obj为空时删除改id
+                result.remove(id);
+            } else {
+                result.put(id, obj);
+            }
+            if (result.isEmpty()) {
+                Files.deleteIfExists(file.toPath());
+            } else {
+                String json = JsonUtil.toJson(result);
+                Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);  // 未知错误
         } finally {
@@ -262,6 +271,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
         return JsonUtil.toObject(content, new TypeToken<Map<String, Object>>() {
         }.getType());
     }
+
     // 读type文件，取id的值
     public Object readOne(String type, String id) {
         return read(type).get(id);
