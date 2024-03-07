@@ -39,7 +39,7 @@ public class DetailRow extends Row {
     public long totalShares;
     // 流通股 Floating Shares - f85
     public long floatingShares;
-    // 时间戳 - f86-不是交易发生的准确时间，好像是数据更新时间，可能是当日盘后的某个时间
+    // 时间戳 - f86-不是交易发生的准确时间，好像是数据更新时间，盘中时间或当日盘后的某个时间
     public long timestamp;
     // 每股净资产 Book Value Per Share (BVPS) - f92
     public double bvps;
