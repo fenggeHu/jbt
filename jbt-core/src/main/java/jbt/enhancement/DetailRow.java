@@ -74,6 +74,8 @@ public class DetailRow extends Row {
     public double change;
     // 涨跌幅的百分比 f170/100 (%) - 如，涨跌幅是 -1.8%时，changeRate=-1.8
     public double changeRate;
+    // 振幅 (%)
+    public double amplitude;
 
     // 买卖5档行情 - 可能为空 - 0
     // 最低卖价Lowest Ask Price f301
