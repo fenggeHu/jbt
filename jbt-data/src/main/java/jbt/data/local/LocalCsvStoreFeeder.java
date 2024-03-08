@@ -14,6 +14,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -297,7 +298,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
             FileLock lock = channel.lock();
 
             String json = JsonUtil.toJson(obj);
-            Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            Files.write(file.toPath(), json.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
             // 释放写锁
             lock.release();
         } catch (IOException e) {
@@ -320,7 +321,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
         // 读取整个文件的字节数组
         byte[] fileBytes = Files.readAllBytes(file.toPath());
         // 将字节数组转换为字符串（根据文件编码）
-        return new String(fileBytes);
+        return new String(fileBytes, StandardCharsets.UTF_8);
     }
 
     @SneakyThrows
