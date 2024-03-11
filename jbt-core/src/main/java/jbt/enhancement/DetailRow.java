@@ -10,6 +10,9 @@ import java.util.List;
 /**
  * 补充一些详细信息的Row
  * 注释中的f标记来自eastmoney接口的对应关系
+ * eastmoney的不同接口的fn含义可能不同：
+ * 1，https://push2.eastmoney.com/api/qt/stock/get
+ * 2，https://push2.eastmoney.com/api/qt/ulist/get
  *
  * @author max.hu  @date 2024/03/04
  **/
@@ -66,6 +69,9 @@ public class DetailRow extends Row {
     public double w52high;
     // 52周最低 52-Week Low f175 /100
     public double w52low;
+    public double d20changeRate;    // 20日涨幅
+    public double d60changeRate;    // 60日涨幅
+    public double yearChangeRate;    // 今年涨幅
     // 量比 Volume Ratio f50/100
     public double volumeRatio;  // 1.32
     // 委比 Order Imbalance Ratio f191/100 (%) - 买档/卖档的比例，范围[-100%, 100%]
@@ -77,15 +83,25 @@ public class DetailRow extends Row {
     // 振幅 (%)
     public double amplitude;
 
+    // 实时买卖行情
+    public long bidAskHands;  // 现手（有正负-可能是买卖手的差） f30
+    // 最低卖出价Lowest Ask Price f301 / 最高买入价
+    public double askPrice; // f32卖出价
+    public double bidPrice; // f31买入价
     // 买卖5档行情 - 可能为空 - 0
-    // 最低卖价Lowest Ask Price f301
-    public double askPrice;
     List<VolumePrice> asks; // 卖档
     List<VolumePrice> bids; // 买档
 
     // 特殊值
     // eastmoney内部的市场代码-secid值前的市场代码 f107
     public int eastmoneyMarketCode;
+
+    // ulist/get接口补充属性
+    public String industry; // f100 -行业名称
+    public String industryLeader; // f101 -行业领涨股的名称
+    public String industryLeaderCode; // f146 -行业领涨股的代码
+    public String tags; // f103 - 打标（HS300_,深成500,预盈预增,融资融券,创业成份,医疗器械概念,创业板综,深证100R,深股通,MSCI中国,医疗美容,化妆品概念,茅指数,宁组合,百元股,减肥药）
+    public double netProfit; // f129 - (财报销售)净利率（%）
 
     /**
      * 前n档卖金额
