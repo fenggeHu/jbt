@@ -94,43 +94,132 @@ public class PrimitiveValueUtil {
      * @param type
      */
     public static Object warpValue(Object value, Class type) {
-        if (null == value || value.getClass() == type) {
+        if (null == type) {
             return value;
         }
         if (type == String.class) {
             return getAsString(value);
         }
         if (type == Integer.class || type == int.class) {
+            if (null == value) {
+                if (type == int.class) {
+                    return 0;
+                } else {
+                    return null;
+                }
+            }
             return getAsInt(value);
         }
         if (type == Long.class || type == long.class) {
+            if (null == value) {
+                if (type == long.class) {
+                    return 0L;
+                } else {
+                    return null;
+                }
+            }
             return getAsLong(value);
         }
         if (type == Double.class || type == double.class) {
+            if (null == value) {
+                if (type == double.class) {
+                    return 0.0;
+                } else {
+                    return null;
+                }
+            }
             return getAsDouble(value);
         }
         if (type == Boolean.class || type == boolean.class) {
+            if (null == value) {
+                if (type == boolean.class) {
+                    return false;
+                } else {
+                    return null;
+                }
+            }
             return getAsBool(value);
         }
         if (type == BigDecimal.class) {
+            if (null == value) {
+                return null;
+            }
             return getAsBigDecimal(value);
         }
         if (type == BigInteger.class) {
+            if (null == value) {
+                return null;
+            }
             return getAsBigInteger(value);
         }
         if (type == Character.class || type == char.class) {
             return getAsCharacter(value);
         }
         if (type == Byte.class || type == byte.class) {
+            if (null == value) {
+                if (type == byte.class) {
+                    return (byte) 0;
+                } else {
+                    return null;
+                }
+            }
             return getAsByte(value);
         }
-        if (type == Float.class || type == float.class) {
-            return getAsFloat(value);
-        }
         if (type == Short.class || type == short.class) {
+            if (null == value) {
+                if (type == short.class) {
+                    return (short) 0;
+                } else {
+                    return null;
+                }
+            }
             return getAsShort(value);
+        }
+        if (type == Float.class || type == float.class) {
+            if (null == value) {
+                if (type == float.class) {
+                    return (float) 0;
+                } else {
+                    return null;
+                }
+            }
+            return getAsFloat(value);
         }
 
         return value;
+    }
+
+    public static boolean isPrimitiveNumber(Class type) {
+        return type == int.class || type == short.class || type == byte.class
+                || type == long.class || type == float.class || type == double.class;
+    }
+
+    // 处理了null值 - 2024-3-11
+    public static int intValue(Object value) {
+        return (int) warpValue(value, int.class);
+    }
+
+    public static long longValue(Object value) {
+        return (long) warpValue(value, long.class);
+    }
+
+    public static double doubleValue(Object value) {
+        return (double) warpValue(value, double.class);
+    }
+
+    public static byte byteValue(Object value) {
+        return (byte) warpValue(value, byte.class);
+    }
+
+    public static short shortValue(Object value) {
+        return (short) warpValue(value, short.class);
+    }
+
+    public static float floatValue(Object value) {
+        return (float) warpValue(value, float.class);
+    }
+
+    public static boolean booleanValue(Object value) {
+        return (boolean) warpValue(value, boolean.class);
     }
 }
