@@ -336,7 +336,7 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
 
     //
     public File getConfigFile(String name) {
-        String filename = String.format("%s/%s/features/%s.cfg", localFolder, region, name);
+        String filename = String.format("%s/%s/%s.cfg", localFolder, region, name);
         File file = new File(filename);
         return file;
     }
