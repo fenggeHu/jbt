@@ -20,6 +20,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 public class DetailRow extends Row {
+    public String symbol;
     // 成交额(元) - f48  -->同时写入 super.volume
     public double turnover;
     // row.volume 可能是成交额，所以使用realVolume存成交量
@@ -32,7 +33,7 @@ public class DetailRow extends Row {
     // 交易地区 US/CN/HK
     public String region;
     // f57
-    public String symbol;
+    public String code;
     // f58
     public String name;
     // f60
