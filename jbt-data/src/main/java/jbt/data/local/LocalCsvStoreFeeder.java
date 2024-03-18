@@ -1,23 +1,12 @@
 package jbt.data.local;
 
 import jbt.constant.RowPropertyEnum;
-import jbt.data.DataFeeder;
-import jbt.data.DataStorage;
-import jbt.data.utils.JsonUtil;
 import jbt.model.Row;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import utils.PrimitiveValueUtil;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
 /**
@@ -30,17 +19,9 @@ import java.util.*;
  * @author jinfeng.hu  @date 2022/10/9
  **/
 @Slf4j
-public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
-    // 换行符
-    private char newlineChar = '\n';
-    // 分隔符
-    private String delimiter = ",";
+public class LocalCsvStoreFeeder extends AbstractLocalStore {
     // 文件头起始字符串
     private String titleStart = RowPropertyEnum.D.getKey();
-    @Setter
-    private String localFolder = "~/.tibet";
-    @Setter
-    private String region = "cn";
     // 不可变空List
     private List EmptyList = Collections.unmodifiableList(new ArrayList<>(0));
 
@@ -214,135 +195,8 @@ public class LocalCsvStoreFeeder implements DataFeeder, DataStorage {
         }
     }
 
-    /**
-     * 写配置/文件 - 按id更新或插入
-     * 注意：此时文件是一个Map<String, Object> 结构
-     *
-     * @param name    记录类型 - 配置
-     * @param id      记录id - 配置内唯一。 当obj为空时删除改id
-     * @param content 记录内容 - 当obj为空时删除改id
-     */
-    @SneakyThrows
-    public void write(String name, String id, Object content) {
-        if (null == name || name.trim().length() == 0 || null == id || id.contains(delimiter)) {
-            throw new RuntimeException("Invalid type/id/content. type=" + name + ", id=" + id);
-        }
-        Map<String, Object> result = null;
-        File file = getConfigFile(name);
-        if (!file.exists()) {
-            if (null == content) {
-                return;
-            }
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-            result = new HashMap<>();
-        }
-        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-             FileChannel channel = randomAccessFile.getChannel()) {
-            // 获取文件独占写锁
-            FileLock lock = channel.lock();
-            // 在锁定状态下执行写操作，例如向文件写入数据
-            // 读取整个文件的字节数组
-            if (null == result) {
-                // 获取文件大小
-                long fileSize = channel.size();
-                // 创建一个ByteBuffer，大小为文件大小
-                ByteBuffer buffer = ByteBuffer.allocate((int) fileSize);
-                // 将文件内容读取到ByteBuffer中
-                int bytesRead = channel.read(buffer);
-                // 将ByteBuffer切换为读模式
-                buffer.flip();
-                // 将ByteBuffer中的字节转换为字符串
-                String txt = new String(buffer.array(), 0, bytesRead);
-                result = JsonUtil.toObject(txt, Map.class);
-            }
-
-            if (null == content) { // 当obj为空时删除改id
-                result.remove(id);
-            } else {
-                result.put(id, content);
-            }
-            if (result.isEmpty()) {
-                Files.deleteIfExists(file.toPath());
-            } else {
-                String json = JsonUtil.toJson(result);
-                Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            }
-            // 释放写锁
-            lock.release();
-        } catch (IOException e) {
-            throw new RuntimeException(e);  // 未知错误
-        }
-    }
-
-    @SneakyThrows
-    @Override
-    public void write(String name, Object obj) {
-        if (null == name || name.trim().length() == 0) {
-            throw new RuntimeException("Invalid type");
-        }
-        File file = getConfigFile(name);
-        if (!file.exists()) {
-            if (null == obj) {
-                return;
-            }
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-        } else if (null == obj) {
-            Files.deleteIfExists(file.toPath());
-            return;
-        }
-        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-             FileChannel channel = randomAccessFile.getChannel()) {
-            // 获取文件独占写锁
-            FileLock lock = channel.lock();
-
-            String json = JsonUtil.toJson(obj);
-            Files.write(file.toPath(), json.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            // 释放写锁
-            lock.release();
-        } catch (IOException e) {
-            throw new RuntimeException(e);  // 未知错误
-        }
-    }
-
-    @SneakyThrows
-    @Override
-    public String read(String name) {
-        if (null == name || name.trim().length() == 0) {
-            throw new RuntimeException("Invalid type");
-        }
-        File file = getConfigFile(name);
-        if (!file.exists()) {
-            log.debug("file is not exists: {}", file.getPath());
-            return null;
-        }
-
-        // 读取整个文件的字节数组
-        byte[] fileBytes = Files.readAllBytes(file.toPath());
-        // 将字节数组转换为字符串（根据文件编码）
-        return new String(fileBytes, StandardCharsets.UTF_8);
-    }
-
-    @SneakyThrows
-    public BasicFileAttributes getConfigAttributes(String name) {
-        File file = getConfigFile(name);
-        if (file.exists()) {
-            return Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-        } else {
-            return null;
-        }
-    }
-
-    //
-    public File getConfigFile(String name) {
-        String filename = String.format("%s/%s/%s.cfg", localFolder, region, name);
-        File file = new File(filename);
-        return file;
-    }
-
     public File getDayFile(String symbol) {
-        String filename = String.format("%s/%s/features/%s/day.csv", localFolder, region, symbol);
+        String filename = this.getFeatureFilename(symbol, "day");
         File file = new File(filename);
         return file;
     }

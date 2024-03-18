@@ -27,23 +27,23 @@ public class LocalCsvStoreFeederTests {
 
     @Test
     public void testRWFile() {
-        usLocalCsvFeeder.write("update", null);
+        usLocalCsvFeeder.writeConfig("update", null);
         Row data = Row.builder().datetime("2013-01-01").open(3.13)
                 .build();
-        usLocalCsvFeeder.write("update", "AAPL", data);
-        Object r = usLocalCsvFeeder.read("update");
+        usLocalCsvFeeder.write(usLocalCsvFeeder.getConfigFilename("update"), "AAPL", data);
+        Object r = usLocalCsvFeeder.readConfig("update");
         Assert.assertNotNull(r);
-        usLocalCsvFeeder.write("update", data);
-        Object r2 = usLocalCsvFeeder.read("update");
+        usLocalCsvFeeder.writeConfig("update", data);
+        Object r2 = usLocalCsvFeeder.readConfig("update");
         Assert.assertNotNull(r2);
-        usLocalCsvFeeder.write("update", null);
-        Object r3 = usLocalCsvFeeder.read("update");
+        usLocalCsvFeeder.writeConfig("update", null);
+        Object r3 = usLocalCsvFeeder.readConfig("update");
         Assert.assertNull(r3);
     }
 
     @Test
-    public void testFileAttribute(){
-        usLocalCsvFeeder.write("real_time_monitoring","{}");
+    public void testFileAttribute() {
+        usLocalCsvFeeder.write("real_time_monitoring", "{}");
         BasicFileAttributes fileAttributes = usLocalCsvFeeder.getConfigAttributes("real_time_monitoring");
 
         System.out.println("Creation Time: " + fileAttributes.creationTime());
