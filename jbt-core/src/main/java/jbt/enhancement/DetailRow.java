@@ -1,6 +1,7 @@
 package jbt.enhancement;
 
 import jbt.model.Row;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -19,7 +20,11 @@ import java.util.List;
 @Data
 @SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 public class DetailRow extends Row {
+    /**
+     * 证券唯一代号 - 全球市场唯一
+     */
     public String symbol;
     // 成交额(元) - f48  -->同时写入 super.volume
     public double turnover;
@@ -30,7 +35,7 @@ public class DetailRow extends Row {
     public double upperLimit;
     // 跌停价Lower Limit Price f52
     public double lowerLimit;
-    // 交易地区 US/CN/HK
+    // 交易地区 US/CN/HK -- 地区 - @Region - CN(1), US(2), HK(3) 1-CN沪深A股、 2-US美股、3-HK港股
     public String region;
     // f57
     public String code;
