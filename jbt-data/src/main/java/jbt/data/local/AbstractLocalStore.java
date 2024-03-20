@@ -15,9 +15,11 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,9 +38,14 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     // 分隔符
     protected String delimiter = ",";
 
+    public String getFilename(String name, String extension) {
+        if (null == extension) extension = "txt";
+        return String.format("%s/%s/%s.%s", localFolder, region, name, extension);
+    }
+
     // config
     public String getConfigFilename(String name) {
-        return String.format("%s/%s/%s.cfg", localFolder, region, name);
+        return getFilename(name, "cfg");
     }
 
     // symbolic features
@@ -154,6 +161,16 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         byte[] fileBytes = Files.readAllBytes(file.toPath());
         // 将字节数组转换为字符串（根据文件编码）
         return new String(fileBytes, StandardCharsets.UTF_8);
+    }
+
+    @SneakyThrows
+    public List<String> readLines(String filename) {
+        return Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
+    }
+
+    @SneakyThrows
+    public void writeLines(String filename, List<String> lines) {
+        Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
     }
 
     /**
