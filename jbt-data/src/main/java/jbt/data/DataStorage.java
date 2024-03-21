@@ -24,5 +24,5 @@ public interface DataStorage {
      * @param name
      * @param content
      */
-    void write(String name, final Object content);
+    void write(String name, String content);
 }

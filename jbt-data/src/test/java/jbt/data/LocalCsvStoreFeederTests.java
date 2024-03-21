@@ -31,13 +31,13 @@ public class LocalCsvStoreFeederTests {
         Row data = Row.builder().datetime("2013-01-01").open(3.13)
                 .build();
         usLocalCsvFeeder.write(usLocalCsvFeeder.getConfigFilename("update"), "AAPL", data);
-        Object r = usLocalCsvFeeder.readConfig("update");
+        Object r = usLocalCsvFeeder.readConfig("update", Row.class);
         Assert.assertNotNull(r);
         usLocalCsvFeeder.writeConfig("update", data);
-        Object r2 = usLocalCsvFeeder.readConfig("update");
+        Object r2 = usLocalCsvFeeder.readConfig("update", Row.class);
         Assert.assertNotNull(r2);
         usLocalCsvFeeder.writeConfig("update", null);
-        Object r3 = usLocalCsvFeeder.readConfig("update");
+        Object r3 = usLocalCsvFeeder.readConfig("update", Row.class);
         Assert.assertNull(r3);
     }
 

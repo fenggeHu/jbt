@@ -43,10 +43,12 @@ public class JsonUtil {
      * @return
      */
     public static <T> T toObject(String json, Class<T> t) {
+        if (null == json) return null;
         return gson.fromJson(json, t);
     }
 
     public static <T> T toObject(String json, Type t) {
+        if (null == json) return null;
         return gson.fromJson(json, t);
     }
 

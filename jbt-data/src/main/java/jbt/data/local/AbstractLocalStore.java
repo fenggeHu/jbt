@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -112,19 +113,21 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     }
 
     /**
-     * 把对象转成json string覆盖写入文件
+     * string覆盖写入文件
+     *
+     * @param txt 传入null则删除文件
      */
     @SneakyThrows
     @Override
-    public void write(String filename, Object obj) {
+    public void write(String filename, String txt) {
         File file = new File(filename);
         if (!file.exists()) {
-            if (null == obj) {
+            if (null == txt) {
                 return;
             }
             file.getParentFile().mkdirs();
             file.createNewFile();
-        } else if (null == obj) {
+        } else if (null == txt) {
             Files.deleteIfExists(file.toPath());
             return;
         }
@@ -133,8 +136,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
             // 获取文件独占写锁
             FileLock lock = channel.lock();
 
-            String json = JsonUtil.toJson(obj);
-            Files.write(file.toPath(), json.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            Files.write(file.toPath(), txt.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
             // 释放写锁
             lock.release();
         } catch (IOException e) {
@@ -158,6 +160,35 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         byte[] fileBytes = Files.readAllBytes(file.toPath());
         // 将字节数组转换为字符串（根据文件编码）
         return new String(fileBytes, StandardCharsets.UTF_8);
+    }
+
+    // 转成json字符串
+    public void writeJson(String filename, Object obj) {
+        String json = null == obj ? null : JsonUtil.toJson(obj);
+        this.write(filename, json);
+    }
+
+    public Object readJson(String filename, Type type) {
+        String json = this.read(filename);
+        return JsonUtil.toObject(json, type);
+    }
+
+    /**
+     * 写配置
+     */
+    public void writeConfig(String name, Object obj) {
+        if (null == name || name.trim().length() == 0) {
+            throw new RuntimeException("Invalid type");
+        }
+        this.writeJson(this.getConfigFilename(name), obj);
+    }
+
+    public Object readConfig(String name, Type type) {
+        if (null == name || name.trim().length() == 0) {
+            throw new RuntimeException("Invalid type");
+        }
+        String filename = this.getConfigFilename(name);
+        return readJson(filename, type);
     }
 
     @SneakyThrows
@@ -185,24 +216,6 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         } catch (IOException e) {
             log.error("Exception while writing:" + filename, e);
         }
-    }
-
-    /**
-     * 写配置
-     */
-    public void writeConfig(String name, Object obj) {
-        if (null == name || name.trim().length() == 0) {
-            throw new RuntimeException("Invalid type");
-        }
-        this.write(this.getConfigFilename(name), obj);
-    }
-
-    public String readConfig(String name) {
-        if (null == name || name.trim().length() == 0) {
-            throw new RuntimeException("Invalid type");
-        }
-        String filename = this.getConfigFilename(name);
-        return read(filename);
     }
 
     // 配置文件的属性
