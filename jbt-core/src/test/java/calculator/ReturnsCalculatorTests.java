@@ -1,7 +1,7 @@
 package calculator;
 
 import jbt.model.Row;
-import jbt.performance.ReturnsPerformance;
+import jbt.performance.Returns;
 import org.junit.Test;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class ReturnsCalculatorTests {
         };
 
         // 计算收益率序列
-        List<Double> returns = ReturnsPerformance.getReturns(rows);
+        List<Double> returns = Returns.getReturns(rows);
 
         // 打印收益率序列
         System.out.println("Daily Returns: " + returns);

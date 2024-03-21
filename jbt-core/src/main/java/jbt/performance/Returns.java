@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author max.hu  @date 2024/03/20
  **/
-public class ReturnsPerformance {
+public class Returns {
 
     /**
      * 计算连续交易日的每日收益率
