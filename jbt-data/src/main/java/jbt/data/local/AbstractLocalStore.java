@@ -7,15 +7,12 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
@@ -165,12 +162,29 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     @SneakyThrows
     public List<String> readLines(String filename) {
-        return Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
+        File file = new File(filename);
+        if (!file.exists()) {
+            log.debug("file is not exists: {}", file.getPath());
+            return null;
+        }
+        return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     }
 
     @SneakyThrows
     public void writeLines(String filename, List<String> lines) {
-        Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
+        File file = new File(filename);
+        if (!file.exists()) {
+            log.debug("file is not exists: {}", file.getPath());
+            return;
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine(); // 写入换行符
+            }
+        } catch (IOException e) {
+            log.error("Exception while writing:" + filename, e);
+        }
     }
 
     /**
