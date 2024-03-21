@@ -87,6 +87,11 @@ public class PrimitiveValueUtil {
         }
     }
 
+    public static String stringValue(Object value) {
+        String val = getAsString(value);
+        return null == val ? "" : val;
+    }
+
     /**
      * 适配值
      *
