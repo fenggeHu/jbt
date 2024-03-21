@@ -75,9 +75,9 @@ public class DetailRow extends Row {
     public double w52high;
     // 52周最低 52-Week Low f175 /100
     public double w52low;
-    public double d20changeRate;    // 20日涨幅
-    public double d60changeRate;    // 60日涨幅
-    public double yearChangeRate;    // 今年涨幅
+    public double d20changeRate;    // 20日涨幅 - 22.6
+    public double d60changeRate;    // 60日涨幅 - 22.6
+    public double yearChangeRate;    // 今年涨幅 - 22.6
     // 量比 Volume Ratio f50/100
     public double volumeRatio;  // 1.32
     // 委比 Order Imbalance Ratio f191/100 (%) - 买档/卖档的比例，范围[-100%, 100%]
