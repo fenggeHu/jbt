@@ -6,8 +6,15 @@ import jbt.model.Row;
 import jbt.model.Sequence;
 
 /**
- * run最新数据的策略 - 增加或更新最后1行
+ * 右侧执行引擎 - run最新数据的策略
  * 可用于实时触发和最新数据寻找机会
+ * 使用方式一：
+ * 使用策略和数据初始化，并使用最右端行情执行策略
+ * 使用方式二：
+ * 1，使用策略和历史数据初始化REngine
+ * 2，接收最新的实时行情，并执行策略
+ * <p>
+ * 当服务器的内存够用时，使用第二种方式可提高性能。
  *
  * @author jinfeng.hu  @date 2022/10/31
  **/
@@ -69,7 +76,7 @@ public class REngine extends Engine {
     }
 
     /**
-     * feed last data & play
+     * 支持接收实时行情并执行策略 - feed last data & play
      */
     public Event play(Row lastRow) {
         this.updateLast(lastRow);
@@ -83,7 +90,7 @@ public class REngine extends Engine {
         if (ct > 0) {
             throw new RuntimeException(String.format("it's not the last datetime. %s", lastRow.getDatetime()));
         }
-        // 修改Sequence data
+        // 替换最新row - 修改Sequence data
         if (ct == 0) {
             row.setOpen(lastRow.getOpen());
             row.setHigh(lastRow.getHigh());
