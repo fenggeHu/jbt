@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 数据序列
@@ -222,6 +224,17 @@ public class Sequence {
         }
         this.first = start;
         this.end = end;
+    }
+
+    // 取时间范围内的所有row
+    public List<Row> rangeRows(String startDatetime, String endDatetime) {
+        List<Row> ret = new LinkedList<>();
+        for (int i = 0; i < _rows.length; i++) {
+            if (startDatetime.compareTo(_rows[i].datetime) <= 0 && endDatetime.compareTo(_rows[i].datetime) >= 0) {
+                ret.add(_rows[i]);
+            }
+        }
+        return ret;
     }
 
     // 获取行数组的最后一行

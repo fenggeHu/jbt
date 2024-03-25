@@ -34,10 +34,23 @@ public class Returns {
      */
     public static List<Double> getReturns(Row[] rows) {
         List<Double> returns = new LinkedList<>();
-
+        returns.add(0.0);   // 首日默认0
         for (int i = 1; i < rows.length; i++) {
             Row currentRow = rows[i];
             Row previousRow = rows[i - 1];
+            double dailyReturn = getReturns(currentRow, previousRow);
+            returns.add(dailyReturn);
+        }
+
+        return returns;
+    }
+
+    public static List<Double> getReturns(List<Row> rows) {
+        List<Double> returns = new LinkedList<>();
+        returns.add(0.0);   // 首日默认0
+        for (int i = 1; i < rows.size(); i++) {
+            Row currentRow = rows.get(i);
+            Row previousRow = rows.get(i - 1);
             double dailyReturn = getReturns(currentRow, previousRow);
             returns.add(dailyReturn);
         }

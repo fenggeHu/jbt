@@ -1,11 +1,10 @@
 package jbt.model;
 
 import jbt.account.Bill;
-import jbt.account.Position;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 收集结果
@@ -44,6 +43,7 @@ import java.util.stream.Collectors;
  * @author jinfeng.hu  @date 2022/10/28
  **/
 @Data
+@Builder
 public class Stats {
     public String start;//2004-08-19 00:00:00
     public String end;  //2013-03-01 00:00:00
@@ -77,13 +77,7 @@ public class Stats {
 //    public String _equity_curve;//     Equ...
 //    public String _trades;//  Size  EntryB...
 
-    // trades
-    private Position position;
-
-    public List<Bill> getBills() {
-        return this.position.getBills();
-    }
-
+    public List<Bill> bills;
 //    public void setBills(final Position position) {
 //        // 过滤无效订单
 //        this.bills = position.getBills().stream().filter(e -> e.getTotal() > 0).collect(Collectors.toList());

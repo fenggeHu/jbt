@@ -5,6 +5,7 @@ import jbt.account.Position;
 import jbt.event.Event;
 import jbt.event.EventQueue;
 import jbt.event.OrderEvent;
+import jbt.handler.PerformanceHandler;
 import jbt.handler.TradeHandler;
 import jbt.model.Row;
 import jbt.model.Sequence;
@@ -14,7 +15,6 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import utils.ClassUtils;
-import utils.DatetimeUtils;
 
 /**
  * 执行引擎
@@ -47,9 +47,10 @@ public class Engine {
     @Setter
     @Getter
     private TradeHandler tradeHandler;
+    // 表现评估
     @Setter
     @Getter
-    private Stats stats;
+    private PerformanceHandler performanceHandler;
 
     // get engine
     public static Engine build(Strategy strategy, String start, String end) {
@@ -123,7 +124,7 @@ public class Engine {
         return this.run();
     }
 
-    // run
+    // run main
     @SneakyThrows
     public Stats run() {
         if (null == this.data) {
@@ -134,9 +135,7 @@ public class Engine {
         //
         this.preNext();
         //
-        stats = new Stats();
-        Row r1 = this.data.row(1);
-        stats.setStart(r1.getDatetime());
+        Row start = this.data.row(1);
         // run strategy
         while (this.next()) {
             Event event = eventQueue.poll();
@@ -146,20 +145,19 @@ public class Engine {
         }
 
         // 收集信息
-        Row end = this.data.get();
-        stats.setEnd(end.getDatetime());
-        long d1 = DatetimeUtils.parseDate(stats.getStart()).getTime();
-        long d2 = DatetimeUtils.parseDate(stats.getEnd()).getTime();
-        stats.setDuration((d2 - d1) / 86400000.00); // days
+        if (null == performanceHandler) {
+            performanceHandler = new PerformanceHandler();
+        }
         if (null != this.tradeHandler) {
             Position pos = tradeHandler.getPosition().compute(data.get().getClose());
             pos.trim();
-            stats.setPosition(pos);
-            stats.setTrades(stats.getBills().size());
-            stats.setTotalReturn(pos.getPercent());
+
+            performanceHandler.setStart(start);
+            performanceHandler.setEnd(this.data.get());
+            performanceHandler.setPosition(pos);
         }
 
-        return stats;
+        return performanceHandler.run(this.data);
     }
 
     // 预处理&初始化必要的属性
@@ -201,16 +199,6 @@ public class Engine {
         // 操作信号
         if (null != this.strategy) {
             strategy.next();
-        }
-        // 计算stats
-        if (null != this.stats) {
-            if (null != this.tradeHandler) {
-                Position position = this.tradeHandler.getPosition().compute(row.getClose());
-                if (position.getQuantity() > 0) {
-                    double maxDraw = this.stats.getMaxDrawdown();
-                    this.stats.setMaxDrawdown(Math.min(maxDraw, position.getPercent()));
-                }
-            }
         }
 
         return true;
