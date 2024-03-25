@@ -128,7 +128,9 @@ public class Strategy {
      * @param limit 限制
      */
     protected void buy(double ratio, int limit) {
-        log.debug("buy: {} - ratio: {}% - limit: {}", _data.get().datetime, ratio * 100, limit);
+        if (log.isDebugEnabled()) {
+            log.debug("buy: {} - ratio: {}% - limit: {}", _data.get().datetime, ratio * 100, limit);
+        }
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY)
                 .price(row.getClose()).ratio(ratio).limit(limit).build();
