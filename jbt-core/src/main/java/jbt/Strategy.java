@@ -33,6 +33,7 @@ public class Strategy {
         return this._position;
     }
 
+    // 计算实时仓位的价值 - 有些策略需要用到
     public Position position(double price) {    // 传入价格计算
         this._position.compute(price);
         return this._position;

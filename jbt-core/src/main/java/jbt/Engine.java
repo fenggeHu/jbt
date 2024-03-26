@@ -1,7 +1,6 @@
 package jbt;
 
 import jbt.account.Account;
-import jbt.account.Position;
 import jbt.event.Event;
 import jbt.event.EventQueue;
 import jbt.event.OrderEvent;
@@ -148,13 +147,10 @@ public class Engine {
         if (null == performanceHandler) {
             performanceHandler = new PerformanceHandler();
         }
+        performanceHandler.setStart(start);
+        performanceHandler.setEnd(this.data.get());
         if (null != this.tradeHandler) {
-            Position pos = tradeHandler.getPosition().compute(data.get().getClose());
-            pos.trim();
-
-            performanceHandler.setStart(start);
-            performanceHandler.setEnd(this.data.get());
-            performanceHandler.setPosition(pos);
+            performanceHandler.setPosition(tradeHandler.getPosition().trim());
         }
 
         return performanceHandler.run(this.data);

@@ -27,6 +27,11 @@ public class PerformanceHandler implements Handler {
     // trades
     @Setter
     private Position position;
+    double value; // 最新价值
+    double returns; // 收益金额
+    double percent; // 收益百分比 x%
+    double maxDrawdown; //最大回撤 %
+    double maxProfit; //最大盈利 %
 
     public List<Bill> getBills() {
         return this.position.getBills();
@@ -46,8 +51,9 @@ public class PerformanceHandler implements Handler {
                 .duration((d2 - d1) / 86400000.00)  // days
                 .bills(this.getBills())
                 .trades(this.getBills().size())
-                .totalReturn(this.position.getPercent())
+                .totalReturn(Returns.totalReturns(dailyReturns))
                 .maxDrawdown(Returns.maxDrawdown(dailyReturns))
                 .build();
     }
+
 }
