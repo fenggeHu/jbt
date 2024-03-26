@@ -7,7 +7,7 @@ import lombok.Getter;
  *
  * @author max.hu  @date 2024/02/04
  **/
-public enum RowPropertyEnum {
+public enum RowPropertiesEnum {
     /**
      * basic - row基本必须的属性。 D-OHLCV
      */
@@ -20,7 +20,7 @@ public enum RowPropertyEnum {
     @Getter
     String key;
 
-    RowPropertyEnum(String v) {
+    RowPropertiesEnum(String v) {
         this.key = v;
     }
 

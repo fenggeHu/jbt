@@ -1,10 +1,8 @@
 package jbt.model;
 
-import jbt.account.Bill;
+import jbt.account.Position;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * 收集结果
@@ -47,15 +45,15 @@ import java.util.List;
 public class Stats {
     public String start;//2004-08-19 00:00:00
     public String end;  //2013-03-01 00:00:00
-    public double duration;                   // 3116 days 00:00:00
+    public double duration;                   // 3116.5 days
     //    public double exposureTime;            // [%] 94.27
 //    public double equityFinal; //[$]68935.12
 //    public double equityPeak; //[$] 68991.22
-    public double totalReturn; //[%]        589.35
+    public double rangeReturn; //时间区间[start, end]内的总收益率[%]        589.35
     //    public double buyHoldReturn; //[%]                  703.46
 //    public double annReturn; //(Ann.) [%]  25.42
 //    public double annVolatility; //(Ann.) [%]                   38.43
-//    public double harpeRatio;    //    0.66
+    public double sharpeRatio;    //    0.66
 //    public double sortinoRatio;  //     1.30
 //    public double calmarRatio;   //     0.77
     public double maxDrawdown; //[%] -33.08
@@ -63,7 +61,7 @@ public class Stats {
 //    public double maxDrawdownDuration;      // 688 days 00:00:00
 //    public double avgDrawdownDuration;       //41 days 00:00:00
     //# Trades              93
-    public int trades;     // trade times
+    public int tradeTimes;     // trade times
 //    public double winRate;// [%]       53.76
 //    public double bestTrade;// [%]     57.12
 //    public double worstTrade;// [%]   -16.63
@@ -77,9 +75,6 @@ public class Stats {
 //    public String _equity_curve;//     Equ...
 //    public String _trades;//  Size  EntryB...
 
-    public List<Bill> bills;
-//    public void setBills(final Position position) {
-//        // 过滤无效订单
-//        this.bills = position.getBills().stream().filter(e -> e.getTotal() > 0).collect(Collectors.toList());
-//    }
+    // 仓位
+    public Position position;
 }

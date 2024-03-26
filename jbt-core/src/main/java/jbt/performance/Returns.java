@@ -143,7 +143,8 @@ public class Returns {
     }
 
     /**
-     * 计算整段数据的收益率
+     * 使用每日的收益率计算整段数据的收益率
+     * 也可以使用价格计算： (endPrice - startPrice)/startPrice
      *
      * @param returns 每日收益率
      */
@@ -153,6 +154,15 @@ public class Returns {
             cumulativeReturns *= (1.0 + dailyReturn);
         }
         return cumulativeReturns - 1.0;
+    }
+
+    /**
+     * 计算结果同 totalReturns
+     */
+    public static double rangeReturns(List<Row> rows) {
+        double endPrice = rows.get(rows.size() - 1).getClose();
+        double startPrice = rows.get(0).getClose();
+        return (endPrice - startPrice) / startPrice;
     }
 
     /**

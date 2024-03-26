@@ -26,12 +26,8 @@ public class PerformanceHandler implements Handler {
     public Row end;  //2013-03-01 00:00:00
     // trades
     @Setter
+    @Getter
     private Position position;
-    double value; // 最新价值
-    double returns; // 收益金额
-    double percent; // 收益百分比 x%
-    double maxDrawdown; //最大回撤 %
-    double maxProfit; //最大盈利 %
 
     public List<Bill> getBills() {
         return this.position.getBills();
@@ -41,18 +37,22 @@ public class PerformanceHandler implements Handler {
         String sdt = this.getStart().getDatetime();
         String edt = this.getEnd().getDatetime();
         List<Row> ranges = data.rangeRows(sdt, edt);
+
         List<Double> dailyReturns = Returns.getReturns(ranges);
+
+        // 分析账单
 
         long d1 = DatetimeUtils.parseDate(sdt).getTime();
         long d2 = DatetimeUtils.parseDate(edt).getTime();
         return Stats.builder()
                 .start(this.getStart().getDatetime())
                 .end(this.getEnd().getDatetime())
-                .duration((d2 - d1) / 86400000.00)  // days
-                .bills(this.getBills())
-                .trades(this.getBills().size())
-                .totalReturn(Returns.totalReturns(dailyReturns))
-                .maxDrawdown(Returns.maxDrawdown(dailyReturns))
+                .duration((d2 - d1) / DatetimeUtils.A_DAY_MS)  // days
+                .position(this.getPosition().compute(this.getEnd().getClose()))
+                .tradeTimes(this.getBills().size())
+                .rangeReturn(Returns.rangeReturns(ranges) * 100)
+                .sharpeRatio(Returns.sharpeRatio(dailyReturns, 0.002))
+                .maxDrawdown(Returns.maxDrawdown(dailyReturns) * 100)
                 .build();
     }
 
