@@ -172,7 +172,6 @@ public class Returns {
      * @param riskFreeRate 无风险利率
      * @return
      */
-
     public static double sharpeRatio(List<Double> returns, double riskFreeRate) {
         // 计算策略收益率的平均值和标准差
         double meanReturn = averageReturns(returns);
