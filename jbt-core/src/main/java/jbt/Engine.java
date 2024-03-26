@@ -202,7 +202,9 @@ public class Engine {
 
     // 处理事件
     protected void notify(Event e) {
-        log.debug("{}", e);
+        if (log.isDebugEnabled()) {
+            log.debug("Notify: {}", e);
+        }
         if (e instanceof OrderEvent) {
             // 处理订单
             this.tradeHandler.run((OrderEvent) e);

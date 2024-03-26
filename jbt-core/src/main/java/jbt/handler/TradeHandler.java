@@ -4,12 +4,12 @@ import jbt.account.Account;
 import jbt.account.Bill;
 import jbt.account.Position;
 import jbt.event.OrderEvent;
-import jbt.model.Action;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 实现交易/订单逻辑
+ *
  * @author jinfeng.hu  @date 2022/10/28
  **/
 @Slf4j
@@ -70,7 +70,7 @@ public class TradeHandler implements Handler {
         }
 
         if (lot < 1) {
-            log.info("not enough balance");
+            log.info("Buy-{}: not enough balance", oe.getDatetime());
             // record
             Bill bill = Bill.builder().datetime(oe.getDatetime()).action(oe.getAction())
                     .price(0).quantity(0).fee(0).total(0).build();
@@ -107,7 +107,7 @@ public class TradeHandler implements Handler {
                     .price(price).quantity(quantity).fee(fee).total(price + fee).build();
             position.addBill(bill);
         } else {
-            log.debug("no position");
+            log.info("Sell-{}: no position", oe.getDatetime());
             Bill bill = Bill.builder().datetime(oe.getDatetime()).action(oe.getAction())
                     .price(0).quantity(0).fee(0).total(0).build();
             position.addBill(bill);
@@ -116,28 +116,31 @@ public class TradeHandler implements Handler {
 
     /**
      * 处理平仓信号
+     *
      * @param oe
      */
     private void close(OrderEvent oe) {
         // TODO
-        log.error("TODO: close function");
+        log.error("TODO:{} close function", oe.getDatetime());
     }
 
     /**
      * 处理取消订单信号
+     *
      * @param oe
      */
     private void cancel(OrderEvent oe) {
         // TODO
-        log.error("TODO: cancel function");
+        log.error("TODO:{} cancel function", oe.getDatetime());
     }
 
     /**
      * 处理调仓到目标仓位的信号
+     *
      * @param oe
      */
     private void target(OrderEvent oe) {
         // TODO
-        log.error("TODO: target function");
+        log.error("TODO:{} target function", oe.getDatetime());
     }
 }
