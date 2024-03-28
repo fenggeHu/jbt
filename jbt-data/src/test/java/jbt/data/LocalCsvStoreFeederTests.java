@@ -1,6 +1,9 @@
 package jbt.data;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import jbt.data.local.LocalCsvStoreFeeder;
+import jbt.ext.DetailRow;
 import jbt.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,6 +18,15 @@ public class LocalCsvStoreFeederTests {
     private String localFolder = "/Users/max/.tibet";
     private LocalCsvStoreFeeder usLocalCsvFeeder = new LocalCsvStoreFeeder(localFolder, "us");
 
+    @Test
+    public void testJson() throws Exception {
+        Gson gson = new GsonBuilder().create(); //.setPrettyPrinting().create();
+        DetailRow row = DetailRow.builder()
+                .symbol("13456").code("33535").change(12432.435).turnover(23985739857932745L).close(345.1)
+                .build();
+        String formattedJson = gson.toJson(row);
+        System.out.println(formattedJson);
+    }
     @Test
     public void testGetData() {
         int n = 3;
