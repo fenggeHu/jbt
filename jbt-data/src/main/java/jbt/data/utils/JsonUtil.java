@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 public class JsonUtil {
     // 默认序列化忽略null
-    private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();// .setPrettyPrinting()-序列化输出时多行
+    private final static Gson gson = new GsonBuilder().setLenient().setPrettyPrinting().create();// .setPrettyPrinting()-序列化输出时多行
     public final static String ArrayStart = "[";
     public final static String ArrayEnd = "]";
 
