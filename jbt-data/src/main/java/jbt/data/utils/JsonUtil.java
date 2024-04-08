@@ -14,6 +14,7 @@ import java.util.Map;
  *
  * @author Jinfeng.hu  @Date 2021-11-2021/11/22
  **/
+@Deprecated
 @Slf4j
 public class JsonUtil {
     // 默认序列化忽略null

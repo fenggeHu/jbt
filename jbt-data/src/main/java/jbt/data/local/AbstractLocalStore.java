@@ -2,7 +2,7 @@ package jbt.data.local;
 
 import jbt.data.DataFeeder;
 import jbt.data.DataStorage;
-import jbt.data.utils.JsonUtil;
+import jbt.data.utils.JacksonUtil;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -91,7 +91,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
                 buffer.flip();
                 // 将ByteBuffer中的字节转换为字符串
                 String txt = new String(buffer.array(), 0, bytesRead);
-                result = JsonUtil.toObject(txt, Map.class);
+                result = JacksonUtil.toObject(txt, Map.class);
             }
 
             if (null == content) { // 当obj为空时删除改id
@@ -102,7 +102,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
             if (result.isEmpty()) {
                 Files.deleteIfExists(file.toPath());
             } else {
-                String json = JsonUtil.toJson(result);
+                String json = JacksonUtil.toJson(result);
                 Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
             }
             // 释放写锁
@@ -164,13 +164,13 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     // 转成json字符串
     public void writeJson(String filename, Object obj) {
-        String json = null == obj ? null : JsonUtil.toJson(obj);
+        String json = null == obj ? null : JacksonUtil.toJson(obj);
         this.write(filename, json);
     }
 
     public Object readJson(String filename, Type type) {
         String json = this.read(filename);
-        return JsonUtil.toObject(json, type);
+        return JacksonUtil.toObject(json, type);
     }
 
     /**
