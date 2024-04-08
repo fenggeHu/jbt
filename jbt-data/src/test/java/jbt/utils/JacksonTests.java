@@ -21,6 +21,10 @@ public class JacksonTests {
         List<Row> list = mockList();
         String json = JacksonUtil.toJson(list);
         JsonNode node = JacksonUtil.getJsonNode(json);
+//        if (node.isArray()) {
+//            ArrayNode arrayNode = (ArrayNode) node;
+//            arrayNode.iterator();
+//        }
         System.out.println(node);
 
         List<Row> readList = JacksonUtil.toList(json, new TypeReference<List<Row>>() {

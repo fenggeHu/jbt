@@ -69,6 +69,12 @@ public class JacksonUtil {
         return toObject(jsonArray, tr.getType());
     }
 
+    /**
+     * 有些场景需要解析JsonNode。JsonNode的用法参考：
+     * JsonNode jsonNode = objectMapper.readTree(jsonString);
+     * String name = jsonNode.get("name").asText();
+     * int age = jsonNode.get("age").asInt();
+     */
     @SneakyThrows
     public static JsonNode getJsonNode(String json) {
         if (isBlank(json)) return null;
