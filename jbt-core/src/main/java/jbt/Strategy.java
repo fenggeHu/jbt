@@ -50,19 +50,24 @@ public class Strategy {
         return _ext.get(k);
     }
 
+    public String exts(String k) {
+        Object obj = ext(k);
+        return PrimitiveValueUtil.stringValue(obj);
+    }
+
     public boolean extb(String k) {
         Object obj = ext(k);
-        return null == obj ? false : PrimitiveValueUtil.getAsBool(obj);
+        return PrimitiveValueUtil.boolValue(obj);
     }
 
     public double extd(String k) {
         Object obj = ext(k);
-        return null == obj ? 0.0 : PrimitiveValueUtil.getAsDouble(obj);
+        return PrimitiveValueUtil.doubleValue(obj);
     }
 
     public long extl(String k) {
         Object obj = ext(k);
-        return null == obj ? 0 : PrimitiveValueUtil.getAsLong(obj);
+        return PrimitiveValueUtil.longValue(obj);
     }
 
     // _data

@@ -87,9 +87,11 @@ public class PrimitiveValueUtil {
         }
     }
 
+    private static String blank = "";
+
     public static String stringValue(Object value) {
         String val = getAsString(value);
-        return null == val ? "" : val;
+        return null == val ? blank : val;
     }
 
     /**
@@ -224,7 +226,7 @@ public class PrimitiveValueUtil {
         return (float) warpValue(value, float.class);
     }
 
-    public static boolean booleanValue(Object value) {
+    public static boolean boolValue(Object value) {
         return (boolean) warpValue(value, boolean.class);
     }
 }
