@@ -40,45 +40,45 @@ public class Strategy {
     }
 
     // 非Sequence的扩展属性
-    private Map<String, Object> _ext = new HashMap<>();
+    private final Map<String, Object> _ext = new HashMap<>();
 
-    protected void addExt(String k, Object v) {
+    public void addExt(String k, Object v) {
         _ext.put(k, v);
     }
 
-    protected Object ext(String k) {
+    public Object ext(String k) {
         return _ext.get(k);
     }
 
-    protected boolean extb(String k) {
+    public boolean extb(String k) {
         Object obj = ext(k);
         return null == obj ? false : PrimitiveValueUtil.getAsBool(obj);
     }
 
-    protected double extd(String k) {
+    public double extd(String k) {
         Object obj = ext(k);
         return null == obj ? 0.0 : PrimitiveValueUtil.getAsDouble(obj);
     }
 
-    protected long extl(String k) {
+    public long extl(String k) {
         Object obj = ext(k);
         return null == obj ? 0 : PrimitiveValueUtil.getAsLong(obj);
     }
 
     // _data
-    protected double[] d(String key) {
+    public double[] d(String key) {
         return _data.d(key);
     }
 
-    protected double[] highs() {
+    public double[] highs() {
         return _data.highs();
     }
 
-    protected double[] lows() {
+    public double[] lows() {
         return _data.lows();
     }
 
-    protected double[] closes() {
+    public double[] closes() {
         return _data.closes();
     }
 
