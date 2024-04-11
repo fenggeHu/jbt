@@ -220,11 +220,11 @@ public class Sequence {
                 }
             }
             // 从最小位置找起始位
-            if (-1 == start && _rows[i].datetime.compareTo(startDatetime) >= 0) {
+            if (-1 == start && (null == startDatetime || _rows[i].datetime.compareTo(startDatetime) >= 0)) {
                 start = i;
             }
             //
-            if (_rows[i].datetime.compareTo(endDatetime) <= 0) {
+            if (null == endDatetime || _rows[i].datetime.compareTo(endDatetime) <= 0) {
                 end = i;
             }
         }
