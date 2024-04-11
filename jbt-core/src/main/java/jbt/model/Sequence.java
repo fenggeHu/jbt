@@ -158,17 +158,17 @@ public class Sequence {
         return get(0);
     }
 
-    // 取相对位置 - 以当前point为0点，读取相对位置的数据
+    // 取range范围内的相对位置 - 以当前point为0点，读取相对位置的数据
     public Row get(int i) {
-        int count = this.size();
-        if (0 == count) {
+        int size = this.size();
+        if (0 == size) {
             return null;
         }
         int index = point + i;
         if (index < 0) { // 环状--向前追溯行
-            index = count - (-1 * index) % count;
-        } else if (index >= count) { // 环状--向后追溯
-            index = index % count;
+            index = size - (-1 * index) % size;
+        } else if (index >= size) { // 环状--向后追溯
+            index = index % size;
         }
         try {
             return _rows[index + first];
