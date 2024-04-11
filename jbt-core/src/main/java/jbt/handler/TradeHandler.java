@@ -9,6 +9,7 @@ import jbt.model.Action;
 import jbt.model.Row;
 import jbt.model.Sequence;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,9 +34,11 @@ public class TradeHandler implements Handler {
         this.position = position;
     }
 
-    // 策略执行后 TODO
-    private double maxRetracePer = 5;  // 最大回撤点数 - 5%
-    private double maxDrawdown = -6;  // 止损点
+    // 策略执行后
+    @Setter
+    private double maxRetracePer = 4;  // 最大回撤%
+    @Setter
+    private double maxDrawdown = -5;  // 止损点%
 
     public Event after(final Sequence seq) {
         Row now = seq.get();
