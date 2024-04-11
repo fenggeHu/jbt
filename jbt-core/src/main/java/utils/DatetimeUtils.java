@@ -195,4 +195,25 @@ public class DatetimeUtils {
         return (t2 - t1) - (h2 - h1) * 40;
     }
 
+    public static boolean isWeekend(Date date) {
+        // 创建 Calendar 对象并设置为给定日期
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        // 获取给定日期的星期几
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        // 判断是否是周六或周日（星期日为1，星期六为7）
+        return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
+    }
+
+    public static Date addDays(Date date, int amount) {
+        return add(date, 5, amount);
+    }
+    private static Date add(Date date, int calendarField, int amount) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(calendarField, amount);
+        return c.getTime();
+    }
 }

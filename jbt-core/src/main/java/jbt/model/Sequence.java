@@ -20,13 +20,12 @@ public class Sequence {
     private boolean ignoreZero = true;
     @Getter
     private Row[] _rows;
-    // 起点 - rows数组index
-    protected int first = 0;
-    // 终点 - rows数组index
-    protected int end = 0;
-    // 当前point对应的rows数组index，调用next行号+1，对应数组的绝对位置
-    @Getter
-    protected int point = -1;
+    // 起点，绝对位置 - rows数组index
+    private int first = 0;
+    // 终点，绝对位置 - rows数组index
+    private int end = 0;
+    // 指针，相对位置 - 从first起计数为0
+    private int point = -1;
 
     // build a Sequence
     public static Sequence build(Row[] rows) {
@@ -159,24 +158,34 @@ public class Sequence {
         return get(0);
     }
 
-    // 以当前point为0点，读取相对位置的数据
+    // 取相对位置 - 以当前point为0点，读取相对位置的数据
     public Row get(int i) {
         int count = this.size();
         if (0 == count) {
             return null;
         }
         int index = point + i;
-        if (index < 0) { // 向前追溯行
+        if (index < 0) { // 环状--向前追溯行
             index = count - (-1 * index) % count;
-        } else if (index >= count) {
+        } else if (index >= count) { // 环状--向后追溯
             index = index % count;
         }
-        return _rows[index + first];
+        try {
+            return _rows[index + first];
+        } catch (Exception e) {
+            log.error("rowLen:{}, index:{}, first:{}, i:{}, point:{}, end:{}", _rows.length, index, first, i, point, this.end);
+            throw new RuntimeException(e);
+        }
     }
 
-    // 当前行的绝对行 - 不考虑起点first, 有时候要取绝对位置
+    // 当前的绝对位置的index
+    private int absoluteIndex() {
+        return this.point + this.first;
+    }
+
+    // 取绝对位置 - 从当前行开始计算 - 不考虑起点first, 有时候要取绝对位置
     public Row row(int i) {
-        int index = point + first + i;
+        int index = this.absoluteIndex() + i;
         if (index < 0 || index >= this._rows.length) {
             // warn -> debug
             log.debug("index out of _rows range(0~{}). index: {}", this._rows.length, index);
@@ -203,39 +212,35 @@ public class Sequence {
 
     // 指定范围，排除含null的行，把数据对齐
     public Sequence range(String startDatetime, String endDatetime) {
-        int start = _rows.length - 1;
+        int start = -1, end = -1;
         for (int i = 0; i < _rows.length; i++) {
-            if (null != startDatetime && startDatetime.compareTo(_rows[i].datetime) > 0) {
-                continue;
-            }
-            if (ignoreZero) {  // 忽略扩展属性的null和0
-                if (!_rows[i].extNaNOrZero()) {
-                    start = i;
-                    break;
-                }
-            } else if (!_rows[i].extNaN()) {    // 判断扩展属性是否有null
-                start = i;
-                break;
-            }
-        }
-
-        int end = _rows.length - 1;
-        if (null != endDatetime) {
-            for (int i = _rows.length - 1; i >= 0; i--) {
-                if (endDatetime.compareTo(_rows[i].datetime) < 0) {
+            if (ignoreZero) {  // 忽略扩展属性端上的null和0
+                if (_rows[i].extNaNOrZero()) {
                     continue;
                 }
+            }
+            // 从最小位置找起始位
+            if (-1 == start && _rows[i].datetime.compareTo(startDatetime) >= 0) {
+                start = i;
+            }
+            //
+            if (_rows[i].datetime.compareTo(endDatetime) <= 0) {
                 end = i;
-                break;
             }
         }
-        return this.range(start, end);
+        try {
+            return this.range(start, end);
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("Range rows Err. start: %s, end: %s",
+                    startDatetime, endDatetime), e);
+        }
     }
 
     // 指定起点/终点位置
     public Sequence range(int start, int end) {
-        if (start >= _rows.length) {
-            throw new RuntimeException(String.format("drop: %d > data count: %d", start, _rows.length));
+        if (start < 0 || end < 0 || start >= _rows.length) {
+            throw new RuntimeException(String.format("Range Index. startIndex: %d, endIndex: %d, count: %d",
+                    start, end, _rows.length));
         }
         this.first = start;
         this.end = end;
@@ -243,27 +248,27 @@ public class Sequence {
         return this;
     }
 
-    // 重置到初始数据位
+    // 把指针重置为-1
     public Sequence reset() {
-        this.point = first - 1;
+        this.point = -1;
         return this;
     }
 
     // 移动到有效序列范围的倒数第2个位置
     public Sequence toSecondLast() {
-        this.point = this.end - this.first - 1;
+        this.point = this.size() - 2;
         return this;
     }
 
     // 移动到有效序列范围的最后
     public Sequence toLast() {
-        this.point = this.end - this.first;
+        this.point = this.size() - 1;
         return this;
     }
 
     // TODO - 暂无应用
     private Sequence to(int pos) {
-        this.point = pos + first;
+        this.point = pos;
         return this;
     }
 
@@ -285,8 +290,12 @@ public class Sequence {
         }
     }
 
-    // 含有效时间的行数
+    // 有效位置的总行数
     public int size() {
-        return this.end - this.first + 1;
+        if (null == _rows) {
+            return 0;
+        } else {
+            return this.end - this.first + 1;
+        }
     }
 }
