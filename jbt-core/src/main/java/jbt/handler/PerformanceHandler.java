@@ -41,7 +41,6 @@ public class PerformanceHandler implements Handler {
         List<Double> dailyReturns = Returns.getReturns(ranges);
 
         // 分析账单
-
         long d1 = DatetimeUtils.parseDate(sdt).getTime();
         long d2 = DatetimeUtils.parseDate(edt).getTime();
         return Stats.builder()

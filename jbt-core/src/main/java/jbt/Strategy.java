@@ -136,8 +136,7 @@ public class Strategy {
     protected void buy(double ratio, int limit) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY)
-                .price(row.getClose()).ratio(ratio).limit(limit).build();
-        event.setRow(row);
+                .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
         _eventQueue.offer(event);
     }
 
@@ -155,8 +154,7 @@ public class Strategy {
     protected void sell(double ratio, int limit) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
-                .price(row.getClose()).ratio(ratio).limit(limit).build();
-        event.setRow(row);
+                .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
         _eventQueue.offer(event);
     }
 
@@ -166,8 +164,7 @@ public class Strategy {
     protected void close() {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CLOSE)
-                .price(row.getClose()).build();
-        event.setRow(row);
+                .price(row.getClose()).row(row).build();
         _eventQueue.offer(event);
     }
 
@@ -177,8 +174,7 @@ public class Strategy {
     protected void cancel() {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CANCEL)
-                .price(row.getClose()).build();
-        event.setRow(row);
+                .price(row.getClose()).row(row).build();
         _eventQueue.offer(event);
     }
 
@@ -190,8 +186,7 @@ public class Strategy {
     protected void targetPercent(double percent) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.TARGET)
-                .price(row.getClose()).targetPercent(percent).build();
-        event.setRow(row);
+                .price(row.getClose()).targetPercent(percent).row(row).build();
         _eventQueue.offer(event);
     }
 }

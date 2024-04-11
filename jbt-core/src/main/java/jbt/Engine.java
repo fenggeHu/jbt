@@ -111,7 +111,7 @@ public class Engine {
 
     /**
      * 按顺序播放数据序列
-      */
+     */
     public Stats play(final Sequence data) {
         return this.play(data, null);
     }
@@ -144,9 +144,7 @@ public class Engine {
         // run strategy
         while (this.next()) {
             Event event = eventQueue.poll();
-            if (null != event) {
-                this.notify(event);
-            }
+            this.notify(event);
 
             // after - 后置处理-策略和事件处理后
             this.after();
@@ -213,18 +211,23 @@ public class Engine {
     protected void after() {
         // 交易策略 - 触发止损/止盈/减仓/平仓/仓位平衡等
         if (null != this.tradeHandler) {
-            this.tradeHandler.after(data);
+            Event event = this.tradeHandler.after(data);
+            this.notify(event);
         }
     }
 
     // 处理事件
     protected void notify(Event e) {
+        if (null == e) return;
+
         if (log.isDebugEnabled()) {
             log.debug("Notify: {}", e);
         }
         if (e instanceof OrderEvent) {
             // 处理订单
-            this.tradeHandler.apply((OrderEvent) e);
+            if (null != this.tradeHandler) {
+                this.tradeHandler.apply((OrderEvent) e);
+            }
         }
     }
 

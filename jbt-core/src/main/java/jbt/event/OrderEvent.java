@@ -2,9 +2,9 @@ package jbt.event;
 
 import jbt.model.Action;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * 订单信号和参数
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  * @author jinfeng.hu  @date 2022/10/14
  **/
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderEvent extends Event {

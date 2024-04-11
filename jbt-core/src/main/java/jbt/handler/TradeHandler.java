@@ -3,7 +3,10 @@ package jbt.handler;
 import jbt.account.Account;
 import jbt.account.Bill;
 import jbt.account.Position;
+import jbt.event.Event;
 import jbt.event.OrderEvent;
+import jbt.model.Action;
+import jbt.model.Row;
 import jbt.model.Sequence;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +34,37 @@ public class TradeHandler implements Handler {
     }
 
     // 策略执行后 TODO
-    public void after(final Sequence seq) {
-//        Row now = seq.get();
-//        log.debug("{}", now.getDatetime());
+    private double maxRetracePer = 5;  // 最大回撤点数 - 5%
+    private double maxDrawdown = -6;  // 止损点
+
+    public Event after(final Sequence seq) {
+        Row now = seq.get();
+        Position pos = this.position.compute(now.getClose());
+        if (pos.getQuantity() > 0) {
+            // 止损/止盈
+            if ((pos.getMaxProfit() > maxRetracePer && pos.getMaxProfit() - pos.getPercent() > maxRetracePer)
+                    || pos.getPercent() < maxDrawdown) {
+                return sell(now);
+            }
+        }
+
+        return null;
+    }
+
+    // sell
+    protected Event sell(Row row) {
+        return sell(row, 1, 0);
+    }
+
+    /**
+     * sell
+     *
+     * @param ratio 比例
+     * @param limit 限制
+     */
+    protected Event sell(Row row, double ratio, int limit) {
+        return OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
+                .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
     }
 
     // 订单逻辑
