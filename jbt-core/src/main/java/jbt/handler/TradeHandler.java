@@ -37,7 +37,7 @@ public class TradeHandler implements Handler {
     }
 
     // 订单逻辑
-    public void run(OrderEvent oe) {
+    public void apply(OrderEvent oe) {
         switch (oe.getAction()) {
             case BUY:
                 this.buy(oe);

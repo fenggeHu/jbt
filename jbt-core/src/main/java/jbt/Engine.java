@@ -162,7 +162,7 @@ public class Engine {
             performanceHandler.setPosition(tradeHandler.getPosition().trim());
         }
 
-        return performanceHandler.run(this.data);
+        return performanceHandler.apply(this.data);
     }
 
     // 预处理&初始化必要的属性
@@ -224,7 +224,7 @@ public class Engine {
         }
         if (e instanceof OrderEvent) {
             // 处理订单
-            this.tradeHandler.run((OrderEvent) e);
+            this.tradeHandler.apply((OrderEvent) e);
         }
     }
 

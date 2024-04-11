@@ -33,7 +33,7 @@ public class PerformanceHandler implements Handler {
         return this.position.getBills();
     }
     // run
-    public Stats run(Sequence data) {
+    public Stats apply(Sequence data) {
         String sdt = this.getStart().getDatetime();
         String edt = this.getEnd().getDatetime();
         List<Row> ranges = data.rangeRows(sdt, edt);
