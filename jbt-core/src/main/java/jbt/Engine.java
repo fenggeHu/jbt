@@ -109,12 +109,16 @@ public class Engine {
         this.account.setPrincipal(principal);
     }
 
-    // 按顺序播放数据序列
+    /**
+     * 按顺序播放数据序列
+      */
     public Stats play(final Sequence data) {
         return this.play(data, null);
     }
 
-    // 按顺序播放数据序列
+    /**
+     * 按顺序播放数据序列
+     */
     public Stats play(final Sequence data, Account account) {
         this.data = data;
         this.account = account;
@@ -123,7 +127,9 @@ public class Engine {
         return this.play();
     }
 
-    // main - 按顺序播放数据序列
+    /**
+     * main - 按顺序播放数据序列
+     */
     @SneakyThrows
     public Stats play() {
         if (null == this.data) {
