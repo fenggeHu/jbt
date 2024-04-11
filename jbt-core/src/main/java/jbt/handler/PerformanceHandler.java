@@ -32,7 +32,7 @@ public class PerformanceHandler implements Handler {
     public List<Bill> getBills() {
         return this.position.getBills();
     }
-
+    // run
     public Stats run(Sequence data) {
         String sdt = this.getStart().getDatetime();
         String edt = this.getEnd().getDatetime();

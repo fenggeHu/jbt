@@ -4,6 +4,7 @@ import jbt.account.Account;
 import jbt.account.Bill;
 import jbt.account.Position;
 import jbt.event.OrderEvent;
+import jbt.model.Sequence;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +28,12 @@ public class TradeHandler implements Handler {
     public TradeHandler(Account account, Position position) {
         this.account = account;
         this.position = position;
+    }
+
+    // 策略执行后 TODO
+    public void after(final Sequence seq) {
+//        Row now = seq.get();
+//        log.debug("{}", now.getDatetime());
     }
 
     // 订单逻辑

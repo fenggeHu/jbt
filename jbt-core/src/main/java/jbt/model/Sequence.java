@@ -24,7 +24,7 @@ public class Sequence {
     protected int first = 0;
     // 终点 - rows数组index
     protected int end = 0;
-    // 当前point对应的rows数组index，调用next行号+1
+    // 当前point对应的rows数组index，调用next行号+1，对应数组的绝对位置
     @Getter
     protected int point = -1;
 
@@ -161,7 +161,7 @@ public class Sequence {
 
     // 以当前point为0点，读取相对位置的数据
     public Row get(int i) {
-        int count = this.count();
+        int count = this.size();
         if (0 == count) {
             return null;
         }
@@ -185,8 +185,24 @@ public class Sequence {
         return _rows[index];
     }
 
+    // 获取行数组的最后一行
+    public Row last() {
+        return this._rows[_rows.length - 1];
+    }
+
+    // 取时间范围内的所有row
+    public List<Row> rangeRows(String startDatetime, String endDatetime) {
+        List<Row> ret = new LinkedList<>();
+        for (int i = 0; i < _rows.length; i++) {
+            if (startDatetime.compareTo(_rows[i].datetime) <= 0 && endDatetime.compareTo(_rows[i].datetime) >= 0) {
+                ret.add(_rows[i]);
+            }
+        }
+        return ret;
+    }
+
     // 指定范围，排除含null的行，把数据对齐
-    public int range(String startDatetime, String endDatetime) {
+    public Sequence range(String startDatetime, String endDatetime) {
         int start = _rows.length - 1;
         for (int i = 0; i < _rows.length; i++) {
             if (null != startDatetime && startDatetime.compareTo(_rows[i].datetime) > 0) {
@@ -213,48 +229,42 @@ public class Sequence {
                 break;
             }
         }
-        this.range(start, end);
-        return start;
+        return this.range(start, end);
     }
 
     // 指定起点/终点位置
-    public void range(int start, int end) {
+    public Sequence range(int start, int end) {
         if (start >= _rows.length) {
             throw new RuntimeException(String.format("drop: %d > data count: %d", start, _rows.length));
         }
         this.first = start;
         this.end = end;
-    }
 
-    // 取时间范围内的所有row
-    public List<Row> rangeRows(String startDatetime, String endDatetime) {
-        List<Row> ret = new LinkedList<>();
-        for (int i = 0; i < _rows.length; i++) {
-            if (startDatetime.compareTo(_rows[i].datetime) <= 0 && endDatetime.compareTo(_rows[i].datetime) >= 0) {
-                ret.add(_rows[i]);
-            }
-        }
-        return ret;
-    }
-
-    // 获取行数组的最后一行
-    public Row last() {
-        return this._rows[_rows.length - 1];
+        return this;
     }
 
     // 重置到初始数据位
-    public void reset() {
+    public Sequence reset() {
         this.point = first - 1;
+        return this;
     }
 
-    // 移动point最后 - 倒数第2个位置
-    public void toEnd() {
+    // 移动到有效序列范围的倒数第2个位置
+    public Sequence toSecondLast() {
         this.point = this.end - this.first - 1;
+        return this;
+    }
+
+    // 移动到有效序列范围的最后
+    public Sequence toLast() {
+        this.point = this.end - this.first;
+        return this;
     }
 
     // TODO - 暂无应用
-    private void to(int pos) {
+    private Sequence to(int pos) {
         this.point = pos + first;
+        return this;
     }
 
     // 从起始位置到数组结尾的Row个数

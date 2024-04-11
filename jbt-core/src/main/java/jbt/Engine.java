@@ -141,6 +141,9 @@ public class Engine {
             if (null != event) {
                 this.notify(event);
             }
+
+            // after - 后置处理-策略和事件处理后
+            this.after();
         }
 
         // 收集信息
@@ -198,6 +201,14 @@ public class Engine {
         }
 
         return true;
+    }
+
+    // strategy策略执行后的操作
+    protected void after() {
+        // 交易策略 - 触发止损/止盈/减仓/平仓/仓位平衡等
+        if (null != this.tradeHandler) {
+            this.tradeHandler.after(data);
+        }
     }
 
     // 处理事件

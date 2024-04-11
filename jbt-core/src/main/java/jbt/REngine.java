@@ -63,8 +63,8 @@ public class REngine extends Engine {
     public Event play() {
         // 数据预处理
         this.preNext();
-        // 定位到最后
-        this.data.toEnd();
+        // 定位到倒数第二行
+        this.data.toSecondLast();
         // 执行策略
         this.next();
         // 处理事件
