@@ -214,17 +214,18 @@ public class Sequence {
     public Sequence range(String startDatetime, String endDatetime) {
         int start = -1, end = -1;
         for (int i = 0; i < _rows.length; i++) {
+            Row row = this._rows[i];
             if (ignoreZero) {  // 忽略扩展属性端上的null和0
-                if (_rows[i].extNaNOrZero()) {
+                if (row.extNaNOrZero()) {
                     continue;
                 }
             }
             // 从最小位置找起始位
-            if (-1 == start && (null == startDatetime || _rows[i].datetime.compareTo(startDatetime) >= 0)) {
+            if (-1 == start && (null == startDatetime || row.datetime.compareTo(startDatetime) >= 0)) {
                 start = i;
             }
             //
-            if (null == endDatetime || _rows[i].datetime.compareTo(endDatetime) <= 0) {
+            if (null == endDatetime || row.datetime.compareTo(endDatetime) <= 0) {
                 end = i;
             }
         }
