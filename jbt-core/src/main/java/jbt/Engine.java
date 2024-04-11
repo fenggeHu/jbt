@@ -109,23 +109,23 @@ public class Engine {
         this.account.setPrincipal(principal);
     }
 
-    // run
-    public Stats run(final Sequence data) {
-        return this.run(data, null);
+    // 按顺序播放数据序列
+    public Stats play(final Sequence data) {
+        return this.play(data, null);
     }
 
-    // run
-    public Stats run(final Sequence data, Account account) {
+    // 按顺序播放数据序列
+    public Stats play(final Sequence data, Account account) {
         this.data = data;
         this.account = account;
         this.tradeHandler = null;
         this.eventQueue.clear();
-        return this.run();
+        return this.play();
     }
 
-    // run main
+    // main - 按顺序播放数据序列
     @SneakyThrows
-    public Stats run() {
+    public Stats play() {
         if (null == this.data) {
             throw new RuntimeException("no data");
         }

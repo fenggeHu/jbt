@@ -60,7 +60,7 @@ public class REngine extends Engine {
     /**
      * run最新的1行数据
      */
-    public Event play() {
+    public Event run() {
         // 数据预处理
         this.preNext();
         // 定位到倒数第二行
@@ -78,9 +78,9 @@ public class REngine extends Engine {
     /**
      * 支持接收实时行情并执行策略 - feed last data & play
      */
-    public Event play(Row lastRow) {
+    public Event run(Row lastRow) {
         this.updateLast(lastRow);
-        return play();
+        return run();
     }
 
     // 更新最近的数据
