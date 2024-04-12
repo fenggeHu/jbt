@@ -1,5 +1,7 @@
 package jbt.event;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -21,6 +23,17 @@ public class EventQueue {
     // get & remove
     public Event poll() {
         return queue.poll();
+    }
+
+    private int maxSize = 100;
+
+    // get all Or max size-防止持续的Event导致阻塞的bug
+    public List<Event> pollAll() {
+        List<Event> events = new ArrayList<>();
+        while (!queue.isEmpty() && events.size() < maxSize) {
+            events.add(queue.poll());
+        }
+        return events;
     }
 
     // clear
