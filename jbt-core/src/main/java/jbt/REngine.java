@@ -29,11 +29,12 @@ public class REngine extends EngineCore {
     }
 
     public REngine(Strategy strategy) {
-        super(strategy);
+        this.strategy = strategy;
     }
 
     public REngine(Strategy strategy, final Sequence data) {
-        super(strategy, data);
+        this.strategy = strategy;
+        this.data = data;
     }
 
     /**

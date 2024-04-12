@@ -5,7 +5,6 @@ import jbt.model.Row;
 import jbt.model.Sequence;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import utils.ClassUtils;
 
@@ -22,48 +21,15 @@ public class EngineCore {
     protected Sequence data;
     // 回测起始时间 - 默认为空则忽略
     @Setter
-    private String start;
+    protected String start;
     // 回测结束时间 - 默认为空则忽略
     @Setter
-    private String end;
+    protected String end;
     @Setter
     protected Strategy strategy;
     // 事件
     @Getter
     protected final EventQueue eventQueue = new EventQueue();
-
-    // get engine
-    public static EngineCore build(Strategy strategy, String start, String end) {
-        EngineCore engine = new EngineCore(strategy);
-        engine.setStart(start);
-        engine.setEnd(end);
-        return engine;
-    }
-
-    // get engine
-    public static EngineCore build(Strategy strategy, String start, String end, Sequence data) {
-        EngineCore engine = new EngineCore(strategy, data);
-        engine.setStart(start);
-        engine.setEnd(end);
-        return engine;
-    }
-
-    public EngineCore() {
-    }
-
-    @SneakyThrows
-    public EngineCore(Class<? extends Strategy> strategy) {
-        this.strategy = strategy.newInstance();
-    }
-
-    public EngineCore(Strategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public EngineCore(Strategy strategy, final Sequence data) {
-        this.data = data;
-        this.strategy = strategy;
-    }
 
     // 绑定属性
     protected void injectionStrategyProperties() {
