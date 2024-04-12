@@ -70,8 +70,8 @@ public class BacktestEngine extends EngineCore {
     }
 
     @SneakyThrows
-    public BacktestEngine(Class<? extends Strategy> strategy) {
-        this.strategy = strategy.newInstance();
+    public BacktestEngine(Class<? extends Strategy> strategyClass) {
+        this.strategy = strategyClass.newInstance();
     }
 
     public BacktestEngine(Strategy strategy) {
@@ -124,7 +124,7 @@ public class BacktestEngine extends EngineCore {
         //
         this.injectionStrategyProperties();
         //
-        this.preNext();
+        this.prepare();
         //
         Row start = this.data.row(1);
         // run strategy

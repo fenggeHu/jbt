@@ -42,7 +42,7 @@ public class REngine extends EngineCore {
      */
     public Event run() {
         // 数据预处理
-        this.preNext();
+        this.prepare();
         // 定位到倒数第二行
         this.data.toSecondLast();
         // 执行策略

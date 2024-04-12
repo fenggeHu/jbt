@@ -31,7 +31,7 @@ public class EngineCore {
     @Getter
     protected final EventQueue eventQueue = new EventQueue();
 
-    // 绑定属性
+    // Strategy绑定属性
     protected void injectionStrategyProperties() {
         // 初始化strategy
         if (null != strategy) {
@@ -42,7 +42,7 @@ public class EngineCore {
     }
 
     // 数据准备
-    protected void preNext() {
+    protected void prepare() {
         if (null != strategy) {
             //
             strategy.init();
