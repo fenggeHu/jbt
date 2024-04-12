@@ -16,16 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import utils.ClassUtils;
 
 /**
- * 执行引擎
+ * 执行引擎 - 基本能力和支持回测
  * - 非线程安全，一个engine实例不能多线程并发调用，一个线程一个engine实例，估可以设计engine线程池
  *
  * @author jinfeng.hu  @date 2022/10/27
  **/
 @Slf4j
 public class Engine {
-    // Sequence Row.datetime的格式
-    @Setter
-    private String datetimeFormat = "yyyy-MM-dd";
     // 数据
     @Setter
     protected Sequence data;
@@ -56,6 +53,8 @@ public class Engine {
         Engine engine = new Engine(strategy);
         engine.setStart(start);
         engine.setEnd(end);
+        // init
+        engine.initTradeHandler();
         return engine;
     }
 
@@ -68,6 +67,8 @@ public class Engine {
             engine.account = new Account();
             engine.account.setPrincipal(principal);
         }
+        // init
+        engine.initTradeHandler();
         return engine;
     }
 
@@ -76,6 +77,8 @@ public class Engine {
         Engine engine = new Engine(strategy, data);
         engine.setStart(start);
         engine.setEnd(end);
+        // init
+        engine.initTradeHandler();
         return engine;
     }
 
@@ -122,7 +125,6 @@ public class Engine {
     public Stats play(final Sequence data, Account account) {
         this.data = data;
         this.account = account;
-        this.tradeHandler = null;
         this.eventQueue.clear();
         return this.play();
     }
@@ -136,7 +138,7 @@ public class Engine {
             throw new RuntimeException("no data");
         }
         //
-        this.init();
+        this.injectionStrategyProperties();
         //
         this.preNext();
         //
@@ -164,7 +166,7 @@ public class Engine {
     }
 
     // 预处理&初始化必要的属性
-    protected void init() {
+    protected void initTradeHandler() {
         // 初始化account
         if (null == account) {
             this.account = new Account();
@@ -173,12 +175,15 @@ public class Engine {
         if (null == tradeHandler) {
             tradeHandler = new TradeHandler(account);
         }
+    }
+
+    // 绑定属性
+    protected void injectionStrategyProperties() {
         // 初始化strategy
         if (null != strategy) {
             // 注入属性到strategy
             ClassUtils.silencedInjection(strategy, "_data", data);
             ClassUtils.silencedInjection(strategy, "_eventQueue", eventQueue);
-            ClassUtils.silencedInjection(strategy, "_position", tradeHandler.getPosition());
         }
     }
 

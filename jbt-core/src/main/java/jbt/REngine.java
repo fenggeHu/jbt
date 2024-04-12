@@ -6,7 +6,7 @@ import jbt.model.Row;
 import jbt.model.Sequence;
 
 /**
- * 右侧执行引擎 - run最新数据的策略
+ * 右侧执行引擎 - run最新数据的策略，返回最多一个信号
  * 可用于实时触发和最新数据寻找机会
  * 使用方式一：
  * 使用策略和数据初始化，并使用最右端行情执行策略
@@ -25,19 +25,19 @@ public class REngine extends Engine {
      */
     public static REngine build(Strategy strategy, final Sequence data) {
         REngine engine = new REngine(strategy, data);
-        engine.init();
+        engine.injectionStrategyProperties();
         return engine;
     }
 
     public static REngine build(Sequence data, Strategy strategy, Account account) {
         REngine engine = new REngine(strategy, data, account);
-        engine.init();
+        engine.injectionStrategyProperties();
         return engine;
     }
 
     public static REngine build(Sequence data, Strategy strategy, double principal) {
         REngine engine = new REngine(strategy, data, principal);
-        engine.init();
+        engine.injectionStrategyProperties();
         return engine;
     }
 
@@ -69,9 +69,10 @@ public class REngine extends Engine {
         this.next();
         // 处理事件
         Event event = this.getEventQueue().poll();
-        if (null != event) {
-            this.notify(event);
-        }
+//        if (null != event) {
+//            this.notify(event);
+//        }
+        this.getEventQueue().clear();
         return event;
     }
 

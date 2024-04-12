@@ -36,9 +36,15 @@ public class TradeHandler implements Handler {
 
     // 策略执行后
     @Setter
-    private double maxRetracePer = 4;  // 最大回撤%
+    private double maxRetracePer = 5;  // 最大回撤%
     @Setter
     private double maxDrawdown = -5;  // 止损点%
+
+    public TradeHandler set(double maxRetracePer, double maxDrawdown) {
+        this.setMaxRetracePer(maxRetracePer);
+        this.setMaxDrawdown(maxDrawdown);
+        return this;
+    }
 
     public Event after(final Sequence seq) {
         Row now = seq.get();

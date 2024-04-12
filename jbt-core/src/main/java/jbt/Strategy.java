@@ -25,7 +25,6 @@ public class Strategy {
      */
     @Getter
     private Sequence _data;
-    private EventQueue _eventQueue;
 
     // 非Sequence的扩展属性
     private final Map<String, Object> _ext = new HashMap<>();
@@ -125,7 +124,7 @@ public class Strategy {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY)
                 .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
-        _eventQueue.offer(event);
+        this.notify(event);
     }
 
     // sell
@@ -143,7 +142,7 @@ public class Strategy {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
                 .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
-        _eventQueue.offer(event);
+        this.notify(event);
     }
 
     /**
@@ -153,7 +152,7 @@ public class Strategy {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CLOSE)
                 .price(row.getClose()).row(row).build();
-        _eventQueue.offer(event);
+        this.notify(event);
     }
 
     /**
@@ -163,7 +162,7 @@ public class Strategy {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CANCEL)
                 .price(row.getClose()).row(row).build();
-        _eventQueue.offer(event);
+        this.notify(event);
     }
 
     /**
@@ -175,6 +174,11 @@ public class Strategy {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.TARGET)
                 .price(row.getClose()).targetPercent(percent).row(row).build();
-        _eventQueue.offer(event);
+        this.notify(event);
+    }
+
+    private EventQueue _eventQueue;
+    protected void notify(Event event) {
+        this._eventQueue.offer(event);
     }
 }
