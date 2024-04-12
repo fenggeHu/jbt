@@ -1,4 +1,4 @@
-package jbt.event;
+package jbt.notify;
 
 import jbt.model.Row;
 import lombok.AllArgsConstructor;

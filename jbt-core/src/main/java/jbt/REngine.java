@@ -1,6 +1,6 @@
 package jbt;
 
-import jbt.event.Event;
+import jbt.notify.Event;
 import jbt.model.Row;
 import jbt.model.Sequence;
 
@@ -48,8 +48,7 @@ public class REngine extends EngineCore {
         // 执行策略
         this.next();
         // 处理事件
-        Event event = this.getEventQueue().poll();
-        this.getEventQueue().clear();
+        Event event = this.notify.getAndClear();
         return event;
     }
 

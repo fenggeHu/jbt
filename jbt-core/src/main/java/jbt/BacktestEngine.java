@@ -1,8 +1,8 @@
 package jbt;
 
 import jbt.account.Account;
-import jbt.event.Event;
-import jbt.event.OrderEvent;
+import jbt.notify.Event;
+import jbt.notify.OrderEvent;
 import jbt.handler.PerformanceHandler;
 import jbt.handler.TradeHandler;
 import jbt.model.Row;
@@ -109,7 +109,7 @@ public class BacktestEngine extends EngineCore {
     public Stats play(final Sequence data, Account account) {
         this.data = data;
         this.account = account;
-        this.eventQueue.clear();
+        this.notify.getAndClear();
         return this.play();
     }
 
@@ -129,7 +129,7 @@ public class BacktestEngine extends EngineCore {
         Row start = this.data.row(1);
         // run strategy
         while (this.next()) {
-            Event event = eventQueue.poll();
+            Event event = this.notify.getAndClear();
             this.notify(event);
 
             // after - 后置处理-策略和事件处理后

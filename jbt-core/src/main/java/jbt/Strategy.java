@@ -1,11 +1,11 @@
 package jbt;
 
-import jbt.event.Event;
-import jbt.event.EventQueue;
-import jbt.event.OrderEvent;
 import jbt.model.Action;
 import jbt.model.Row;
 import jbt.model.Sequence;
+import jbt.notify.Event;
+import jbt.notify.Notify;
+import jbt.notify.OrderEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import utils.PrimitiveValueUtil;
@@ -177,8 +177,12 @@ public class Strategy {
         this.notify(event);
     }
 
-    private EventQueue _eventQueue;
+    // 发送通知
+    private Notify<Event> _notify;
+
     protected void notify(Event event) {
-        this._eventQueue.offer(event);
+        if(null != _notify) {
+            this._notify.send(event);
+        }
     }
 }

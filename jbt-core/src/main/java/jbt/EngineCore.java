@@ -1,9 +1,10 @@
 package jbt;
 
-import jbt.event.EventQueue;
 import jbt.model.Row;
 import jbt.model.Sequence;
-import lombok.Getter;
+import jbt.notify.Event;
+import jbt.notify.Notify;
+import jbt.notify.impl.OneEventNotify;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import utils.ClassUtils;
@@ -28,8 +29,8 @@ public class EngineCore {
     @Setter
     protected Strategy strategy;
     // 事件
-    @Getter
-    protected final EventQueue eventQueue = new EventQueue();
+    @Setter
+    protected Notify<Event> notify;
 
     // Strategy绑定属性
     protected void injectionStrategyProperties() {
@@ -37,7 +38,10 @@ public class EngineCore {
         if (null != strategy) {
             // 注入属性到strategy
             ClassUtils.silencedInjection(strategy, "_data", data);
-            ClassUtils.silencedInjection(strategy, "_eventQueue", eventQueue);
+            if (null == notify) {
+                notify = new OneEventNotify();
+            }
+            ClassUtils.silencedInjection(strategy, "_notify", notify);
         }
     }
 
