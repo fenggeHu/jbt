@@ -10,7 +10,7 @@ public class OneEventNotify implements Notify<Event> {
     private Event event;
 
     @Override
-    public void send(Event event) {
+    public void add(Event event) {
         this.event = event;
     }
 

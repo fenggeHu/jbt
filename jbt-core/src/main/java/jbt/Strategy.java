@@ -182,7 +182,7 @@ public class Strategy {
 
     protected void notify(Event event) {
         if(null != _notify) {
-            this._notify.send(event);
+            this._notify.add(event);
         }
     }
 }

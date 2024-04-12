@@ -12,7 +12,7 @@ public class DefaultNotify implements Notify<Event> {
     private EventQueue _eventQueue = new EventQueue();
 
     @Override
-    public void send(Event event) {
+    public void add(Event event) {
         this._eventQueue.offer(event);
     }
 

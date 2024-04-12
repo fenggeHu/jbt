@@ -130,7 +130,7 @@ public class BacktestEngine extends EngineCore {
         // run strategy
         while (this.next()) {
             Event event = this.notify.getAndClear();
-            this.fireEvent(event);
+            this.processEvent(event);
 
             // after - 后置处理-策略和事件处理后
             this.after();
@@ -166,12 +166,12 @@ public class BacktestEngine extends EngineCore {
         // 交易策略 - 触发止损/止盈/减仓/平仓/仓位平衡等
         if (null != this.tradeHandler) {
             Event event = this.tradeHandler.after(data);
-            this.fireEvent(event);
+            this.processEvent(event);
         }
     }
 
     // 处理事件
-    protected void fireEvent(Event e) {
+    protected void processEvent(Event e) {
         if (null == e) return;
 
         if (log.isDebugEnabled()) {

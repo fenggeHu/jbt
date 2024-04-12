@@ -5,7 +5,7 @@ package jbt.notify;
  * @author max.hu  @date 2024/04/12
  **/
 public interface Notify<T> {
-    void send(T event);
+    void add(T event);
 
     T get();
 
