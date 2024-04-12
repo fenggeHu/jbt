@@ -1,6 +1,5 @@
 package jbt;
 
-import jbt.account.Account;
 import jbt.event.Event;
 import jbt.model.Row;
 import jbt.model.Sequence;
@@ -18,7 +17,7 @@ import jbt.model.Sequence;
  *
  * @author jinfeng.hu  @date 2022/10/31
  **/
-public class REngine extends Engine {
+public class REngine extends EngineCore {
 
     /**
      * build - 构建REngine & init
@@ -29,32 +28,12 @@ public class REngine extends Engine {
         return engine;
     }
 
-    public static REngine build(Sequence data, Strategy strategy, Account account) {
-        REngine engine = new REngine(strategy, data, account);
-        engine.injectionStrategyProperties();
-        return engine;
-    }
-
-    public static REngine build(Sequence data, Strategy strategy, double principal) {
-        REngine engine = new REngine(strategy, data, principal);
-        engine.injectionStrategyProperties();
-        return engine;
-    }
-
     public REngine(Strategy strategy) {
         super(strategy);
     }
 
     public REngine(Strategy strategy, final Sequence data) {
         super(strategy, data);
-    }
-
-    public REngine(Strategy strategy, final Sequence data, Account account) {
-        super(strategy, data, account);
-    }
-
-    public REngine(Strategy strategy, final Sequence data, double principal) {
-        super(strategy, data, principal);
     }
 
     /**
@@ -69,9 +48,6 @@ public class REngine extends Engine {
         this.next();
         // 处理事件
         Event event = this.getEventQueue().poll();
-//        if (null != event) {
-//            this.notify(event);
-//        }
         this.getEventQueue().clear();
         return event;
     }

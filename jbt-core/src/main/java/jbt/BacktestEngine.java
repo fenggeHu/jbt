@@ -2,7 +2,6 @@ package jbt;
 
 import jbt.account.Account;
 import jbt.event.Event;
-import jbt.event.EventQueue;
 import jbt.event.OrderEvent;
 import jbt.handler.PerformanceHandler;
 import jbt.handler.TradeHandler;
@@ -13,7 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import utils.ClassUtils;
 
 /**
  * 执行引擎 - 基本能力和支持回测
@@ -22,23 +20,9 @@ import utils.ClassUtils;
  * @author jinfeng.hu  @date 2022/10/27
  **/
 @Slf4j
-public class Engine {
-    // 数据
-    @Setter
-    protected Sequence data;
-    // 回测起始时间 - 默认为空则忽略
-    @Setter
-    private String start;
-    // 回测结束时间 - 默认为空则忽略
-    @Setter
-    private String end;
-    @Setter
-    protected Strategy strategy;
+public class BacktestEngine extends EngineCore {
     @Getter
     private Account account;
-    // 事件
-    @Getter
-    private final EventQueue eventQueue = new EventQueue();
     // trade handler
     @Setter
     @Getter
@@ -49,63 +33,63 @@ public class Engine {
     private PerformanceHandler performanceHandler;
 
     // get engine
-    public static Engine build(Strategy strategy, String start, String end) {
-        Engine engine = new Engine(strategy);
-        engine.setStart(start);
-        engine.setEnd(end);
+    public static BacktestEngine build(Strategy strategy, String start, String end) {
+        BacktestEngine backtestEngine = new BacktestEngine(strategy);
+        backtestEngine.setStart(start);
+        backtestEngine.setEnd(end);
         // init
-        engine.initTradeHandler();
-        return engine;
+        backtestEngine.initTradeHandler();
+        return backtestEngine;
     }
 
     // get engine
-    public static Engine build(Strategy strategy, String start, String end, double principal) {
-        Engine engine = new Engine(strategy);
-        engine.setStart(start);
-        engine.setEnd(end);
+    public static BacktestEngine build(Strategy strategy, String start, String end, double principal) {
+        BacktestEngine backtestEngine = new BacktestEngine(strategy);
+        backtestEngine.setStart(start);
+        backtestEngine.setEnd(end);
         if (principal > 0) {
-            engine.account = new Account();
-            engine.account.setPrincipal(principal);
+            backtestEngine.account = new Account();
+            backtestEngine.account.setPrincipal(principal);
         }
         // init
-        engine.initTradeHandler();
-        return engine;
+        backtestEngine.initTradeHandler();
+        return backtestEngine;
     }
 
     // get engine
-    public static Engine build(Strategy strategy, String start, String end, Sequence data) {
-        Engine engine = new Engine(strategy, data);
-        engine.setStart(start);
-        engine.setEnd(end);
+    public static BacktestEngine build(Strategy strategy, String start, String end, Sequence data) {
+        BacktestEngine backtestEngine = new BacktestEngine(strategy, data);
+        backtestEngine.setStart(start);
+        backtestEngine.setEnd(end);
         // init
-        engine.initTradeHandler();
-        return engine;
+        backtestEngine.initTradeHandler();
+        return backtestEngine;
     }
 
-    public Engine() {
+    public BacktestEngine() {
     }
 
     @SneakyThrows
-    public Engine(Class<? extends Strategy> strategy) {
+    public BacktestEngine(Class<? extends Strategy> strategy) {
         this.strategy = strategy.newInstance();
     }
 
-    public Engine(Strategy strategy) {
+    public BacktestEngine(Strategy strategy) {
         this.strategy = strategy;
     }
 
-    public Engine(Strategy strategy, final Sequence data) {
+    public BacktestEngine(Strategy strategy, final Sequence data) {
         this.data = data;
         this.strategy = strategy;
     }
 
-    public Engine(Strategy strategy, final Sequence data, Account account) {
+    public BacktestEngine(Strategy strategy, final Sequence data, Account account) {
         this.data = data;
         this.strategy = strategy;
         this.account = account;
     }
 
-    public Engine(Strategy strategy, final Sequence data, double principal) {
+    public BacktestEngine(Strategy strategy, final Sequence data, double principal) {
         this.data = data;
         this.strategy = strategy;
         this.account = new Account();
@@ -175,41 +159,6 @@ public class Engine {
         if (null == tradeHandler) {
             tradeHandler = new TradeHandler(account);
         }
-    }
-
-    // 绑定属性
-    protected void injectionStrategyProperties() {
-        // 初始化strategy
-        if (null != strategy) {
-            // 注入属性到strategy
-            ClassUtils.silencedInjection(strategy, "_data", data);
-            ClassUtils.silencedInjection(strategy, "_eventQueue", eventQueue);
-        }
-    }
-
-    // 数据准备
-    protected void preNext() {
-        if (null != strategy) {
-            //
-            strategy.init();
-            //
-            data.range(start, end);
-        }
-    }
-
-    // 读取数据行，执行策略逻辑
-    protected boolean next() {
-        Row row = data.next();
-        if (null == row) {
-            log.debug("Engine run out");
-            return false;
-        }
-        // 操作信号
-        if (null != this.strategy) {
-            strategy.next();
-        }
-
-        return true;
     }
 
     // strategy策略执行后的操作
