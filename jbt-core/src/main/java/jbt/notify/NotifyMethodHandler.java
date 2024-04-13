@@ -1,12 +1,14 @@
 package jbt.notify;
 
 import javassist.util.proxy.MethodHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
 
 /**
  * @author jinfeng.hu  @date 2024-04-13
  **/
+@Slf4j
 public class NotifyMethodHandler<T> implements MethodHandler {
     private T originalObject;
 
@@ -19,7 +21,7 @@ public class NotifyMethodHandler<T> implements MethodHandler {
         Object result = thisMethod.invoke(originalObject, args);
         Notify notify = getNotify(thisMethod);
         if (null != notify && notify.enabled()) {
-            System.out.println(thisMethod.getName() + " - Notify: " + result);
+            log.info(thisMethod.getName() + " - Notify: " + result);
         }
         return result;
     }
@@ -44,24 +46,4 @@ public class NotifyMethodHandler<T> implements MethodHandler {
         }
         return null;
     }
-
-    // 获取方法的所有超类方法
-//    private static List<Method> getSuperMethods(Method method) {
-//        List<Method> superMethods = new ArrayList<>();
-//        Class<?> declaringClass = method.getDeclaringClass();
-//        Class<?> superClass = declaringClass.getSuperclass();
-//
-//        // 递归查找超类方法
-//        while (superClass != null) {
-//            try {
-//                Method superMethod = superClass.getMethod(method.getName(), method.getParameterTypes());
-//                superMethods.add(superMethod);
-//            } catch (NoSuchMethodException e) {
-//                // 如果超类没有该方法，继续查找超类的超类
-//            }
-//            superClass = superClass.getSuperclass();
-//        }
-//
-//        return superMethods;
-//    }
 }
