@@ -110,8 +110,8 @@ public class Strategy {
     }
 
     // buy
-    protected void buy() {
-        buy(1, 0);
+    protected Event buy() {
+        return buy(1, 0);
     }
 
     /**
@@ -120,16 +120,17 @@ public class Strategy {
      * @param ratio 比例
      * @param limit 限制
      */
-    protected void buy(double ratio, int limit) {
+    protected Event buy(double ratio, int limit) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY)
                 .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
         this.notify(event);
+        return event;
     }
 
     // sell
-    protected void sell() {
-        sell(1, 0);
+    protected Event sell() {
+        return sell(1, 0);
     }
 
     /**
@@ -138,31 +139,34 @@ public class Strategy {
      * @param ratio 比例
      * @param limit 限制
      */
-    protected void sell(double ratio, int limit) {
+    protected Event sell(double ratio, int limit) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
                 .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
         this.notify(event);
+        return event;
     }
 
     /**
      * 平仓
      */
-    protected void close() {
+    protected Event close() {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CLOSE)
                 .price(row.getClose()).row(row).build();
         this.notify(event);
+        return event;
     }
 
     /**
      * 取消订单 - 如果已经提交的订单还未成交则取消该订单
      */
-    protected void cancel() {
+    protected Event cancel() {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CANCEL)
                 .price(row.getClose()).row(row).build();
         this.notify(event);
+        return event;
     }
 
     /**
@@ -170,11 +174,12 @@ public class Strategy {
      *
      * @param percent 取值[0,1]
      */
-    protected void targetPercent(double percent) {
+    protected Event targetPercent(double percent) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.TARGET)
                 .price(row.getClose()).targetPercent(percent).row(row).build();
         this.notify(event);
+        return event;
     }
 
     // 发送通知
