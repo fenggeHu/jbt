@@ -1,6 +1,6 @@
 package jbt;
 
-import jbt.notify.Event;
+import jbt.event.Event;
 import jbt.model.Row;
 import jbt.model.Sequence;
 

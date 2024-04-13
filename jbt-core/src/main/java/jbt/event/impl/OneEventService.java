@@ -1,12 +1,12 @@
-package jbt.notify.impl;
+package jbt.event.impl;
 
-import jbt.notify.Event;
-import jbt.notify.Notify;
+import jbt.event.Event;
+import jbt.event.EventService;
 
 /**
  * @author max.hu  @date 2024/04/12
  **/
-public class OneEventNotify implements Notify<Event> {
+public class OneEventService implements EventService {
     private Event event;
 
     @Override

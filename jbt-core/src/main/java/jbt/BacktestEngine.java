@@ -1,8 +1,8 @@
 package jbt;
 
 import jbt.account.Account;
-import jbt.notify.Event;
-import jbt.notify.OrderEvent;
+import jbt.event.Event;
+import jbt.event.OrderEvent;
 import jbt.handler.PerformanceHandler;
 import jbt.handler.TradeHandler;
 import jbt.model.Row;

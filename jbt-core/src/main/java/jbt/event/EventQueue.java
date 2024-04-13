@@ -1,4 +1,4 @@
-package jbt.notify;
+package jbt.event;
 
 import java.util.ArrayList;
 import java.util.List;

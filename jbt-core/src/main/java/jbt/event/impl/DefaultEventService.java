@@ -1,14 +1,14 @@
-package jbt.notify.impl;
+package jbt.event.impl;
 
-import jbt.notify.Event;
-import jbt.notify.EventQueue;
-import jbt.notify.Notify;
+import jbt.event.Event;
+import jbt.event.EventQueue;
+import jbt.event.EventService;
 
 /**
  * 默认通知的实现 - 队列
  * @author max.hu  @date 2024/04/12
  **/
-public class DefaultNotify implements Notify<Event> {
+public class DefaultEventService implements EventService {
     private EventQueue _eventQueue = new EventQueue();
 
     @Override

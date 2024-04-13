@@ -3,9 +3,9 @@ package jbt;
 import jbt.model.Action;
 import jbt.model.Row;
 import jbt.model.Sequence;
-import jbt.notify.Event;
-import jbt.notify.Notify;
-import jbt.notify.OrderEvent;
+import jbt.event.Event;
+import jbt.event.EventService;
+import jbt.event.OrderEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import utils.PrimitiveValueUtil;
@@ -178,7 +178,7 @@ public class Strategy {
     }
 
     // 发送通知
-    private Notify<Event> _notify;
+    private EventService _notify;
 
     protected void notify(Event event) {
         if(null != _notify) {
