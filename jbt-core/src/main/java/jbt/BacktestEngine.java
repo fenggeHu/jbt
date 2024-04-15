@@ -109,7 +109,7 @@ public class BacktestEngine extends EngineCore {
     public Stats play(final Sequence data, Account account) {
         this.data = data;
         this.account = account;
-        this.notify.getAndClear();
+        this.eventContainer.get();
         return this.play();
     }
 
@@ -122,14 +122,14 @@ public class BacktestEngine extends EngineCore {
             throw new RuntimeException("no data");
         }
         //
-        this.injectionStrategyProperties();
+        this.init();
         //
         this.prepare();
         //
         Row start = this.data.row(1);
         // run strategy
         while (this.next()) {
-            Event event = this.notify.getAndClear();
+            Event event = this.eventContainer.get();
             this.processEvent(event);
 
             // after - 后置处理-策略和事件处理后

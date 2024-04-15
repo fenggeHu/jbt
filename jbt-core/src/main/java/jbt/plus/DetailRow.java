@@ -1,4 +1,4 @@
-package jbt.ext;
+package jbt.plus;
 
 import jbt.model.Row;
 import lombok.AllArgsConstructor;

@@ -24,7 +24,7 @@ public class REngine extends EngineCore {
      */
     public static REngine build(Strategy strategy, final Sequence data) {
         REngine engine = new REngine(strategy, data);
-        engine.injectionStrategyProperties();
+        engine.init();
         return engine;
     }
 
@@ -48,7 +48,7 @@ public class REngine extends EngineCore {
         // 执行策略
         this.next();
         // 处理事件
-        Event event = this.notify.getAndClear();
+        Event event = this.eventContainer.get();
         return event;
     }
 

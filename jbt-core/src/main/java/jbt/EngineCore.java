@@ -1,12 +1,16 @@
 package jbt;
 
-import jbt.event.EventService;
-import jbt.event.impl.OneEventService;
+import jbt.event.Event;
+import jbt.event.ext.Container;
+import jbt.event.ext.impl.AContainer;
 import jbt.model.Row;
 import jbt.model.Sequence;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import utils.ClassUtils;
+
+import java.util.UUID;
 
 /**
  * 执行引擎 - 基本能力和支持回测
@@ -16,6 +20,9 @@ import utils.ClassUtils;
  **/
 @Slf4j
 public class EngineCore {
+    // 每个Engine实例的唯一ID
+    @Getter
+    private String id;
     // 数据
     @Setter
     protected Sequence data;
@@ -27,20 +34,22 @@ public class EngineCore {
     protected String end;
     @Setter
     protected Strategy strategy;
-    // 事件
+    // 事件容器
     @Setter
-    protected EventService notify;
+    protected Container<Event> eventContainer;
 
     // Strategy绑定属性
-    protected void injectionStrategyProperties() {
+    protected void init() {
+        // 生成唯一
+        this.id = UUID.randomUUID().toString();
         // 初始化strategy
         if (null != strategy) {
             // 注入属性到strategy
             ClassUtils.silencedInjection(strategy, "_data", data);
-            if (null == notify) {
-                notify = new OneEventService();
+            if (null == eventContainer) {
+                eventContainer = new AContainer();
             }
-            ClassUtils.silencedInjection(strategy, "_notify", notify);
+            ClassUtils.silencedInjection(strategy, "_notify", eventContainer);
         }
     }
 

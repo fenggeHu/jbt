@@ -3,7 +3,7 @@ package jbt.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import jbt.data.utils.JacksonUtil;
-import jbt.ext.DetailRow;
+import jbt.plus.DetailRow;
 import jbt.model.Row;
 import org.junit.Test;
 

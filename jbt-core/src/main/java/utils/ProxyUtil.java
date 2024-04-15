@@ -1,4 +1,4 @@
-package jbt.notify;
+package utils;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.Proxy;
@@ -6,15 +6,22 @@ import javassist.util.proxy.ProxyFactory;
 import lombok.SneakyThrows;
 
 /**
+ * 创建代理类
  * @author jinfeng.hu  @date 2024-04-13
  **/
 public class ProxyUtil {
 
+    /**
+     * 创建代理类
+     * @param superClass - 很重要 - 代理到哪
+     * @param methodHandler - 方法的行为
+     * @return 代理类
+     */
     @SneakyThrows
-    public static <T> T get(Class<T> myclass, MethodHandler methodHandler) {
+    public static <T> T get(Class<T> superClass, MethodHandler methodHandler) {
         // 创建代理工厂
         ProxyFactory factory = new ProxyFactory();
-        factory.setSuperclass(myclass);
+        factory.setSuperclass(superClass);
         // 创建代理类
         Class<?> proxyClass = factory.createClass();
         // 实例化代理对象

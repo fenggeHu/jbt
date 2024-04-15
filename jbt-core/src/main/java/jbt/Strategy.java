@@ -4,7 +4,7 @@ import jbt.model.Action;
 import jbt.model.Row;
 import jbt.model.Sequence;
 import jbt.event.Event;
-import jbt.event.EventService;
+import jbt.event.ext.Container;
 import jbt.event.OrderEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -183,11 +183,11 @@ public class Strategy {
     }
 
     // 发送通知
-    private EventService _notify;
+    private Container<Event> _notify;
 
     protected void notify(Event event) {
         if(null != _notify) {
-            this._notify.add(event);
+            this._notify.offer(event);
         }
     }
 }

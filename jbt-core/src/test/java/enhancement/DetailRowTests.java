@@ -1,6 +1,6 @@
 package enhancement;
 
-import jbt.ext.DetailRow;
+import jbt.plus.DetailRow;
 import jbt.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
