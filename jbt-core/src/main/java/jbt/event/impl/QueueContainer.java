@@ -1,6 +1,6 @@
-package jbt.event.ext.impl;
+package jbt.event.impl;
 
-import jbt.event.ext.Container;
+import jbt.event.Container;
 
 import java.util.LinkedList;
 import java.util.List;

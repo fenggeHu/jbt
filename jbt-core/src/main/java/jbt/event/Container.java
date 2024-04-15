@@ -1,4 +1,4 @@
-package jbt.event.ext;
+package jbt.event;
 
 /**
  * 通知容器接口

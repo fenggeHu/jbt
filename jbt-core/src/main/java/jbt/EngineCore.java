@@ -1,8 +1,8 @@
 package jbt;
 
 import jbt.event.Event;
-import jbt.event.ext.Container;
-import jbt.event.ext.impl.AContainer;
+import jbt.event.Container;
+import jbt.event.impl.AContainer;
 import jbt.model.Row;
 import jbt.model.Sequence;
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class EngineCore {
     protected String end;
     @Setter
     protected Strategy strategy;
-    // 事件容器
+    // 事件容器 - 存储event
     @Setter
     protected Container<Event> eventContainer;
 
