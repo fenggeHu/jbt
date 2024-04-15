@@ -1,16 +1,13 @@
 package jbt;
 
-import jbt.event.Event;
 import jbt.event.Container;
+import jbt.event.Event;
 import jbt.event.impl.AContainer;
 import jbt.model.Row;
 import jbt.model.Sequence;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import utils.ClassUtils;
-
-import java.util.UUID;
 
 /**
  * 执行引擎 - 基本能力和支持回测
@@ -20,9 +17,6 @@ import java.util.UUID;
  **/
 @Slf4j
 public class EngineCore {
-    // 每个Engine实例的唯一ID
-    @Getter
-    private String id;
     // 数据
     @Setter
     protected Sequence data;
@@ -40,8 +34,6 @@ public class EngineCore {
 
     // Strategy绑定属性
     protected void init() {
-        // 生成唯一
-        this.id = UUID.randomUUID().toString();
         // 初始化strategy
         if (null != strategy) {
             // 注入属性到strategy

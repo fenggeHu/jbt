@@ -1,4 +1,4 @@
-package jbt.constant;
+package jbt.model;
 
 import lombok.Getter;
 
@@ -7,7 +7,7 @@ import lombok.Getter;
  *
  * @author max.hu  @date 2024/02/04
  **/
-public enum RowPropertiesEnum {
+public enum RowEnum {
     /**
      * basic - row基本必须的属性。 D-OHLCV
      */
@@ -20,7 +20,7 @@ public enum RowPropertiesEnum {
     @Getter
     String key;
 
-    RowPropertiesEnum(String v) {
+    RowEnum(String v) {
         this.key = v;
     }
 

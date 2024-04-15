@@ -1,6 +1,6 @@
 package jbt.data.local;
 
-import jbt.constant.RowPropertiesEnum;
+import jbt.model.RowEnum;
 import jbt.model.Row;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.*;
 @Slf4j
 public class LocalCsvStoreFeeder extends AbstractLocalStore {
     // 文件头起始字符串
-    private String titleStart = RowPropertiesEnum.D.getKey();
+    private String titleStart = RowEnum.D.getKey();
     // 不可变空List
     private List EmptyList = Collections.unmodifiableList(new ArrayList<>(0));
 

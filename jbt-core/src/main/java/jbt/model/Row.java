@@ -1,6 +1,5 @@
 package jbt.model;
 
-import jbt.constant.RowPropertiesEnum;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -68,15 +67,15 @@ public class Row {
      * get object
      */
     public Object o(String key) {
-        if (RowPropertiesEnum.O.getKey().equals(key)) {
+        if (RowEnum.O.getKey().equals(key)) {
             return open;
-        } else if (RowPropertiesEnum.H.getKey().equals(key)) {
+        } else if (RowEnum.H.getKey().equals(key)) {
             return high;
-        } else if (RowPropertiesEnum.L.getKey().equals(key)) {
+        } else if (RowEnum.L.getKey().equals(key)) {
             return low;
-        } else if (RowPropertiesEnum.C.getKey().equals(key)) {
+        } else if (RowEnum.C.getKey().equals(key)) {
             return close;
-        } else if (RowPropertiesEnum.V.getKey().equals(key)) {
+        } else if (RowEnum.V.getKey().equals(key)) {
             return volume;
         }
         return _ext.containsKey(key) ? _ext.get(key) : null;
@@ -108,6 +107,6 @@ public class Row {
     }
 
     public String title() {
-        return RowPropertiesEnum.basicTitle();
+        return RowEnum.basicTitle();
     }
 }
