@@ -182,7 +182,7 @@ public class Strategy {
         return event;
     }
 
-    // 发送通知
+    // 发送event通知
     private Container<Event> _notify;
 
     protected void notify(Event event) {

@@ -1,4 +1,4 @@
-package jbt.plus;
+package jbt.model.plus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
