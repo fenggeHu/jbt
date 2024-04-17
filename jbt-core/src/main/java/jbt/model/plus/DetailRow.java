@@ -113,6 +113,7 @@ public class DetailRow extends Row {
      * 前n档卖金额
      */
     public double askTurnover() {
+        if (null == this.asks) return 0.0;
         double prices = 0;
         for (VolumePrice vp : this.asks) {
             prices += vp.getPrice() * vp.getVolume();
@@ -124,6 +125,7 @@ public class DetailRow extends Row {
      * 前n档买金额
      */
     public double bidTurnover() {
+        if (null == this.bids) return 0.0;
         double prices = 0;
         for (VolumePrice vp : this.bids) {
             prices += vp.getPrice() * vp.getVolume();
