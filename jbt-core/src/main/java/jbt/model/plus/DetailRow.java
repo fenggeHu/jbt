@@ -36,7 +36,7 @@ public class DetailRow extends Row {
     // 跌停价Lower Limit Price f52
     public double lowerLimit;
     // 交易地区 US/CN/HK -- 地区 - @Region - CN(1), US(2), HK(3) 1-CN沪深A股、 2-US美股、3-HK港股
-    public String region;
+    public Region region;
     // f57
     public String code;
     // f58
