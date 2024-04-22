@@ -125,10 +125,10 @@ public class TradeHandler implements Handler {
             return;
         }
         int quantity = lot * account.getLotSize();
-        double price = lotPrice * lot;
-        double fee = Math.max(account.getOpenCost() * price, account.getMinCost());
+        double amount = lotPrice * lot;
+        double fee = Math.max(account.getOpenCost() * amount, account.getMinCost());
         Bill bill = Bill.builder().datetime(oe.getDatetime()).action(oe.getAction())
-                .price(price).quantity(quantity).fee(fee).total(price + fee).build();
+                .price(oe.getPrice()).quantity(quantity).fee(fee).amount(amount).total(amount + fee).build();
         position.addBill(bill);
     }
 
@@ -148,10 +148,10 @@ public class TradeHandler implements Handler {
                 quantity = position.getQuantity();
             }
 
-            double price = quantity * oe.getPrice();
-            double fee = Math.max(account.getCloseCost() * price, account.getMinCost());
+            double amount = quantity * oe.getPrice();
+            double fee = Math.max(account.getCloseCost() * amount, account.getMinCost());
             Bill bill = Bill.builder().datetime(oe.getDatetime()).action(oe.getAction())
-                    .price(price).quantity(quantity).fee(fee).total(price + fee).build();
+                    .price(oe.getPrice()).quantity(quantity).fee(fee).amount(amount).total(amount + fee).build();
             position.addBill(bill);
         } else {
             log.info("Sell-{}: no position", oe.getDatetime());

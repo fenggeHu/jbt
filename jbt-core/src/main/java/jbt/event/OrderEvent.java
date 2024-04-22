@@ -1,6 +1,5 @@
 package jbt.event;
 
-import jbt.event.Event;
 import jbt.model.Action;
 import lombok.AllArgsConstructor;
 import lombok.Data;
