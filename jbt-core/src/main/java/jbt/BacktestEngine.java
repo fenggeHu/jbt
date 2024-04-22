@@ -109,7 +109,6 @@ public class BacktestEngine extends EngineCore {
     public Stats play(final Sequence data, Account account) {
         this.data = data;
         this.account = account;
-        this.eventContainer.get();
         return this.play();
     }
 

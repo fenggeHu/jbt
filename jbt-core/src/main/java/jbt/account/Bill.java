@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bill {
-    String symbol;
     // 交易日
     String datetime;
     // 操作
