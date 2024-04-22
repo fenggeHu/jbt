@@ -48,11 +48,11 @@ public class TradeHandler implements Handler {
 
     public Event after(final Sequence seq) {
         Row now = seq.get();
-        Position pos = this.position.compute(now.getClose());
+        Position pos = this.position.instant(now.getClose());
         if (pos.getQuantity() > 0) {
             // 止损/止盈
-            if ((pos.getMaxProfit() > maxRetracePer && pos.getMaxProfit() - pos.getPercent() > maxRetracePer)
-                    || pos.getPercent() < maxDrawdown) {
+            if ((pos.getPosMaxProfit() > maxRetracePer && pos.getPosMaxProfit() - pos.getPosPercent() > maxRetracePer)
+                    || pos.getPosPercent() < maxDrawdown) {
                 return sell(now);
             }
         }

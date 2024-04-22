@@ -47,7 +47,7 @@ public class PerformanceHandler implements Handler {
                 .start(this.getStart().getDatetime())
                 .end(this.getEnd().getDatetime())
                 .duration((d2 - d1) / DatetimeUtils.A_DAY_MS)  // days
-                .position(this.getPosition().compute(this.getEnd().getClose()))
+                .position(this.getPosition().summary(this.getEnd().getClose()))
                 .tradeTimes(this.getBills().size())
                 .rangeReturn(Returns.rangeReturns(ranges) * 100)
                 .sharpeRatio(Returns.sharpeRatio(dailyReturns, 0.002))
