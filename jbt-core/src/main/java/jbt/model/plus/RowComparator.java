@@ -9,7 +9,7 @@ import java.util.Comparator;
  **/
 public class RowComparator {
 
-    public static Comparator<Row> CloseDescComparator = (o1, o2) -> Double.compare(o2.getClose(), o1.getClose());
-    public static Comparator<Row> CloseAscComparator = (o1, o2) -> Double.compare(o1.getClose(), o2.getClose());
-    public static Comparator<Row> DateAscComparator = (o1, o2) -> o1.getDatetime().compareTo(o2.getDatetime());
+    public static Comparator<Row> CloseAscComparator = Comparator.comparingDouble(Row::getClose);
+    public static Comparator<Row> CloseDescComparator = CloseAscComparator.reversed();
+    public static Comparator<Row> DateAscComparator = Comparator.comparing(Row::getDatetime);
 }
