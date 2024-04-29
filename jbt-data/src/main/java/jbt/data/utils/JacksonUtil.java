@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -23,11 +24,14 @@ import java.util.Map;
  *
  * @author max.hu  @date 2024/04/08
  **/
+@Slf4j
 public class JacksonUtil {
     //
     public static final ObjectMapper mapper = new ObjectMapper()
             // 设置在反序列化时忽略在JSON字符串中存在，而在Java中不存在的属性
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    public final static String ArrayStart = "[";
+    public final static String ArrayEnd = "]";
 
     @SneakyThrows
     public static <T> T toObject(String json, Type t) {
@@ -81,6 +85,29 @@ public class JacksonUtil {
         return mapper.readTree(json);
     }
 
+    public static JsonNode getJsonNode(final JsonNode root, String node) {
+        if (null == root) return null;
+        if (isBlank(node)) return root;
+        try {
+            JsonNode current = root;
+            String[] trees = node.split("\\.");
+            for (String t : trees) {
+                if (t.contains(ArrayStart) && t.contains(ArrayEnd)) {
+                    int st = t.indexOf(ArrayStart);
+                    int end = t.indexOf(ArrayEnd, st);
+                    String name = t.substring(0, st);
+                    int index = Integer.parseInt(t.substring(st + 1, end));
+                    current = current.get(name).get(index);
+                } else {
+                    current = current.get(t);
+                }
+            }
+            return current;
+        } catch (Exception e) {
+            log.warn("get sub node failed: node=" + node, e);
+        }
+        return null;
+    }
     // check string
     public static boolean isBlank(CharSequence cs) {
         int strLen = length(cs);
