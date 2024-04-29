@@ -33,6 +33,11 @@ public class Strategy {
         _ext.put(k, v);
     }
 
+    public void addExts(Map<String, Object> kvs) {
+        if (null == kvs || kvs.isEmpty()) return;
+        _ext.putAll(kvs);
+    }
+
     public Object ext(String k) {
         return _ext.get(k);
     }
@@ -186,7 +191,7 @@ public class Strategy {
     private Container<Event> _notify;
 
     protected void notify(Event event) {
-        if(null != _notify) {
+        if (null != _notify) {
             this._notify.offer(event);
         }
     }
