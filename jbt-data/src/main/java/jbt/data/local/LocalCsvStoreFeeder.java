@@ -195,9 +195,14 @@ public class LocalCsvStoreFeeder extends AbstractLocalStore {
         }
     }
 
-    public File getDayFile(String symbol) {
-        String filename = this.getFeatureFilename(symbol, "day");
+    // 获取feature目录下的文件
+    public File getFeatureFile(String symbol, String feature) {
+        String filename = this.getFeatureFilename(symbol, feature);
         File file = new File(filename);
         return file;
+    }
+
+    public File getDayFile(String symbol) {
+        return this.getFeatureFile(symbol, "day.csv");
     }
 }

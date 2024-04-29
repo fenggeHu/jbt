@@ -48,7 +48,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     // symbolic features
     public String getFeatureFilename(String symbol, String name) {
-        return String.format("%s/%s/features/%s/%s.csv", localFolder, region, symbol, name);
+        return String.format("%s/%s/features/%s/%s", localFolder, region, symbol, name);
     }
 
     /**
@@ -117,10 +117,14 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
      *
      * @param txt 传入null则删除文件
      */
-    @SneakyThrows
     @Override
     public void write(String filename, String txt) {
         File file = new File(filename);
+        this.write(file, txt);
+    }
+
+    @SneakyThrows
+    public void write(File file, String txt) {
         if (!file.exists()) {
             if (null == txt) {
                 return;
@@ -147,10 +151,14 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     /**
      * 读取整个文件
      */
-    @SneakyThrows
     @Override
     public String read(String filename) {
         File file = new File(filename);
+        return read(file);
+    }
+
+    @SneakyThrows
+    public String read(File file) {
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return null;
