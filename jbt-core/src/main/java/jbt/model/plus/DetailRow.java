@@ -67,6 +67,7 @@ public class DetailRow extends Row {
     public double ttmPERatio;      // f164
     // 静态市盈率：通常是指当前时刻的市盈率，它可以是基于过去一年的收益数据，也可以是基于未来预测的数据。
     public double staticPERatio;    // f163
+    public double dynamicPERatio;    // f9
     // 市净率 f167
     public double pbRatio;
     // 换手率 Turnover Ratio f168/100 (%)
