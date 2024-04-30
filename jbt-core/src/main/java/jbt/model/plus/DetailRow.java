@@ -101,7 +101,7 @@ public class DetailRow extends Row {
 
     // 特殊值
     // eastmoney内部的市场代码-secid值前的市场代码 f107
-    public int eastmoneyMarketCode;
+    public int emMarketCode;
 
     // ulist/get接口补充属性
     public String industry; // f100 -行业名称
