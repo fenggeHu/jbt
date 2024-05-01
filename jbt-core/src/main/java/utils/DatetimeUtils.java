@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 /**
  * 用于处理各种日期格式的类
+ *
  * @author jinfeng.hu  @date 2022/12/1
  **/
 public class DatetimeUtils {
@@ -90,6 +91,11 @@ public class DatetimeUtils {
     }
 
     public static String dayStr8To10(String yyyyMMdd) {
+        if (null == yyyyMMdd) return null;
+        if (yyyyMMdd.length() != 8) {
+            Date d = parseDate(yyyyMMdd);
+            return format(d);
+        }
         return yyyyMMdd.substring(0, 4) + "-" + yyyyMMdd.substring(4, 6) + "-" + yyyyMMdd.substring(6);
     }
 
@@ -210,6 +216,7 @@ public class DatetimeUtils {
     public static Date addDays(Date date, int amount) {
         return add(date, 5, amount);
     }
+
     private static Date add(Date date, int calendarField, int amount) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
