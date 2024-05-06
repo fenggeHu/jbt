@@ -42,7 +42,7 @@ public class DetailRow extends Row {
     // f58
     public String name;
     // f60
-    public double preCLose;
+    public double preClose;
     // f71
     // 总股本 Total Shares Outstanding - f84 - f277
     public long totalShares;
