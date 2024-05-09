@@ -2,7 +2,7 @@ package jbt.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import jbt.data.local.LocalCsvStoreFeeder;
+import jbt.data.local.LocalFileStoreFeeder;
 import jbt.model.plus.DetailRow;
 import jbt.model.Row;
 import org.junit.Assert;
@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * @author max.hu  @date 2024/03/04
  **/
-public class LocalCsvStoreFeederTests {
+public class LocalFileStoreFeederTests {
     private String localFolder = "/Users/max/.tibet";
-    private LocalCsvStoreFeeder usLocalCsvFeeder = new LocalCsvStoreFeeder(localFolder, "us");
+    private LocalFileStoreFeeder usLocalCsvFeeder = new LocalFileStoreFeeder(localFolder, "us");
 
     @Test
     public void testJson() throws Exception {

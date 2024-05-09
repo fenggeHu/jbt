@@ -19,20 +19,20 @@ import java.util.*;
  * @author jinfeng.hu  @date 2022/10/9
  **/
 @Slf4j
-public class LocalCsvStoreFeeder extends AbstractLocalStore {
+public class LocalFileStoreFeeder extends AbstractLocalStore {
     // 文件头起始字符串
     private String titleStart = RowEnum.D.getKey();
     // 不可变空List
     private List EmptyList = Collections.unmodifiableList(new ArrayList<>(0));
 
-    public LocalCsvStoreFeeder() {
+    public LocalFileStoreFeeder() {
     }
 
-    public LocalCsvStoreFeeder(String localFolder) {
+    public LocalFileStoreFeeder(String localFolder) {
         this.localFolder = localFolder;
     }
 
-    public LocalCsvStoreFeeder(String localFolder, String region) {
+    public LocalFileStoreFeeder(String localFolder, String region) {
         this.localFolder = localFolder;
         this.region = region;
     }
