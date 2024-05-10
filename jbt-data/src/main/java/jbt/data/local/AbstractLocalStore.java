@@ -216,15 +216,16 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     public void writeLines(String filename, List<String> lines) {
         File file = new File(filename);
         if (!file.exists()) {
-            log.debug("file is not exists: {}", file.getPath());
-            return;
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+            log.debug("file is not exists, so created file {}", file.getPath());
         }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String line : lines) {
                 writer.write(line);
                 writer.newLine(); // 写入换行符
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Exception while writing:" + filename, e);
         }
     }
