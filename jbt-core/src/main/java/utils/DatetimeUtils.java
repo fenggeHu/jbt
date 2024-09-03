@@ -128,6 +128,10 @@ public class DatetimeUtils {
         return format(new Date(timestamp), zone);
     }
 
+    public static String format(long timestamp, String pattern, TimeZone zone) {
+        return format(new Date(timestamp), pattern, zone);
+    }
+
     public static String format(Date date) {
         return format(date, TimeZone.getDefault());
     }
