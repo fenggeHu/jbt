@@ -20,7 +20,7 @@ public class DatetimeUtils {
     public final static String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
     public final static String yyyy_MM_dd_HHmmss = "yyyy-MM-dd HHmmss";
     public final static String yyyyMMdd = "yyyyMMdd";
-    // a day
+    // a day - ms
     public final static long A_DAY_MS = 1000 * 60 * 60 * 24;
 
     // 解析日期格式
