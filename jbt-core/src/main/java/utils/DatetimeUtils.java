@@ -18,20 +18,32 @@ import java.util.TimeZone;
 public class DatetimeUtils {
     public final static String yyyy_MM_dd = "yyyy-MM-dd";
     public final static String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+    public final static String yyyy_MM_dd_HHmmss = "yyyy-MM-dd HHmmss";
     public final static String yyyyMMdd = "yyyyMMdd";
     // a day
     public final static long A_DAY_MS = 1000 * 60 * 60 * 24;
 
     // 解析日期格式
     @SneakyThrows
-    public static Date parseDate(String ds) {
+    public static Date parseDate(String ds, TimeZone zone) {
+        SimpleDateFormat sdf;
         if (ds.length() == 8) {
-            return new SimpleDateFormat(yyyyMMdd).parse(ds);
+            sdf = new SimpleDateFormat(yyyyMMdd);
         } else if (ds.length() == 10) {
-            return new SimpleDateFormat(yyyy_MM_dd).parse(ds);
+            sdf = new SimpleDateFormat(yyyy_MM_dd);
+        } else if (ds.length() == 17) {
+            sdf = new SimpleDateFormat(yyyy_MM_dd_HHmmss);
+        } else {
+            sdf = new SimpleDateFormat(yyyy_MM_dd_HH_mm_ss);
         }
-        return new SimpleDateFormat(yyyy_MM_dd_HH_mm_ss).parse(ds);
+        sdf.setTimeZone(zone);
+        return sdf.parse(ds);
     }
+
+    public static Date parseDate(String ds) {
+        return parseDate(ds, TimeZone.getDefault());
+    }
+
 
     /**
      * 现在的日期
@@ -222,5 +234,12 @@ public class DatetimeUtils {
         c.setTime(date);
         c.add(calendarField, amount);
         return c.getTime();
+    }
+
+    // 时间转换
+    public static long time2timestamp(int time, String yyyy_MM_dd, TimeZone zone) {
+        String timeStr = yyyy_MM_dd + (time < 100000 ? " 0" : " ") + time;
+        Date date = parseDate(timeStr, zone);
+        return date.getTime();
     }
 }
