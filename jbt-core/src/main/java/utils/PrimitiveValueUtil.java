@@ -120,7 +120,7 @@ public class PrimitiveValueUtil {
         if (type == Long.class || type == long.class) {
             if (null == value) {
                 if (type == long.class) {
-                    return 0;
+                    return 0L;
                 } else {
                     return null;
                 }
