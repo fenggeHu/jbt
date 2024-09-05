@@ -17,4 +17,6 @@ import lombok.experimental.SuperBuilder;
 public class Event {
     // 触发事件的行数据
     public Row row;
+    // 触发时的信息
+    public String message;
 }

@@ -116,7 +116,11 @@ public class Strategy {
 
     // buy
     protected Event buy() {
-        return buy(1, 0);
+        return buy(null);
+    }
+
+    protected Event buy(String message) {
+        return buy(1, 0, message);
     }
 
     /**
@@ -125,17 +129,21 @@ public class Strategy {
      * @param ratio 比例
      * @param limit 限制
      */
-    protected Event buy(double ratio, int limit) {
+    protected Event buy(double ratio, int limit, String message) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY)
-                .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
+                .price(row.getClose()).ratio(ratio).limit(limit).row(row).message(message).build();
         this.notify(event);
         return event;
     }
 
     // sell
     protected Event sell() {
-        return sell(1, 0);
+        return sell(null);
+    }
+
+    protected Event sell(String message) {
+        return sell(1, 0, message);
     }
 
     /**
@@ -144,10 +152,10 @@ public class Strategy {
      * @param ratio 比例
      * @param limit 限制
      */
-    protected Event sell(double ratio, int limit) {
+    protected Event sell(double ratio, int limit, String message) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
-                .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
+                .price(row.getClose()).ratio(ratio).limit(limit).row(row).message(message).build();
         this.notify(event);
         return event;
     }
@@ -155,10 +163,10 @@ public class Strategy {
     /**
      * 平仓
      */
-    protected Event close() {
+    protected Event close(String message) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CLOSE)
-                .price(row.getClose()).row(row).build();
+                .price(row.getClose()).row(row).message(message).build();
         this.notify(event);
         return event;
     }
@@ -166,10 +174,10 @@ public class Strategy {
     /**
      * 取消订单 - 如果已经提交的订单还未成交则取消该订单
      */
-    protected Event cancel() {
+    protected Event cancel(String message) {
         Row row = get();
         Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CANCEL)
-                .price(row.getClose()).row(row).build();
+                .price(row.getClose()).row(row).message(message).build();
         this.notify(event);
         return event;
     }
