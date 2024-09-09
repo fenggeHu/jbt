@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import utils.DatetimeUtils;
 
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * 补充一些详细信息的Row
@@ -134,12 +132,5 @@ public class DetailRow extends Row {
             prices += vp.getPrice() * vp.getVolume();
         }
         return prices;
-    }
-
-    /**
-     * 交易日 - 年-月-日
-     */
-    public String getDay(TimeZone zone) {
-        return DatetimeUtils.format(this.getTimestamp(), zone);
     }
 }
