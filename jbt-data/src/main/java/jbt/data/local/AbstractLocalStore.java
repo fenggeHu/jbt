@@ -36,6 +36,16 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     // 分隔符
     protected String delimiter = ",";
 
+    // 根目录
+    public String root() {
+        return String.format("%s/%s", localFolder, region);
+    }
+
+    // 根目录下的相对目录
+    public String root(String folder) {
+        return String.format("%s/%s/%s", localFolder, region, folder);
+    }
+
     public String getFilename(String name) {
         return this.getFilename(name, "txt");
     }
