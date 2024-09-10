@@ -1,5 +1,6 @@
 package jbt.data.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,14 +23,25 @@ import java.util.Map;
  * JsonParser是Jackson库中用于解析JSON数据的接口。它提供了一系列方法来读取和解析JSON数据，包括读取JSON元素、处理异常等。
  * JsonParser是一个低级接口，它允许你手动管理JSON解析的状态，这与使用ObjectMapper解析JSON字符串到Java对象的方式不同，后者提供了更多的抽象和封装。
  *
+ * --> setSerializationInclusion
+ * Include.Include.ALWAYS 默认
+ * Include.NON_DEFAULT 属性为默认值不序列化
+ * Include.NON_EMPTY 属性为 空（“”） 或者为 NULL 都不序列化
+ * Include.NON_NULL 属性为NULL 不序列化
  * @author max.hu  @date 2024/04/08
  **/
 @Slf4j
 public class JacksonUtil {
-    //
+    // default
     public static final ObjectMapper mapper = new ObjectMapper()
             // 设置在反序列化时忽略在JSON字符串中存在，而在Java中不存在的属性
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    // setSerializationInclusion - 不序列化默认值
+    public static final ObjectMapper NON_DEFAULT_MAPPER = new ObjectMapper()
+            // 设置在反序列化时忽略在JSON字符串中存在，而在Java中不存在的属性
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+
     public final static String ArrayStart = "[";
     public final static String ArrayEnd = "]";
 
