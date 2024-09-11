@@ -213,13 +213,17 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     }
 
     @SneakyThrows
+    public List<String> readLines(File file) {
+        return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+    }
+
     public List<String> readLines(String filename) {
         File file = new File(filename);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return null;
         }
-        return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+        return this.readLines(file);
     }
 
     @SneakyThrows
@@ -254,5 +258,20 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         } else {
             return null;
         }
+    }
+
+    // 读文件夹
+    public File[] list(String folder, String extension) {
+        File file = new File(folder);
+        if (!file.exists()) {
+            log.debug("{} is not exists", folder);
+            return null;
+        }
+
+        if (!file.isDirectory()) {
+            log.debug("{} is not Directory", folder);
+            return null;
+        }
+        return file.listFiles((dir, name) -> name.endsWith(extension));    // .txt
     }
 }
