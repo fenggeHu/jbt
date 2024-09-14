@@ -186,8 +186,9 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     }
 
     // 转成json字符串
+    @SneakyThrows
     public void writeJson(String filename, Object obj) {
-        String json = null == obj ? null : JacksonUtil.toJson(obj);
+        String json = null == obj ? null : JacksonUtil.NON_DEFAULT_MAPPER.writeValueAsString(obj);
         this.write(filename, json);
     }
 
