@@ -44,15 +44,16 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     // 根目录下的相对目录
     public String root(String folder) {
-        return String.format("%s/%s/%s", localFolder, region, folder);
+        return String.format("%s/%s", region, folder);
     }
 
     public String getFilename(String name) {
         return this.getFilename(name, "txt");
     }
 
+    // 相对路径
     public String getFilename(String name, String extension) {
-        return String.format("%s/%s/%s.%s", localFolder, region, name, extension);
+        return String.format("%s/%s.%s", region, name, extension);
     }
 
     // config
@@ -62,14 +63,14 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     // symbolic features
     public String getFeatureFilename(String symbol, String name) {
-        return String.format("%s/%s/features/%s/%s", localFolder, region, symbol, name);
+        return String.format("%s/features/%s/%s", region, symbol, name);
     }
 
     /**
      * 按行写文件 - 按row id更新或插入
      * 注意：此时文件是一个Map<String, Object> 结构
      *
-     * @param filename 文件路径
+     * @param filename 文件的相对路径
      * @param id       记录id - 配置内唯一。 当obj为空时删除改id
      * @param content  记录内容 - 当obj为空时删除改id
      */
@@ -78,9 +79,8 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         if (null == filename || filename.trim().length() == 0 || null == id || id.contains(delimiter)) {
             throw new RuntimeException("Invalid filename/id/content. type=" + filename + ", id=" + id);
         }
+        File file = new File(localFolder, filename);    // 使用相对路径
         Map<String, Object> result = null;
-        File file = new File(filename);
-        this.rightChecker(file);
         if (!file.exists()) {
             if (null == content) {
                 return;
@@ -134,13 +134,12 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
      */
     @Override
     public void write(String filename, String txt) {
-        File file = new File(filename);
+        File file = new File(localFolder, filename);
         this.write(file, txt);
     }
 
     @SneakyThrows
-    public void write(File file, String txt) {
-        this.rightChecker(file);
+    protected void write(File file, String txt) {
         if (!file.exists()) {
             if (null == txt) {
                 return;
@@ -169,13 +168,12 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
      */
     @Override
     public String read(String filename) {
-        File file = new File(filename);
+        File file = new File(localFolder, filename);
         return read(file);
     }
 
     @SneakyThrows
     protected String read(File file) {
-        this.rightChecker(file);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return null;
@@ -218,12 +216,11 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     @SneakyThrows
     protected List<String> readLines(File file) {
-        this.rightChecker(file);
         return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     }
 
     public List<String> readLines(String filename) {
-        File file = new File(filename);
+        File file = new File(localFolder, filename);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return null;
@@ -233,8 +230,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     @SneakyThrows
     public void writeLines(String filename, List<String> lines) {
-        File file = new File(filename);
-        this.rightChecker(file);
+        File file = new File(localFolder, filename);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
             file.createNewFile();
@@ -258,8 +254,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     // 获取文件属性
     @SneakyThrows
     public BasicFileAttributes getFileAttributes(String filename) {
-        File file = new File(filename);
-        this.rightChecker(file);
+        File file = new File(localFolder, filename);
         if (file.exists()) {
             return Files.readAttributes(file.toPath(), BasicFileAttributes.class);
         } else {
@@ -269,8 +264,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
 
     // 读文件夹
     public File[] list(String folder, String extension) {
-        File file = new File(folder);
-        this.rightChecker(file);
+        File file = new File(localFolder, folder);
         if (!file.exists()) {
             log.debug("{} is not exists", folder);
             return null;
@@ -286,11 +280,4 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     /**
      * 检测文件的路径必须位于localFolder目录
      */
-    private void rightChecker(File file) {
-        String filepath = file.getPath();
-        boolean matched = filepath.equals(localFolder) || filepath.startsWith(localFolder);
-        if (!matched) {
-            throw new RuntimeException("No permission. " + filepath);
-        }
-    }
 }

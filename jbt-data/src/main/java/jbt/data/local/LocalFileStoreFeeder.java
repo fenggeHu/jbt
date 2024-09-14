@@ -39,8 +39,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
 
     @Override
     public List<String> getSymbols() {
-        String features = String.format("%s/%s/features/", localFolder, region);
-        File file = new File(features);
+        String features = String.format("%s/features/", region);
+        File file = new File(localFolder, features);
         if (file.exists() && file.isDirectory()) {
             return Arrays.asList(file.list());
         }
@@ -196,13 +196,14 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     }
 
     // 获取feature目录下的文件
-    public File getFeatureFile(String symbol, String feature) {
-        String filename = this.getFeatureFilename(symbol, feature);
-        File file = new File(filename);
-        return file;
-    }
+//    protected File getFeatureFile(String symbol, String feature) {
+//        String filename = this.getFeatureFilename(symbol, feature);
+//        File file = new File(filename);
+//        return file;
+//    }
 
-    public File getDayFile(String symbol) {
-        return this.getFeatureFile(symbol, "day.csv");
+    protected File getDayFile(String symbol) {
+        String filename = this.getFeatureFilename(symbol, "day.csv");
+        return new File(localFolder, filename);
     }
 }
