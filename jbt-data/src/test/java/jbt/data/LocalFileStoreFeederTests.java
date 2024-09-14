@@ -8,6 +8,7 @@ import jbt.model.Row;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
@@ -19,6 +20,15 @@ public class LocalFileStoreFeederTests {
     private LocalFileStoreFeeder usLocalCsvFeeder = new LocalFileStoreFeeder(localFolder, "us");
 
     @Test
+    public void testFile() {
+        File file = new File("~/logs/main.log");
+        File f2 = file.getAbsoluteFile();
+        System.out.println(file.getAbsolutePath());
+        System.out.println(file.getPath());
+        System.out.println(f2.getPath());
+    }
+
+    @Test
     public void testJson() throws Exception {
         Gson gson = new GsonBuilder().create(); //.setPrettyPrinting().create();
         DetailRow row = DetailRow.builder()
@@ -27,6 +37,7 @@ public class LocalFileStoreFeederTests {
         String formattedJson = gson.toJson(row);
         System.out.println(formattedJson);
     }
+
     @Test
     public void testGetData() {
         int n = 3;
