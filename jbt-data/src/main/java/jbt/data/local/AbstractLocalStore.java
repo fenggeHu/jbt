@@ -118,7 +118,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
                 Files.deleteIfExists(file.toPath());
             } else {
                 String json = JacksonUtil.toJson(result);
-                Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+                Files.write(file.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
             }
             // 释放写锁
             lock.release();
@@ -150,17 +150,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
             Files.deleteIfExists(file.toPath());
             return;
         }
-        try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-             FileChannel channel = randomAccessFile.getChannel()) {
-            // 获取文件独占写锁
-            FileLock lock = channel.lock();
-
-            Files.write(file.toPath(), txt.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            // 释放写锁
-            lock.release();
-        } catch (IOException e) {
-            throw new RuntimeException(e);  // 未知错误
-        }
+        Files.write(file.toPath(), txt.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
     }
 
     /**
