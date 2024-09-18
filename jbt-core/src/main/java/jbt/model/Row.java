@@ -26,6 +26,11 @@ public class Row {
     public double low;
     // size or money - default money/turnover
     public long volume;
+    // 2024.9
+    public double change;   // 涨跌额 (Change in Price)
+    public double percentage;   // 涨跌幅 (Change Percentage)
+    public double turnoverRate; // 换手率 (Turnover Rate)
+    public double amplitude;    // 振幅
     // 自定义的扩展属性
     @Builder.Default        // 避免在使用build时此属性未被初始化
     protected Map<String, Object> _ext = new HashMap<>();
@@ -38,6 +43,20 @@ public class Row {
         this.low = low;
         this.close = close;
         this.volume = volume;
+    }
+
+    public Row(String datetime, double open, double high, double low, double close, long volume,
+               double change, double percentage, double turnoverRate, double amplitude) {
+        this.datetime = datetime;
+        this.open = open;
+        this.high = high;
+        this.low = low;
+        this.close = close;
+        this.volume = volume;
+        this.change = change;
+        this.percentage = percentage;
+        this.turnoverRate = turnoverRate;
+        this.amplitude = amplitude;
     }
 
     public void setExt(String key, Object obj) {
@@ -107,6 +126,44 @@ public class Row {
     }
 
     public String title() {
-        return RowEnum.basicTitle();
+        return "datetime,open,high,low,close,volume,amplitude,percentage,change,turnoverRate";
+    }
+
+    // 分隔符
+    public static String delimiter = ",";
+
+    // to a line
+    public String line() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getDatetime()).append(delimiter)
+                .append(this.getOpen()).append(delimiter)
+                .append(this.getHigh()).append(delimiter)
+                .append(this.getLow()).append(delimiter)
+                .append(this.getClose()).append(delimiter)
+                .append(this.getVolume()).append(delimiter)
+                .append(this.amplitude).append(delimiter)
+                .append(this.percentage).append(delimiter)
+                .append(this.change).append(delimiter)
+                .append(this.turnoverRate).append(turnoverRate)
+        ;
+        return sb.toString();
+    }
+
+    public static Row of(String line) {
+        String[] vs = line.split(delimiter);
+        Row row = new Row();
+        row.setDatetime(vs[0]);
+        row.setOpen(PrimitiveValueUtil.toDouble(vs[1]));
+        row.setHigh(PrimitiveValueUtil.toDouble(vs[2]));
+        row.setLow(PrimitiveValueUtil.toDouble(vs[3]));
+        row.setClose(PrimitiveValueUtil.toDouble(vs[4]));
+        row.setVolume(PrimitiveValueUtil.toLong(vs[5]));
+        // 2.0 扩充
+        if (vs.length > 6) row.setAmplitude(PrimitiveValueUtil.toDouble(vs[6]));
+        if (vs.length > 7) row.setPercentage(PrimitiveValueUtil.toDouble(vs[7]));
+        if (vs.length > 8) row.setChange(PrimitiveValueUtil.toDouble(vs[8]));
+        if (vs.length > 9) row.setTurnoverRate(PrimitiveValueUtil.toDouble(vs[9]));
+
+        return row;
     }
 }

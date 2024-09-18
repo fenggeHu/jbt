@@ -1,5 +1,7 @@
 package utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -10,6 +12,7 @@ import java.math.BigInteger;
  *
  * @author jinfeng.hu  @date 2021-12-2021/12/21
  **/
+@Slf4j
 public class PrimitiveValueUtil {
 
     public static boolean isBoolean(Object value) {
@@ -206,13 +209,45 @@ public class PrimitiveValueUtil {
         return (int) warpValue(value, int.class);
     }
 
+    // 非number类型的特殊处理
+    public static int toInt(Object value) {
+        try {
+            return intValue(value);
+        } catch (Exception e) {
+            log.warn("value: " + value, e);
+        }
+        return 0;
+    }
+
     public static long longValue(Object value) {
         return (long) warpValue(value, long.class);
     }
 
+    // 非number类型的特殊处理
+    public static long toLong(Object value) {
+        try {
+            return longValue(value);
+        } catch (Exception e) {
+            log.warn("value: " + value, e);
+        }
+        return 0L;
+    }
+
+
     public static double doubleValue(Object value) {
         return (double) warpValue(value, double.class);
     }
+
+    // 非number类型的特殊处理
+    public static double toDouble(Object value) {
+        try {
+            return doubleValue(value);
+        } catch (Exception e) {
+            log.warn("value: " + value, e);
+        }
+        return 0L;
+    }
+
 
     public static byte byteValue(Object value) {
         return (byte) warpValue(value, byte.class);
@@ -229,4 +264,5 @@ public class PrimitiveValueUtil {
     public static boolean boolValue(Object value) {
         return (boolean) warpValue(value, boolean.class);
     }
+
 }

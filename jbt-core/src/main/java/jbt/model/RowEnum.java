@@ -24,7 +24,4 @@ public enum RowEnum {
         this.key = v;
     }
 
-    public static String basicTitle() {
-        return "datetime,open,high,low,close,volume";
-    }
 }

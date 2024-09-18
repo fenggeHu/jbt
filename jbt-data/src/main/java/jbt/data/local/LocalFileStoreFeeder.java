@@ -87,18 +87,6 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         return EmptyList;
     }
 
-    private Row toRow(String line) {
-        String[] vs = line.split(delimiter);
-        Row row = new Row();
-        row.setDatetime(vs[0]);
-        row.setOpen(PrimitiveValueUtil.getAsDouble(vs[1]));
-        row.setHigh(PrimitiveValueUtil.getAsDouble(vs[2]));
-        row.setLow(PrimitiveValueUtil.getAsDouble(vs[3]));
-        row.setClose(PrimitiveValueUtil.getAsDouble(vs[4]));
-        row.setVolume(PrimitiveValueUtil.getAsLong(vs[5]));
-        return row;
-    }
-
     @Override
     public List<Row> get(String symbol, int n) {
         File file = getDayFile(symbol);
@@ -132,7 +120,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
             }
             // to row
             if (lastNLines.size() > 0) {
-                lastNLines.forEach(s -> ret.add(toRow(s)));
+                lastNLines.forEach(s -> ret.add(Row.of(s)));
             }
         } catch (Exception e) {
             log.error("get local day data error: " + symbol, e);
@@ -175,14 +163,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                 if (null == title) {
                     title = bar.title();
                 }
-                StringBuilder sb = new StringBuilder();
-                sb.append(bar.getDatetime()).append(delimiter)
-                        .append(bar.getOpen()).append(delimiter)
-                        .append(bar.getHigh()).append(delimiter)
-                        .append(bar.getLow()).append(delimiter)
-                        .append(bar.getClose()).append(delimiter)
-                        .append(bar.getVolume()).append(newlineChar);
-                treeMap.put(bar.getDatetime(), sb.toString());
+                treeMap.put(bar.getDatetime(), bar.line());
             }
             if (null != title) {
                 bw.append(title + newlineChar);
