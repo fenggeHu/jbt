@@ -70,8 +70,8 @@ public class DetailRow extends Row {
     public double dynamicPERatio;    // f9
     // 市净率 f167
     public double pbRatio;
-    // 换手率 Turnover Ratio f168/100 (%)
-    public double turnoverRatio;
+//    // 换手率 Turnover Ratio f168/100 (%)
+//    public double turnoverRatio;
     // 52周最高 52-Week High f174 /100
     public double w52high;
     // 52周最低 52-Week Low f175 /100
@@ -83,12 +83,12 @@ public class DetailRow extends Row {
     public double volumeRatio;  // 1.32
     // 委比 Order Imbalance Ratio f191/100 (%) - 买档/卖档的比例，范围[-100%, 100%]
     public double orderImbalanceRatio;  // -21.80
-    // 涨跌金额 f169/100
-    public double change;
-    // 涨跌幅的百分比 f170/100 (%) - 如，涨跌幅是 -1.8%时，changeRate=-1.8
-    public double changeRate;
-    // 振幅 (%)
-    public double amplitude;
+//    // 涨跌金额 f169/100
+//    public double change;
+//    // 涨跌幅的百分比 f170/100 (%) - 如，涨跌幅是 -1.8%时，changeRate=-1.8
+//    public double changeRate;
+//    // 振幅 (%)
+//    public double amplitude;
 
     // 实时买卖行情
     public long bidAskHands;  // 现手（有正负-可能是买卖手的差） f30

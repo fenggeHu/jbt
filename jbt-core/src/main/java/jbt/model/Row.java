@@ -28,9 +28,9 @@ public class Row {
     public long volume;
     // 2024.9
     public double change;   // 涨跌额 (Change in Price)
-    public double percentage;   // 涨跌幅 (Change Percentage)
-    public double turnoverRate; // 换手率 (Turnover Rate)
-    public double amplitude;    // 振幅
+    public double changeRate;   // 涨跌幅 (Change Percentage)  (%)
+    public double turnoverRatio; // 换手率 (Turnover Rate)  (%)
+    public double amplitude;    // 振幅  (%)
     // 自定义的扩展属性
     @Builder.Default        // 避免在使用build时此属性未被初始化
     protected Map<String, Object> _ext = new HashMap<>();
@@ -46,7 +46,7 @@ public class Row {
     }
 
     public Row(String datetime, double open, double high, double low, double close, long volume,
-               double change, double percentage, double turnoverRate, double amplitude) {
+               double change, double changeRate, double turnoverRatio, double amplitude) {
         this.datetime = datetime;
         this.open = open;
         this.high = high;
@@ -54,8 +54,8 @@ public class Row {
         this.close = close;
         this.volume = volume;
         this.change = change;
-        this.percentage = percentage;
-        this.turnoverRate = turnoverRate;
+        this.changeRate = changeRate;
+        this.turnoverRatio = turnoverRatio;
         this.amplitude = amplitude;
     }
 
@@ -142,9 +142,9 @@ public class Row {
                 .append(this.getClose()).append(delimiter)
                 .append(this.getVolume()).append(delimiter)
                 .append(this.amplitude).append(delimiter)
-                .append(this.percentage).append(delimiter)
+                .append(this.changeRate).append(delimiter)
                 .append(this.change).append(delimiter)
-                .append(this.turnoverRate).append(turnoverRate)
+                .append(this.turnoverRatio)
         ;
         return sb.toString();
     }
@@ -160,9 +160,9 @@ public class Row {
         row.setVolume(PrimitiveValueUtil.toLong(vs[5]));
         // 2.0 扩充
         if (vs.length > 6) row.setAmplitude(PrimitiveValueUtil.toDouble(vs[6]));
-        if (vs.length > 7) row.setPercentage(PrimitiveValueUtil.toDouble(vs[7]));
+        if (vs.length > 7) row.setChangeRate(PrimitiveValueUtil.toDouble(vs[7]));
         if (vs.length > 8) row.setChange(PrimitiveValueUtil.toDouble(vs[8]));
-        if (vs.length > 9) row.setTurnoverRate(PrimitiveValueUtil.toDouble(vs[9]));
+        if (vs.length > 9) row.setTurnoverRatio(PrimitiveValueUtil.toDouble(vs[9]));
 
         return row;
     }
