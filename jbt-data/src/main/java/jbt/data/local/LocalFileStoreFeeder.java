@@ -169,7 +169,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                 bw.append(title + newlineChar);
             }
             for (String value : treeMap.values()) {
-                bw.append(value);
+                bw.append(value).append(newlineChar);
             }
         } catch (Exception e) {
             log.error("{}: write file", symbol, e);
