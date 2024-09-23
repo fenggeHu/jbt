@@ -1,10 +1,9 @@
 package jbt.data.local;
 
-import jbt.model.RowEnum;
 import jbt.model.Row;
+import jbt.model.RowEnum;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import utils.PrimitiveValueUtil;
 
 import java.io.*;
 import java.util.*;
@@ -67,16 +66,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                     continue;
                 }
 
-                String[] row = line.split(delimiter);
-                String datetime = row[0];
-                if (datetime.compareTo(start) >= 0 && datetime.compareTo(end) <= 0) {
-                    Row bar = new Row();
-                    bar.setDatetime(datetime);
-                    bar.setOpen(PrimitiveValueUtil.getAsDouble(row[1]));
-                    bar.setHigh(PrimitiveValueUtil.getAsDouble(row[2]));
-                    bar.setLow(PrimitiveValueUtil.getAsDouble(row[3]));
-                    bar.setClose(PrimitiveValueUtil.getAsDouble(row[4]));
-                    bar.setVolume(PrimitiveValueUtil.getAsLong(row[5]));
+                Row bar = Row.of(line);
+                if (bar.datetime.compareTo(start) >= 0 && bar.datetime.compareTo(end) <= 0) {
                     ret.add(bar);
                 }
             }
@@ -149,9 +140,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                         title = line;
                         continue;
                     }
-                    String[] row = line.split(delimiter);
-                    String datetime = row[0];
-                    treeMap.put(datetime, line + newlineChar);
+                    Row row = Row.of(line);
+                    treeMap.put(row.datetime, line + newlineChar);
                 }
             } catch (Exception e) {
                 log.error("{}: read file", symbol, e);
