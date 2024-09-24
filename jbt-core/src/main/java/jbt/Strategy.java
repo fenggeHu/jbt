@@ -79,6 +79,10 @@ public class Strategy {
         return _data.closes();
     }
 
+    public double[] volumes() {
+        return _data.volumes();
+    }
+
     // current row
     protected Row get() {
         return _data.get();

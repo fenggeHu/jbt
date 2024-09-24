@@ -114,6 +114,10 @@ public class Sequence {
         return d("close");
     }
 
+    public double[] volumes() {
+        return d("volume");
+    }
+
     // 初始化数据
     public Sequence init(Row[] rs) {
         this._rows = rs;
