@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * 事件
+ *
  * @author jinfeng.hu  @date 2022/10/18
  **/
 @Data
@@ -19,4 +20,9 @@ public class Event {
     public Row row;
     // 触发时的信息
     public String message;
+
+    // 判空处理
+    public String message() {
+        return null == message ? "" : message.trim();
+    }
 }
