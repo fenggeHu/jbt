@@ -7,6 +7,7 @@ import jbt.event.Event;
 import jbt.event.Container;
 import jbt.event.OrderEvent;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import utils.PrimitiveValueUtil;
 
@@ -20,6 +21,10 @@ import java.util.Map;
  **/
 @Slf4j
 public class Strategy {
+    //
+    @Setter
+    @Getter
+    protected String symbol;
     /**
      * 引用engine的data\position
      */

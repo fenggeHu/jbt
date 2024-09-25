@@ -1,11 +1,13 @@
 package base;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author jinfeng.hu  @Date 2022-10-07
  **/
-@Data
+@Getter
+@Setter
 public class Node {
     Number value;
     Node left;
