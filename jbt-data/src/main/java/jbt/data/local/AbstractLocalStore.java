@@ -3,6 +3,7 @@ package jbt.data.local;
 import jbt.data.DataFeeder;
 import jbt.data.DataStorage;
 import jbt.data.utils.JacksonUtil;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     @Setter
     protected String localFolder = "~/.tibet";
     @Setter
+    @Getter
     protected String region = "cn";
     // 换行符
     protected char newlineChar = '\n';
