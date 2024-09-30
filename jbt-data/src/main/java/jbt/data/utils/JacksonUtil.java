@@ -3,12 +3,14 @@ package jbt.data.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +24,13 @@ import java.util.Map;
  * --> JsonParser：
  * JsonParser是Jackson库中用于解析JSON数据的接口。它提供了一系列方法来读取和解析JSON数据，包括读取JSON元素、处理异常等。
  * JsonParser是一个低级接口，它允许你手动管理JSON解析的状态，这与使用ObjectMapper解析JSON字符串到Java对象的方式不同，后者提供了更多的抽象和封装。
- *
+ * <p>
  * --> setSerializationInclusion
  * Include.Include.ALWAYS 默认
  * Include.NON_DEFAULT 属性为默认值不序列化
  * Include.NON_EMPTY 属性为 空（“”） 或者为 NULL 都不序列化
  * Include.NON_NULL 属性为NULL 不序列化
+ *
  * @author max.hu  @date 2024/04/08
  **/
 @Slf4j
@@ -120,6 +123,29 @@ public class JacksonUtil {
         }
         return null;
     }
+
+    @SneakyThrows
+    // jsonNode to Object
+    public static Object parse(final JsonNode jsonNode, final Type type) {
+        if (null == jsonNode) return null;
+        JavaType javaType = mapper.constructType(type);
+        if (jsonNode.isArray()) {
+            List<Object> ret = new LinkedList<>();
+            for (JsonNode childNode : jsonNode) {
+                ret.add(mapper.readValue(childNode.traverse(), javaType));
+            }
+            return ret;
+        } else {
+            return mapper.readValue(jsonNode.traverse(), javaType);
+        }
+    }
+
+    // child jsonNode to Object
+    public static Object parse(final JsonNode root, String node, final Type type) {
+        JsonNode jsonNode = getJsonNode(root, node);
+        return parse(jsonNode, type);
+    }
+
     // check string
     public static boolean isBlank(CharSequence cs) {
         int strLen = length(cs);
