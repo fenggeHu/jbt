@@ -10,7 +10,7 @@ import java.math.BigInteger;
  * 注意转换为Primitive类型的未做null判断，需要在使用前做判断
  * 参考: com.google.gson.JsonPrimitive
  *
- * @author jinfeng.hu  @date 2021-12-2021/12/21
+ * @author jinfeng.hu  @date 2021-12-20
  **/
 @Slf4j
 public class PrimitiveValueUtil {
