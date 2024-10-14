@@ -19,8 +19,29 @@ public class PrimitiveValueUtil {
         return value instanceof Boolean;
     }
 
+    /**
+     * 判断对象是否是数字类型
+     * - 与isNumeric用法不同
+     * @param value
+     * @return
+     */
     public static boolean isNumber(Object value) {
         return value instanceof Number;
+    }
+
+    /**
+     * 判断字符串是否是数字
+     * - 与isNumber用法不同
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static Number getAsNumber(Object value) {

@@ -8,15 +8,6 @@ import java.math.RoundingMode;
  **/
 public class NumberUtils {
 
-    public static boolean isNumeric(String str) {
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * 保留n位小数 -- org.apache.commons.lang3.math.NumberUtils
      */
