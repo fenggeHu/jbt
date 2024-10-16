@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author jinfeng.hu  @date 2022/10/27
  **/
 @Slf4j
-public class BacktestEngine extends EngineCore {
+public class BacktestEngine extends Engine {
     @Getter
     private Account account;
     // trade handler

@@ -11,12 +11,12 @@ import utils.ClassUtils;
 
 /**
  * 执行引擎 - 基本能力和支持回测
- * - 非线程安全，一个engine实例不能多线程并发调用，一个线程一个engine实例，估可以设计engine线程池
+ * - 非线程安全，一个engine实例不能多线程并发调用，一个线程一个engine实例，可以设计engine线程池
  *
  * @author jinfeng.hu  @date 2022/10/27
  **/
 @Slf4j
-public class EngineCore {
+public class Engine {
     // 数据
     @Setter
     protected Sequence data;

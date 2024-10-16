@@ -17,7 +17,7 @@ import jbt.model.Sequence;
  *
  * @author jinfeng.hu  @date 2022/10/31
  **/
-public class REngine extends EngineCore {
+public class REngine extends Engine {
 
     /**
      * build - 构建REngine & init
