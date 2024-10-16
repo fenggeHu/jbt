@@ -2,7 +2,6 @@ package jbt.model;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import utils.PrimitiveValueUtil;
 
@@ -16,7 +15,6 @@ import java.util.Map;
  **/
 @Data
 @SuperBuilder
-@NoArgsConstructor
 public class Bar {
     // 时间字符串 - 可自定义格式 - 默认yyyy-MM-dd
     public String datetime;
@@ -33,7 +31,10 @@ public class Bar {
     public double amplitude;    // 振幅  (%)
     // 自定义的扩展属性
     @Builder.Default        // 避免在使用build时此属性未被初始化
-    protected final Map<String, Object> _ext = new HashMap<>();
+    protected Map<String, Object> _ext = new HashMap<>();
+
+    public Bar() {
+    }
 
     // 构造函数
     public Bar(String datetime, double open, double high, double low, double close, long volume) {
