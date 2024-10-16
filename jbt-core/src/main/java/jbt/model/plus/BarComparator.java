@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * @author max.hu  @date 2024/04/21
  **/
-public class RowComparator {
+public class BarComparator {
 
     public static Comparator<Bar> CloseAscComparator = Comparator.comparingDouble(Bar::getClose);
     public static Comparator<Bar> CloseDescComparator = CloseAscComparator.reversed();
