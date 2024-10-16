@@ -33,7 +33,7 @@ public class Bar {
     public double amplitude;    // 振幅  (%)
     // 自定义的扩展属性
     @Builder.Default        // 避免在使用build时此属性未被初始化
-    protected Map<String, Object> _ext = new HashMap<>();
+    protected final Map<String, Object> _ext = new HashMap<>();
 
     // 构造函数
     public Bar(String datetime, double open, double high, double low, double close, long volume) {
