@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * a row
+ * a row / Bar
  *
  * @author jinfeng.hu  @date 2022/10/10
  **/
