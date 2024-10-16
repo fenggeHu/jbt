@@ -1,7 +1,7 @@
 package jbt;
 
 import jbt.event.Event;
-import jbt.model.Row;
+import jbt.model.Bar;
 import jbt.model.Sequence;
 
 /**
@@ -55,30 +55,30 @@ public class REngine extends EngineCore {
     /**
      * 支持接收实时行情并执行策略 - feed last data & play
      */
-    public Event run(Row lastRow) {
-        this.updateLast(lastRow);
+    public Event run(Bar lastBar) {
+        this.updateLast(lastBar);
         return run();
     }
 
     // 更新最近的数据
-    private void updateLast(Row lastRow) {
-        Row row = this.data.last();
-        int ct = row.getDatetime().compareTo(lastRow.getDatetime());
+    private void updateLast(Bar lastBar) {
+        Bar bar = this.data.last();
+        int ct = bar.getDatetime().compareTo(lastBar.getDatetime());
         if (ct > 0) {
-            throw new RuntimeException(String.format("it's not the last datetime. %s", lastRow.getDatetime()));
+            throw new RuntimeException(String.format("it's not the last datetime. %s", lastBar.getDatetime()));
         }
         // 替换最新row - 修改Sequence data
         if (ct == 0) {
-            row.setOpen(lastRow.getOpen());
-            row.setHigh(lastRow.getHigh());
-            row.setLow(lastRow.getLow());
-            row.setClose(lastRow.getClose());
-            row.setVolume(lastRow.getVolume());
+            bar.setOpen(lastBar.getOpen());
+            bar.setHigh(lastBar.getHigh());
+            bar.setLow(lastBar.getLow());
+            bar.setClose(lastBar.getClose());
+            bar.setVolume(lastBar.getVolume());
         } else {
-            Row[] rows = this.data.get_rows();
-            Row[] nrs = new Row[rows.length + 1];
-            System.arraycopy(rows, 0, nrs, 0, rows.length);
-            nrs[rows.length] = lastRow;
+            Bar[] bars = this.data.get_bars();
+            Bar[] nrs = new Bar[bars.length + 1];
+            System.arraycopy(bars, 0, nrs, 0, bars.length);
+            nrs[bars.length] = lastBar;
             this.data.init(nrs);
         }
     }

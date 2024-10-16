@@ -1,6 +1,6 @@
 package jbt.model.plus;
 
-import jbt.model.Row;
+import jbt.model.Bar;
 
 import java.util.Comparator;
 
@@ -9,7 +9,7 @@ import java.util.Comparator;
  **/
 public class RowComparator {
 
-    public static Comparator<Row> CloseAscComparator = Comparator.comparingDouble(Row::getClose);
-    public static Comparator<Row> CloseDescComparator = CloseAscComparator.reversed();
-    public static Comparator<Row> DateAscComparator = Comparator.comparing(Row::getDatetime);
+    public static Comparator<Bar> CloseAscComparator = Comparator.comparingDouble(Bar::getClose);
+    public static Comparator<Bar> CloseDescComparator = CloseAscComparator.reversed();
+    public static Comparator<Bar> DateAscComparator = Comparator.comparing(Bar::getDatetime);
 }

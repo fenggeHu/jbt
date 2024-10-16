@@ -1,6 +1,6 @@
 package jbt.performance;
 
-import jbt.model.Row;
+import jbt.model.Bar;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,26 +32,26 @@ public class Returns {
      *
      * @Params rows 升序的K线序列
      */
-    public static List<Double> getReturns(Row[] rows) {
+    public static List<Double> getReturns(Bar[] bars) {
         List<Double> returns = new LinkedList<>();
         returns.add(0.0);   // 首日默认0
-        for (int i = 1; i < rows.length; i++) {
-            Row currentRow = rows[i];
-            Row previousRow = rows[i - 1];
-            double dailyReturn = getReturns(currentRow, previousRow);
+        for (int i = 1; i < bars.length; i++) {
+            Bar currentBar = bars[i];
+            Bar previousBar = bars[i - 1];
+            double dailyReturn = getReturns(currentBar, previousBar);
             returns.add(dailyReturn);
         }
 
         return returns;
     }
 
-    public static List<Double> getReturns(List<Row> rows) {
+    public static List<Double> getReturns(List<Bar> bars) {
         List<Double> returns = new LinkedList<>();
         returns.add(0.0);   // 首日默认0
-        for (int i = 1; i < rows.size(); i++) {
-            Row currentRow = rows.get(i);
-            Row previousRow = rows.get(i - 1);
-            double dailyReturn = getReturns(currentRow, previousRow);
+        for (int i = 1; i < bars.size(); i++) {
+            Bar currentBar = bars.get(i);
+            Bar previousBar = bars.get(i - 1);
+            double dailyReturn = getReturns(currentBar, previousBar);
             returns.add(dailyReturn);
         }
 
@@ -61,12 +61,12 @@ public class Returns {
     /**
      * 计算日收益率
      */
-    public static double getReturns(Row currentRow, Row previousRow) {
-        if (previousRow == null) {
+    public static double getReturns(Bar currentBar, Bar previousBar) {
+        if (previousBar == null) {
             return 0.0; // 第一天的收益率为零或未定义
         }
 
-        return getReturns(currentRow.close, previousRow.close);
+        return getReturns(currentBar.close, previousBar.close);
     }
 
     /**
@@ -159,9 +159,9 @@ public class Returns {
     /**
      * 计算结果同 totalReturns
      */
-    public static double rangeReturns(List<Row> rows) {
-        double endPrice = rows.get(rows.size() - 1).getClose();
-        double startPrice = rows.get(0).getClose();
+    public static double rangeReturns(List<Bar> bars) {
+        double endPrice = bars.get(bars.size() - 1).getClose();
+        double startPrice = bars.get(0).getClose();
         return (endPrice - startPrice) / startPrice;
     }
 

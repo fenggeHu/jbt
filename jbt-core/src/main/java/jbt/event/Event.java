@@ -1,6 +1,6 @@
 package jbt.event;
 
-import jbt.model.Row;
+import jbt.model.Bar;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class Event {
     // 触发事件的行数据
-    public Row row;
+    public Bar bar;
     // 触发时的信息
     public String message;
 

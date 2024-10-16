@@ -1,7 +1,7 @@
 package jbt.data.local;
 
-import jbt.model.Row;
-import jbt.model.RowEnum;
+import jbt.model.Bar;
+import jbt.model.BarEnum;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +20,7 @@ import java.util.*;
 @Slf4j
 public class LocalFileStoreFeeder extends AbstractLocalStore {
     // 文件头起始字符串
-    private String titleStart = RowEnum.D.getKey();
+    private String titleStart = BarEnum.D.getKey();
     // 不可变空List
     private List EmptyList = Collections.unmodifiableList(new ArrayList<>(0));
 
@@ -47,7 +47,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     }
 
     @Override
-    public List<Row> get(String symbol, String start, String end) {
+    public List<Bar> get(String symbol, String start, String end) {
         File file = getDayFile(symbol);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
@@ -56,7 +56,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         String title = null;
         try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
             String line;
-            List<Row> ret = new LinkedList<>();
+            List<Bar> ret = new LinkedList<>();
             while ((line = br.readLine()) != null) {
                 if (null == line || line.length() == 0) {
                     continue;
@@ -66,7 +66,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                     continue;
                 }
 
-                Row bar = Row.of(line);
+                Bar bar = Bar.of(line);
                 if (bar.datetime.compareTo(start) >= 0 && bar.datetime.compareTo(end) <= 0) {
                     ret.add(bar);
                 }
@@ -79,13 +79,13 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     }
 
     @Override
-    public List<Row> get(String symbol, int n) {
+    public List<Bar> get(String symbol, int n) {
         File file = getDayFile(symbol);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return EmptyList;
         }
-        List<Row> ret = new LinkedList<>();
+        List<Bar> ret = new LinkedList<>();
         String title = null;
         // 使用 RandomAccessFile 读取文件
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -111,7 +111,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
             }
             // to row
             if (lastNLines.size() > 0) {
-                lastNLines.forEach(s -> ret.add(Row.of(s)));
+                lastNLines.forEach(s -> ret.add(Bar.of(s)));
             }
         } catch (Exception e) {
             log.error("get local day data error: " + symbol, e);
@@ -122,7 +122,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
 
     @SneakyThrows
     @Override
-    public void store(String symbol, Collection<Row> chartRow, boolean overwrite) {
+    public void store(String symbol, Collection<Bar> chartBar, boolean overwrite) {
         File file = getDayFile(symbol);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -140,8 +140,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                         title = line;
                         continue;
                     }
-                    Row row = Row.of(line);
-                    treeMap.put(row.datetime, line + newlineChar);
+                    Bar bar = Bar.of(line);
+                    treeMap.put(bar.datetime, line + newlineChar);
                 }
             } catch (Exception e) {
                 log.error("{}: read file", symbol, e);
@@ -149,7 +149,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         }
         // 数据整合重写
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            for (Row bar : chartRow) {
+            for (Bar bar : chartBar) {
                 if (null == title) {
                     title = bar.title();
                 }

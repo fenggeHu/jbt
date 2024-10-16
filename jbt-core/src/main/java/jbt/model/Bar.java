@@ -17,7 +17,7 @@ import java.util.Map;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class Row {
+public class Bar {
     // 时间字符串 - 可自定义格式 - 默认yyyy-MM-dd
     public String datetime;
     public double open;
@@ -36,7 +36,7 @@ public class Row {
     protected Map<String, Object> _ext = new HashMap<>();
 
     // 构造函数
-    public Row(String datetime, double open, double high, double low, double close, long volume) {
+    public Bar(String datetime, double open, double high, double low, double close, long volume) {
         this.datetime = datetime;
         this.open = open;
         this.high = high;
@@ -45,7 +45,7 @@ public class Row {
         this.volume = volume;
     }
 
-    public Row(String datetime, double open, double high, double low, double close, long volume,
+    public Bar(String datetime, double open, double high, double low, double close, long volume,
                double change, double changeRate, double turnoverRatio, double amplitude) {
         this.datetime = datetime;
         this.open = open;
@@ -86,15 +86,15 @@ public class Row {
      * get object
      */
     public Object o(String key) {
-        if (RowEnum.O.getKey().equals(key)) {
+        if (BarEnum.O.getKey().equals(key)) {
             return open;
-        } else if (RowEnum.H.getKey().equals(key)) {
+        } else if (BarEnum.H.getKey().equals(key)) {
             return high;
-        } else if (RowEnum.L.getKey().equals(key)) {
+        } else if (BarEnum.L.getKey().equals(key)) {
             return low;
-        } else if (RowEnum.C.getKey().equals(key)) {
+        } else if (BarEnum.C.getKey().equals(key)) {
             return close;
-        } else if (RowEnum.V.getKey().equals(key)) {
+        } else if (BarEnum.V.getKey().equals(key)) {
             return volume;
         }
         return _ext.containsKey(key) ? _ext.get(key) : null;
@@ -149,21 +149,21 @@ public class Row {
         return sb.toString();
     }
 
-    public static Row of(String line) {
+    public static Bar of(String line) {
         String[] vs = line.split(delimiter);
-        Row row = new Row();
-        row.setDatetime(vs[0]);
-        row.setOpen(PrimitiveValueUtil.toDouble(vs[1]));
-        row.setHigh(PrimitiveValueUtil.toDouble(vs[2]));
-        row.setLow(PrimitiveValueUtil.toDouble(vs[3]));
-        row.setClose(PrimitiveValueUtil.toDouble(vs[4]));
-        row.setVolume(PrimitiveValueUtil.toLong(vs[5]));
+        Bar bar = new Bar();
+        bar.setDatetime(vs[0]);
+        bar.setOpen(PrimitiveValueUtil.toDouble(vs[1]));
+        bar.setHigh(PrimitiveValueUtil.toDouble(vs[2]));
+        bar.setLow(PrimitiveValueUtil.toDouble(vs[3]));
+        bar.setClose(PrimitiveValueUtil.toDouble(vs[4]));
+        bar.setVolume(PrimitiveValueUtil.toLong(vs[5]));
         // 2.0 扩充
-        if (vs.length > 6) row.setAmplitude(PrimitiveValueUtil.toDouble(vs[6]));
-        if (vs.length > 7) row.setChangeRate(PrimitiveValueUtil.toDouble(vs[7]));
-        if (vs.length > 8) row.setChange(PrimitiveValueUtil.toDouble(vs[8]));
-        if (vs.length > 9) row.setTurnoverRatio(PrimitiveValueUtil.toDouble(vs[9]));
+        if (vs.length > 6) bar.setAmplitude(PrimitiveValueUtil.toDouble(vs[6]));
+        if (vs.length > 7) bar.setChangeRate(PrimitiveValueUtil.toDouble(vs[7]));
+        if (vs.length > 8) bar.setChange(PrimitiveValueUtil.toDouble(vs[8]));
+        if (vs.length > 9) bar.setTurnoverRatio(PrimitiveValueUtil.toDouble(vs[9]));
 
-        return row;
+        return bar;
     }
 }

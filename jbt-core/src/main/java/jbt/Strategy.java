@@ -1,7 +1,7 @@
 package jbt;
 
 import jbt.model.Action;
-import jbt.model.Row;
+import jbt.model.Bar;
 import jbt.model.Sequence;
 import jbt.event.Event;
 import jbt.event.Container;
@@ -89,17 +89,17 @@ public class Strategy {
     }
 
     // current row
-    protected Row get() {
+    protected Bar get() {
         return _data.get();
     }
 
     // index by first
-    protected Row get(int index) {
+    protected Bar get(int index) {
         return _data.get(index);
     }
 
     // index of the data rows
-    protected Row row(int index) {
+    protected Bar row(int index) {
         return _data.row(index);
     }
 
@@ -139,9 +139,9 @@ public class Strategy {
      * @param limit 限制
      */
     protected Event buy(double ratio, int limit, String message) {
-        Row row = get();
-        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.BUY)
-                .price(row.getClose()).ratio(ratio).limit(limit).row(row).message(message).build();
+        Bar bar = get();
+        Event event = OrderEvent.builder().datetime(bar.getDatetime()).action(Action.BUY)
+                .price(bar.getClose()).ratio(ratio).limit(limit).bar(bar).message(message).build();
         this.notify(event);
         return event;
     }
@@ -162,9 +162,9 @@ public class Strategy {
      * @param limit 限制
      */
     protected Event sell(double ratio, int limit, String message) {
-        Row row = get();
-        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
-                .price(row.getClose()).ratio(ratio).limit(limit).row(row).message(message).build();
+        Bar bar = get();
+        Event event = OrderEvent.builder().datetime(bar.getDatetime()).action(Action.SELL)
+                .price(bar.getClose()).ratio(ratio).limit(limit).bar(bar).message(message).build();
         this.notify(event);
         return event;
     }
@@ -173,9 +173,9 @@ public class Strategy {
      * 平仓
      */
     protected Event close(String message) {
-        Row row = get();
-        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CLOSE)
-                .price(row.getClose()).row(row).message(message).build();
+        Bar bar = get();
+        Event event = OrderEvent.builder().datetime(bar.getDatetime()).action(Action.CLOSE)
+                .price(bar.getClose()).bar(bar).message(message).build();
         this.notify(event);
         return event;
     }
@@ -184,9 +184,9 @@ public class Strategy {
      * 取消订单 - 如果已经提交的订单还未成交则取消该订单
      */
     protected Event cancel(String message) {
-        Row row = get();
-        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.CANCEL)
-                .price(row.getClose()).row(row).message(message).build();
+        Bar bar = get();
+        Event event = OrderEvent.builder().datetime(bar.getDatetime()).action(Action.CANCEL)
+                .price(bar.getClose()).bar(bar).message(message).build();
         this.notify(event);
         return event;
     }
@@ -197,9 +197,9 @@ public class Strategy {
      * @param percent 取值[0,1]
      */
     protected Event targetPercent(double percent) {
-        Row row = get();
-        Event event = OrderEvent.builder().datetime(row.getDatetime()).action(Action.TARGET)
-                .price(row.getClose()).targetPercent(percent).row(row).build();
+        Bar bar = get();
+        Event event = OrderEvent.builder().datetime(bar.getDatetime()).action(Action.TARGET)
+                .price(bar.getClose()).targetPercent(percent).bar(bar).build();
         this.notify(event);
         return event;
     }

@@ -1,6 +1,6 @@
 package jbt.data;
 
-import jbt.model.Row;
+import jbt.model.Bar;
 
 import java.util.Collection;
 
@@ -14,10 +14,10 @@ public interface DataStorage {
      * kline数据存储
      *
      * @param symbol
-     * @param chartRow
+     * @param chartBar
      * @param overwrite 是否重写
      */
-    void store(String symbol, Collection<Row> chartRow, boolean overwrite);
+    void store(String symbol, Collection<Bar> chartBar, boolean overwrite);
 
     /**
      * 写配置/文件

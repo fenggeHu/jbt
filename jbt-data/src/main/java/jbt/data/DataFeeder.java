@@ -1,6 +1,6 @@
 package jbt.data;
 
-import jbt.model.Row;
+import jbt.model.Bar;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import java.util.List;
  **/
 public interface DataFeeder {
     // 按时间周期读数据
-    List<Row> get(String symbol, String start, String end);
+    List<Bar> get(String symbol, String start, String end);
 
     // 读取最近n条数据
-    List<Row> get(String symbol, int count);
+    List<Bar> get(String symbol, int count);
 
     /**
      * 读取本地存储的symbol

@@ -5,7 +5,7 @@ import jbt.event.Event;
 import jbt.event.OrderEvent;
 import jbt.handler.PerformanceHandler;
 import jbt.handler.TradeHandler;
-import jbt.model.Row;
+import jbt.model.Bar;
 import jbt.model.Sequence;
 import jbt.model.Stats;
 import lombok.Getter;
@@ -125,7 +125,7 @@ public class BacktestEngine extends EngineCore {
         //
         this.prepare();
         //
-        Row start = this.data.row(1);
+        Bar start = this.data.row(1);
         // run strategy
         while (this.next()) {
             Event event = this.eventContainer.get();

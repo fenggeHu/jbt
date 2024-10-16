@@ -3,7 +3,7 @@ package jbt;
 import jbt.event.Container;
 import jbt.event.Event;
 import jbt.event.impl.AContainer;
-import jbt.model.Row;
+import jbt.model.Bar;
 import jbt.model.Sequence;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -57,8 +57,8 @@ public class EngineCore {
 
     // 读取数据行，执行策略逻辑
     protected boolean next() {
-        Row row = data.next();
-        if (null == row) {
+        Bar bar = data.next();
+        if (null == bar) {
             log.debug("Engine run out");
             return false;
         }

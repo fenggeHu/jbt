@@ -3,8 +3,8 @@ package jbt.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import jbt.data.utils.JacksonUtil;
-import jbt.model.plus.DetailRow;
-import jbt.model.Row;
+import jbt.model.Bar;
+import jbt.model.plus.DetailBar;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -18,7 +18,7 @@ public class JacksonTests {
 
     @Test
     public void testRead() throws Exception {
-        List<Row> list = mockList();
+        List<Bar> list = mockList();
         String json = JacksonUtil.toJson(list);
         JsonNode node = JacksonUtil.getJsonNode(json);
 //        if (node.isArray()) {
@@ -27,15 +27,15 @@ public class JacksonTests {
 //        }
         System.out.println(node);
 
-        List<Row> readList = JacksonUtil.toList(json, new TypeReference<List<Row>>() {
+        List<Bar> readList = JacksonUtil.toList(json, new TypeReference<List<Bar>>() {
         });
         System.out.println(readList);
     }
 
-    private List<Row> mockList() {
-        List<Row> list = new LinkedList<>();
+    private List<Bar> mockList() {
+        List<Bar> list = new LinkedList<>();
         for (int i = 0; i < 1000; i++) {
-            list.add(Row.builder().datetime("2024" + i)
+            list.add(Bar.builder().datetime("2024" + i)
                     .open(124.546 + i).high(234.45 - i).low(234.45 - i).close(124.546 + i).volume(1278324 + 10 * i)
 //                    .turnover(345345 - 10 * i)
                     .build());
@@ -47,10 +47,10 @@ public class JacksonTests {
     @Test
     public void testConvert() {
         // 10ms
-        List<Row> list = new LinkedList<>();
+        List<Bar> list = new LinkedList<>();
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {
-            list.add(Row.builder().datetime("2024" + i)
+            list.add(Bar.builder().datetime("2024" + i)
                     .open(124.546 + i).high(234.45 - i).low(234.45 - i).close(124.546 + i).volume(1278324 + 10 * i)
 //                    .turnover(345345 - 10 * i)
                     .build());
@@ -59,9 +59,9 @@ public class JacksonTests {
         System.out.println("Building: " + (p1 - start));
 
         // 600ms
-        List<DetailRow> list2 = new LinkedList<>();
+        List<DetailBar> list2 = new LinkedList<>();
         long start2 = System.currentTimeMillis();
-        list.forEach(e -> list2.add(JacksonUtil.convert(e, DetailRow.class)));
+        list.forEach(e -> list2.add(JacksonUtil.convert(e, DetailBar.class)));
         long p2 = System.currentTimeMillis();
         System.out.println("Convert2-Jackson: " + (p2 - start2));
 

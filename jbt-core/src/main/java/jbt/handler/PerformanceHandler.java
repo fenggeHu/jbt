@@ -2,7 +2,7 @@ package jbt.handler;
 
 import jbt.account.Bill;
 import jbt.account.Position;
-import jbt.model.Row;
+import jbt.model.Bar;
 import jbt.model.Sequence;
 import jbt.model.Stats;
 import jbt.performance.Returns;
@@ -20,10 +20,10 @@ import java.util.List;
 public class PerformanceHandler implements Handler {
     @Setter
     @Getter
-    public Row start;//2004-08-19 00:00:00
+    public Bar start;//2004-08-19 00:00:00
     @Setter
     @Getter
-    public Row end;  //2013-03-01 00:00:00
+    public Bar end;  //2013-03-01 00:00:00
     // trades
     @Setter
     @Getter
@@ -36,7 +36,7 @@ public class PerformanceHandler implements Handler {
     public Stats apply(Sequence data) {
         String sdt = this.getStart().getDatetime();
         String edt = this.getEnd().getDatetime();
-        List<Row> ranges = data.rangeRows(sdt, edt);
+        List<Bar> ranges = data.rangeRows(sdt, edt);
 
         List<Double> dailyReturns = Returns.getReturns(ranges);
 

@@ -1,6 +1,6 @@
 package jbt.model.plus;
 
-import jbt.model.Row;
+import jbt.model.Bar;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DetailRow extends Row {
+public class DetailBar extends Bar {
     /**
      * 证券唯一代号 - 全球市场唯一
      */

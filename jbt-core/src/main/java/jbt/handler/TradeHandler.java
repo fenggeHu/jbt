@@ -6,7 +6,7 @@ import jbt.account.Position;
 import jbt.event.Event;
 import jbt.event.OrderEvent;
 import jbt.model.Action;
-import jbt.model.Row;
+import jbt.model.Bar;
 import jbt.model.Sequence;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +47,7 @@ public class TradeHandler implements Handler {
     }
 
     public Event after(final Sequence seq) {
-        Row now = seq.get();
+        Bar now = seq.get();
         Position pos = this.position.instant(now.getClose());
         if (pos.getQuantity() > 0) {
             // 止损/止盈
@@ -61,8 +61,8 @@ public class TradeHandler implements Handler {
     }
 
     // sell
-    protected Event sell(Row row) {
-        return sell(row, 1, 0);
+    protected Event sell(Bar bar) {
+        return sell(bar, 1, 0);
     }
 
     /**
@@ -71,9 +71,9 @@ public class TradeHandler implements Handler {
      * @param ratio 比例
      * @param limit 限制
      */
-    protected Event sell(Row row, double ratio, int limit) {
-        return OrderEvent.builder().datetime(row.getDatetime()).action(Action.SELL)
-                .price(row.getClose()).ratio(ratio).limit(limit).row(row).build();
+    protected Event sell(Bar bar, double ratio, int limit) {
+        return OrderEvent.builder().datetime(bar.getDatetime()).action(Action.SELL)
+                .price(bar.getClose()).ratio(ratio).limit(limit).bar(bar).build();
     }
 
     // 订单逻辑

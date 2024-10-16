@@ -1,7 +1,7 @@
 package hu.jinfeng;
 
 import jbt.Strategy;
-import jbt.model.Row;
+import jbt.model.Bar;
 import lombok.extern.slf4j.Slf4j;
 import utils.NumberUtils;
 
@@ -30,15 +30,15 @@ public class MyStrategy extends Strategy {
 
     @Override
     public void next() {
-        Row now = get();
+        Bar now = get();
         // 止损点 - 随着价格上涨不断上移，并限制最大亏损
 //        Position pos = this.position(now.close);
 //        if (pos.getQuantity() > 0 && (pos.getMaxProfit() - pos.getPercent() > maxRetracePer || pos.getPercent() < maxDrawdown)) { //回撤大于止损点数就sell
 //            sell();
 //        }
         //
-        Row pre = row(-1); // 取绝对的前一行
-        Row pre2 = row(-2); // 前2天
+        Bar pre = row(-1); // 取绝对的前一行
+        Bar pre2 = row(-2); // 前2天
         if (null == pre || null == pre2) {
             return;
         }
@@ -100,7 +100,7 @@ public class MyStrategy extends Strategy {
             return;
         }
 
-        Row pre3 = row(-3);
+        Bar pre3 = row(-3);
         double p4pct = (now.close - pre3.close) / pre3.close;
         if (p4pct > 0.3) {
             log.info("最近4日涨幅已经较大{}", p4pct);
