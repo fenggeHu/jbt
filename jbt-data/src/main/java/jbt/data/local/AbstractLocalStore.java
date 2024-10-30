@@ -225,6 +225,8 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         // 如果为空则删除文件
         if (null == lines || lines.isEmpty()) {
             Files.deleteIfExists(file.toPath());
+            log.debug("file is cleaned {}", file.getPath());
+            return;
         }
         if (!file.exists()) {
             file.getParentFile().mkdirs();
