@@ -17,9 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 本地文件的操作
@@ -222,8 +220,12 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     }
 
     @SneakyThrows
-    public void writeLines(String filename, List<String> lines) {
+    public void writeLines(String filename, Collection<String> lines) {
         File file = new File(localFolder, filename);
+        // 如果为空则删除文件
+        if (null == lines || lines.isEmpty()) {
+            Files.deleteIfExists(file.toPath());
+        }
         if (!file.exists()) {
             file.getParentFile().mkdirs();
             file.createNewFile();
@@ -268,6 +270,13 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
             return null;
         }
         return file.listFiles((dir, name) -> name.endsWith(extension));    // .txt
+    }
+
+    // 前缀过滤
+    public File[] list(String folder, String extension, String prefix) {
+        File[] files = this.list(folder, extension);
+        if (null == files) return null;
+        return (File[]) Arrays.stream(files).filter(f -> f.getName().startsWith(prefix)).toArray();
     }
 
     /**

@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,6 +20,25 @@ import java.util.List;
 public class LocalFileStoreFeederTests {
     private String localFolder = "/Users/max/.tibet";
     private LocalFileStoreFeeder usLocalCsvFeeder = new LocalFileStoreFeeder(localFolder, "us");
+    private LocalFileStoreFeeder cnLocalCsvFeeder = new LocalFileStoreFeeder(localFolder, "cn");
+
+    @Test
+    public void testWriteLines() {
+        String file = "test.txt";
+        List<String> lines = new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
+        cnLocalCsvFeeder.writeLines(file, lines);
+        var readLines = cnLocalCsvFeeder.readLines(file);
+        Assert.assertEquals(lines.size(), readLines.size());
+        // 覆盖
+        lines.remove("2");
+        cnLocalCsvFeeder.writeLines(file, lines);
+        readLines = cnLocalCsvFeeder.readLines(file);
+        Assert.assertEquals(lines.size(), readLines.size());
+
+        // 清空
+        lines.clear();
+        cnLocalCsvFeeder.writeLines(file, lines);
+    }
 
     @Test
     public void testFile() {
