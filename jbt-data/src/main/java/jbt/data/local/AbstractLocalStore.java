@@ -276,7 +276,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     public File[] list(String folder, String extension, String prefix) {
         File[] files = this.list(folder, extension);
         if (null == files) return null;
-        return (File[]) Arrays.stream(files).filter(f -> f.getName().startsWith(prefix)).toArray();
+        return Arrays.stream(files).filter(f -> f.getName().startsWith(prefix)).toArray(File[]::new);
     }
 
     /**
