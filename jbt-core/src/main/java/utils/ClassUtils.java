@@ -20,6 +20,21 @@ public class ClassUtils {
         return Class.forName(className);
     }
 
+    // 查询带注解的方法
+    public static List<Method> getMethodsWithAnnotation(Class clazz, Class<? extends Annotation> annotationClass) {
+        List<Method> ret = new LinkedList<>();
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method m : methods) {
+            if (null != m.getAnnotation(annotationClass)) {
+                ret.add(m);
+            }
+        }
+        Class sc = clazz.getSuperclass();
+        if (null != sc) {
+            ret.addAll(getMethodsWithAnnotation(sc, annotationClass));
+        }
+        return ret;
+    }
     // 查询带注解的属性
     public static List<Field> getDeclaredFieldsWithAnnotation(Class clazz, Class<? extends Annotation> annotationClass) {
         List<Field> ret = new LinkedList<>();
