@@ -22,6 +22,7 @@ public class PrimitiveValueUtil {
     /**
      * 判断对象是否是数字类型
      * - 与isNumeric用法不同
+     *
      * @param value
      * @return
      */
@@ -32,6 +33,7 @@ public class PrimitiveValueUtil {
     /**
      * 判断字符串是否是数字
      * - 与isNumber用法不同
+     *
      * @param str
      * @return
      */
@@ -82,6 +84,10 @@ public class PrimitiveValueUtil {
 
     public static int getAsInt(Object value) {
         return getAsNumber(value).intValue();
+    }
+
+    public static int getAsInt(Object value, int def) {
+        return null == value ? def : getAsInt(value);
     }
 
     public static byte getAsByte(Object value) {
