@@ -111,8 +111,8 @@ public class DatetimeUtils {
         return yyyyMMdd.substring(0, 4) + "-" + yyyyMMdd.substring(4, 6) + "-" + yyyyMMdd.substring(6);
     }
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(yyyy_MM_dd);
-    private static DateTimeFormatter formatter4NumDay = DateTimeFormatter.ofPattern(yyyyMMdd);
+    public final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(yyyy_MM_dd);
+    public final static DateTimeFormatter formatter4NumDay = DateTimeFormatter.ofPattern(yyyyMMdd);
 
     /**
      * yyyy-MM-dd
