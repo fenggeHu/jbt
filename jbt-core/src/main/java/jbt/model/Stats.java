@@ -54,7 +54,7 @@ public class Stats {
 //    public double annReturn; //(Ann.) [%]  25.42
 //    public double annVolatility; //(Ann.) [%]                   38.43
     public double sharpeRatio;    //    0.66
-//    public double sortinoRatio;  //     1.30
+    //    public double sortinoRatio;  //     1.30
 //    public double calmarRatio;   //     0.77
     public double maxDrawdown; //[%] -33.08
     //    public double avgDrawdown; //[%]  -5.58
@@ -77,4 +77,12 @@ public class Stats {
 
     // 仓位
     public Position position;
+
+    // 快捷操作
+    public boolean hasBuy() {
+        if (null == position || position.getBills() == null || position.getBills().isEmpty()) {
+            return false;
+        }
+        return position.getBills().stream().filter(e -> e.getAction().equals(Action.BUY)).count() > 0;
+    }
 }

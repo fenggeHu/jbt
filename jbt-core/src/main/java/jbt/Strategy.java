@@ -93,12 +93,12 @@ public class Strategy {
         return _data.get();
     }
 
-    // index by first
+    // index by first - 基于当前位置的相对位置
     protected Bar get(int index) {
         return _data.get(index);
     }
 
-    // index of the data rows
+    // index of the data rows - 整个数组里的位置
     protected Bar row(int index) {
         return _data.row(index);
     }
