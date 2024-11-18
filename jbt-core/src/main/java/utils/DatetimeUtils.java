@@ -229,6 +229,11 @@ public class DatetimeUtils {
         return dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
     }
 
+    // 日期偏移
+    public static Date addDays(String date, int amount) {
+        return addDays(parseDate(date), amount);
+    }
+
     public static Date addDays(Date date, int amount) {
         return add(date, 5, amount);
     }
