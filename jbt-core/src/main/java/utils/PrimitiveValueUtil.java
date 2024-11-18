@@ -245,7 +245,7 @@ public class PrimitiveValueUtil {
         }
         return 0;
     }
-
+    // 兼容类型转成long
     public static long longValue(Object value) {
         return (long) warpValue(value, long.class);
     }
