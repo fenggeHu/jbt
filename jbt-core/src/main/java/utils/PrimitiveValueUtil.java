@@ -110,7 +110,7 @@ public class PrimitiveValueUtil {
         if (null == value) return null;
         if (isNumber(value)) {
             Number num = getAsNumber(value);
-            if (num instanceof Double) {
+            if (num instanceof Double) {    // 不使用科学计数法
                 return BigDecimal.valueOf((double) num).toPlainString();
             } else {
                 return num.toString();
