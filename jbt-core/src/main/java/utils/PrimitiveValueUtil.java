@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.regex.Pattern;
 
 /**
  * Description: 值判断和转换为java基础类型
@@ -32,18 +33,14 @@ public class PrimitiveValueUtil {
 
     /**
      * 判断字符串是否是数字
-     * - 与isNumber用法不同
      *
      * @param str
      * @return
      */
+    private static Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?"); // 正负、整数或小数
+
     public static boolean isNumeric(String str) {
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
+        return pattern.matcher(str).matches();
     }
 
     public static Number getAsNumber(Object value) {
