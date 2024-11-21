@@ -109,7 +109,12 @@ public class PrimitiveValueUtil {
     public static String getAsString(Object value) {
         if (null == value) return null;
         if (isNumber(value)) {
-            return getAsNumber(value).toString();
+            Number num = getAsNumber(value);
+            if (num instanceof Double) {
+                return BigDecimal.valueOf((double) num).toPlainString();
+            } else {
+                return num.toString();
+            }
         } else if (isBoolean(value)) {
             return ((Boolean) value).toString();
         } else {
@@ -245,7 +250,7 @@ public class PrimitiveValueUtil {
         }
         return 0;
     }
-    // 兼容类型转成long
+
     public static long longValue(Object value) {
         return (long) warpValue(value, long.class);
     }
