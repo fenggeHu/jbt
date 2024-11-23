@@ -26,4 +26,11 @@ public interface DataStorage extends DataFormat {
      * @param content
      */
     void write(String name, String content);
+
+    /**
+     * 按行把数据存入symbol目录 - 数据按第一列（通常是日期时间）去重覆盖
+     *
+     * @param overwrite true - 覆盖；false - 补充更新
+     */
+    <T extends DataFormat> int storeLines(String symbol, Collection<T> lines, boolean overwrite);
 }

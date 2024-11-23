@@ -8,4 +8,12 @@ public interface DataFormat {
     char newlineChar = '\n';
     // 分隔符
     String delimiter = ",";
+
+    default String toLine() {
+        throw new RuntimeException("Not Support");
+    }
+
+    default DataFormat format(String line) {
+        throw new RuntimeException("Not Support");
+    }
 }

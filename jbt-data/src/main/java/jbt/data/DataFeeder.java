@@ -27,4 +27,9 @@ public interface DataFeeder extends DataFormat {
      * @param name 类型
      */
     String read(String name);
+
+    /**
+     * 从symbol目录读取数据
+     */
+    <T extends DataFormat> List<T> readLines(String symbol, int count, Class<T> clazz);
 }

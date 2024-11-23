@@ -1,12 +1,15 @@
 package jbt.data.local;
 
+import jbt.data.DataFormat;
 import jbt.model.Bar;
 import jbt.model.BarEnum;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * // TODO 不支持多线程操作
@@ -169,5 +172,67 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     protected File getDayFile(String symbol) {
         String filename = this.getFeatureFilename(symbol, "day.csv");
         return new File(localFolder, filename);
+    }
+
+    protected String getFeatureFilename(String symbol, Class<?> clazz) {
+        return this.getFeatureFilename(symbol, clazz.getSimpleName() + ".csv");
+    }
+
+    @Override
+    @SneakyThrows
+    public <T extends DataFormat> List<T> readLines(String symbol, int count, Class<T> clazz) {
+        String filename = this.getFeatureFilename(symbol, clazz);
+        // TODO 按需读取
+        List<String> lines = this.readLines(filename);
+        if (null == lines || lines.isEmpty()) return EmptyList;
+        Object object = clazz.getDeclaredConstructor().newInstance();
+        Method method = clazz.getDeclaredMethod("format", String.class);
+        List<T> ret = new LinkedList<>();
+        for (String e : lines) {
+            ret.add((T) method.invoke(object, e));
+        }
+        // TODO 按需读取
+        if (ret.size() <= count) {
+            return ret;
+        } else {
+            return new ArrayList<>(ret.subList(ret.size() - count, ret.size()));
+        }
+    }
+
+    @Override
+    public <T extends DataFormat> int storeLines(String symbol, Collection<T> lines, boolean overwrite) {
+        if (null == lines || lines.isEmpty()) return -1;
+        Class<T> clazz = (Class<T>) lines.stream().findFirst().get().getClass();
+        String filename = this.getFeatureFilename(symbol, clazz);
+        List<String> list = this.toLines(lines);
+        if (!overwrite) {
+            List<String> odd = this.readLines(filename);
+            if (null != odd && !odd.isEmpty()) {
+                for (String ol : odd) {
+                    int index = ol.indexOf(delimiter);
+                    if (index > 0) {
+                        String keyAndDelimiter = ol.substring(0, index + 1);
+                        boolean isExists = false;
+                        for (String nl : list) {
+                            if (nl.startsWith(keyAndDelimiter)) {
+                                isExists = true;
+                                break;
+                            }
+                        }
+                        if (!isExists) {
+                            list.add(ol);
+                        }
+                    }
+                }
+                list.sort(String::compareTo);
+            }
+        }
+        this.writeLines(filename, list);
+        return list.size();
+    }
+
+    // 要求集合是同一个数据类型
+    private <T extends DataFormat> List<String> toLines(Collection<T> lines) {
+        return lines.stream().map(T::toLine).collect(Collectors.toList());
     }
 }
