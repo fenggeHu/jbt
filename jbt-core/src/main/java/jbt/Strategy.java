@@ -103,6 +103,11 @@ public class Strategy {
         return _data.row(index);
     }
 
+    // 按datetime加入扩展属性的对象 - 不要求属性长度一致
+    protected void add(String indicator, Map<String, ?> extData) {
+        _data.addExt(indicator, extData);
+    }
+
     protected void add(String indicator, Object[] values) {
         if (null != indicator && null != values) {
             _data.addExt(indicator, values);

@@ -82,6 +82,12 @@ public class Bar {
         return false;
     }
 
+    // 做一下类型转换
+    public <T> T o(String key, Class<T> tClass) {
+        Object obj = this.o(key);
+        return tClass.cast(obj);
+    }
+
     /**
      * get object
      */

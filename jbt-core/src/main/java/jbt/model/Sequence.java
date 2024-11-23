@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据序列
@@ -125,6 +126,14 @@ public class Sequence {
         this.end = rs.length - 1;
         this.point = -1;
         return this;
+    }
+
+    // 按datetime加入扩展属性的对象 - 不要求属性长度一致
+    public void addExt(String key, Map<String, ?> map) {
+        for (int i = 0; i < _bars.length; i++) {
+            Object obj = map.get(_bars[i].datetime);
+            if (null != obj) _bars[i].setExt(key, obj);
+        }
     }
 
     // 加入扩展/自定义属性
