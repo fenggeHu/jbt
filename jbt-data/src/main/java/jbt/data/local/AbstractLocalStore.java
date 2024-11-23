@@ -32,10 +32,6 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     @Setter
     @Getter
     protected String region = "cn";
-    // 换行符
-    protected char newlineChar = '\n';
-    // 分隔符
-    protected String delimiter = ",";
 
     // 根目录
     public String root() {

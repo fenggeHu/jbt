@@ -9,7 +9,7 @@ import java.util.Collection;
  *
  * @author jinfeng.hu  @date 2022/10/9
  **/
-public interface DataStorage {
+public interface DataStorage extends DataFormat {
     /**
      * kline数据存储
      *
@@ -21,6 +21,7 @@ public interface DataStorage {
 
     /**
      * 写配置/文件
+     *
      * @param name
      * @param content
      */

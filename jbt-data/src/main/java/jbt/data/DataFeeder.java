@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author jinfeng.hu  @date 2022/10/9
  **/
-public interface DataFeeder {
+public interface DataFeeder extends DataFormat {
     // 按时间周期读数据
     List<Bar> get(String symbol, String start, String end);
 

@@ -166,13 +166,6 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         }
     }
 
-    // 获取feature目录下的文件
-//    protected File getFeatureFile(String symbol, String feature) {
-//        String filename = this.getFeatureFilename(symbol, feature);
-//        File file = new File(filename);
-//        return file;
-//    }
-
     protected File getDayFile(String symbol) {
         String filename = this.getFeatureFilename(symbol, "day.csv");
         return new File(localFolder, filename);
