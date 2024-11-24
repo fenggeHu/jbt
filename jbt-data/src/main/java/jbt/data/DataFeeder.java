@@ -24,12 +24,12 @@ public interface DataFeeder extends DataFormat {
     /**
      * 读取记录
      *
-     * @param name 类型
+     * @param filename 类型
      */
-    String read(String name);
+    String read(String filename);
 
     /**
-     * 从symbol目录读取数据
+     * 从symbol目录读取最近n条数据
      */
-    <T extends DataFormat> List<T> readLines(String symbol, int count, Class<T> clazz);
+    <T extends DataFormat> List<T> readLines(String symbol, Class<T> clazz, int count);
 }

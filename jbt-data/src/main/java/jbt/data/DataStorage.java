@@ -22,10 +22,10 @@ public interface DataStorage extends DataFormat {
     /**
      * 写配置/文件
      *
-     * @param name
+     * @param filename
      * @param content
      */
-    void write(String name, String content);
+    void write(String filename, String content);
 
     /**
      * 按行把数据存入symbol目录 - 数据按第一列（通常是日期时间）去重覆盖

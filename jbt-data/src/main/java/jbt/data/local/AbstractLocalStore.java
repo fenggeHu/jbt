@@ -206,6 +206,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     }
 
+    // 按行读取文件
     public List<String> readLines(String filename) {
         File file = new File(localFolder, filename);
         if (!file.exists()) {

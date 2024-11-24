@@ -180,7 +180,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
 
     @Override
     @SneakyThrows
-    public <T extends DataFormat> List<T> readLines(String symbol, int count, Class<T> clazz) {
+    public <T extends DataFormat> List<T> readLines(String symbol, Class<T> clazz, int count) {
         String filename = this.getFeatureFilename(symbol, clazz);
         // TODO 按需读取
         List<String> lines = this.readLines(filename);
