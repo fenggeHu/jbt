@@ -172,7 +172,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         return new File(localFolder, filename);
     }
 
-    protected String getFeatureFilename(String symbol, Class<?> clazz) {
+    public String getFeatureFilename(String symbol, Class<?> clazz) {
         return this.getFeatureFilename(symbol, clazz.getSimpleName() + ".csv");
     }
 
