@@ -24,8 +24,6 @@ import java.util.stream.Collectors;
 public class LocalFileStoreFeeder extends AbstractLocalStore {
     // 文件头起始字符串
     private String titleStart = BarEnum.D.getKey();
-    // 不可变空List
-    private List EmptyList = Collections.unmodifiableList(new ArrayList<>(0));
 
     public LocalFileStoreFeeder() {
     }
@@ -50,8 +48,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     }
 
     @Override
-    public List<Bar> get(String symbol, String start, String end) {
-        File file = getDayFile(symbol);
+    public List<Bar> getBar(String symbol, String start, String end) {
+        File file = getBarFile(symbol);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return EmptyList;
@@ -82,8 +80,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     }
 
     @Override
-    public List<Bar> get(String symbol, int n) {
-        File file = getDayFile(symbol);
+    public List<Bar> getBar(String symbol, int n) {
+        File file = getBarFile(symbol);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return EmptyList;
@@ -125,8 +123,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
 
     @SneakyThrows
     @Override
-    public void store(String symbol, Collection<Bar> chartBar, boolean overwrite) {
-        File file = getDayFile(symbol);
+    public void storeBar(String symbol, Collection<Bar> chartBar, boolean overwrite) {
+        File file = getBarFile(symbol);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
             file.createNewFile();
@@ -169,8 +167,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         }
     }
 
-    protected File getDayFile(String symbol) {
-        String filename = this.getFeatureFilename(symbol, "day.csv");
+    protected File getBarFile(String symbol) {
+        String filename = this.getFeatureFilename(symbol, "Bar.csv");
         return new File(localFolder, filename);
     }
 
@@ -179,18 +177,11 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     }
 
     @Override
-    @SneakyThrows
-    public <T extends DataFormat> List<T> readLines(String symbol, Class<T> clazz, int count) {
+    public <T extends DataFormat> List<T> read(String symbol, Class<T> clazz, int count) {
         String filename = this.getFeatureFilename(symbol, clazz);
         // TODO 按需读取
         List<String> lines = this.readLines(filename);
-        if (null == lines || lines.isEmpty()) return EmptyList;
-        Object object = clazz.getDeclaredConstructor().newInstance();
-        Method method = clazz.getDeclaredMethod("format", String.class);
-        List<T> ret = new LinkedList<>();
-        for (String e : lines) {
-            ret.add((T) method.invoke(object, e));
-        }
+        List<T> ret = this.parse(lines, clazz);
         // TODO 按需读取
         if (ret.size() <= count) {
             return ret;
@@ -200,7 +191,26 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     }
 
     @Override
-    public <T extends DataFormat> int storeLines(String symbol, Collection<T> lines, boolean overwrite) {
+    public <T extends DataFormat> List<T> read(String symbol, Class<T> clazz, String start, String end) {
+        String filename = this.getFeatureFilename(symbol, clazz);
+        List<String> lines = this.readLines(filename, start, end);
+        return this.parse(lines, clazz);
+    }
+
+    @SneakyThrows
+    protected <T extends DataFormat> List<T> parse(List<String> lines, Class<T> clazz) {
+        if (null == lines || lines.isEmpty()) return EmptyList;
+        Object object = clazz.getDeclaredConstructor().newInstance();
+        Method method = clazz.getDeclaredMethod("format", String.class);
+        List<T> ret = new LinkedList<>();
+        for (String e : lines) {
+            ret.add((T) method.invoke(object, e));
+        }
+        return ret;
+    }
+
+    @Override
+    public <T extends DataFormat> int store(String symbol, Collection<T> lines, boolean overwrite) {
         if (null == lines || lines.isEmpty()) return -1;
         Class<T> clazz = (Class<T>) lines.stream().findFirst().get().getClass();
         String filename = this.getFeatureFilename(symbol, clazz);

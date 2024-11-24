@@ -17,7 +17,7 @@ public interface DataStorage extends DataFormat {
      * @param chartBar
      * @param overwrite 是否重写
      */
-    void store(String symbol, Collection<Bar> chartBar, boolean overwrite);
+    void storeBar(String symbol, Collection<Bar> chartBar, boolean overwrite);
 
     /**
      * 写配置/文件
@@ -32,5 +32,5 @@ public interface DataStorage extends DataFormat {
      *
      * @param overwrite true - 覆盖；false - 补充更新
      */
-    <T extends DataFormat> int storeLines(String symbol, Collection<T> lines, boolean overwrite);
+    <T extends DataFormat> int store(String symbol, Collection<T> lines, boolean overwrite);
 }

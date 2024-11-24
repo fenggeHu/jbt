@@ -32,6 +32,8 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     @Setter
     @Getter
     protected String region = "cn";
+    // 不可变空List
+    protected List EmptyList = Collections.emptyList();
 
     // 根目录
     public String root() {
@@ -201,6 +203,35 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         return readJson(filename, type);
     }
 
+    // 按条件序列读取数据。要求文件里的数据按顺序存放 - 按第一个字段排序
+    protected List<String> readLines(File file, String start, String end) {
+        List<String> lines = new LinkedList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                int index = line.indexOf(delimiter);
+                if (index > 0) {// 检查条件：这里是简单的字符串匹配
+                    String datetime = line.substring(0, index);
+                    if (datetime.compareTo(start) >= 0 && datetime.compareTo(end) <= 0) {
+                        lines.add(line);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return lines;
+    }
+
+    public List<String> readLines(String filename, String start, String end) {
+        File file = new File(localFolder, filename);
+        if (!file.exists()) {
+            log.debug("file is not exists: {}", file.getPath());
+            return EmptyList;
+        }
+        return readLines(file, start, end);
+    }
+
     @SneakyThrows
     protected List<String> readLines(File file) {
         return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
@@ -211,7 +242,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         File file = new File(localFolder, filename);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
-            return null;
+            return EmptyList;
         }
         return this.readLines(file);
     }

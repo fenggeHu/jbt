@@ -62,10 +62,10 @@ public class LocalFileStoreFeederTests {
     @Test
     public void testGetData() {
         int n = 3;
-        List<Bar> bars = usLocalCsvFeeder.get("APLE", n);
+        List<Bar> bars = usLocalCsvFeeder.getBar("APLE", n);
         Assert.assertEquals(n, bars.size());
 
-        bars = usLocalCsvFeeder.get("APLE", "2023-12-27", "2024-01-11");
+        bars = usLocalCsvFeeder.getBar("APLE", "2023-12-27", "2024-01-11");
         Assert.assertEquals(11, bars.size());
     }
 

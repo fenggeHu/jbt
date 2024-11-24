@@ -11,10 +11,10 @@ import java.util.List;
  **/
 public interface DataFeeder extends DataFormat {
     // 按时间周期读数据
-    List<Bar> get(String symbol, String start, String end);
+    List<Bar> getBar(String symbol, String start, String end);
 
     // 读取最近n条数据
-    List<Bar> get(String symbol, int count);
+    List<Bar> getBar(String symbol, int count);
 
     /**
      * 读取本地存储的symbol
@@ -31,5 +31,10 @@ public interface DataFeeder extends DataFormat {
     /**
      * 从symbol目录读取最近n条数据
      */
-    <T extends DataFormat> List<T> readLines(String symbol, Class<T> clazz, int count);
+    <T extends DataFormat> List<T> read(String symbol, Class<T> clazz, int count);
+
+    /**
+     * 按起（含）始（含）位置读取数据
+     */
+    <T extends DataFormat> List<T> read(String symbol, Class<T> clazz, String start, String end);
 }
