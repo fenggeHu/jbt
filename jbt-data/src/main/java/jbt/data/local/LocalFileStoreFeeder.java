@@ -34,7 +34,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
 
     public LocalFileStoreFeeder(String localFolder, String region) {
         this.localFolder = localFolder;
-        this.region = region;
+        this.region = region.toLowerCase();
     }
 
     @Override
