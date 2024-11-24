@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * // TODO 不支持多线程操作
+ * // TODO 暂不支持并发操作文件
  * 目录结构
  * root/region/features/symbol/day.csv
  * datetime,O,H,L,C,V,...
@@ -176,20 +176,15 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         return this.getFeatureFilename(symbol, clazz.getSimpleName() + ".csv");
     }
 
+    // 按行读取整个文件
     @Override
-    public <T extends DataFormat> List<T> read(String symbol, Class<T> clazz, int count) {
+    public <T extends DataFormat> List<T> read(String symbol, Class<T> clazz) {
         String filename = this.getFeatureFilename(symbol, clazz);
-        // TODO 按需读取
         List<String> lines = this.readLines(filename);
-        List<T> ret = this.parse(lines, clazz);
-        // TODO 按需读取
-        if (ret.size() <= count) {
-            return ret;
-        } else {
-            return new ArrayList<>(ret.subList(ret.size() - count, ret.size()));
-        }
+        return this.parse(lines, clazz);
     }
 
+    // 按行读取文件里满足起始条件的行
     @Override
     public <T extends DataFormat> List<T> read(String symbol, Class<T> clazz, String start, String end) {
         String filename = this.getFeatureFilename(symbol, clazz);

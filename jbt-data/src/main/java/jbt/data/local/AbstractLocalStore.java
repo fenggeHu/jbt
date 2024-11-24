@@ -223,6 +223,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         return lines;
     }
 
+    // 按行读取文件里满足起始条件的行
     public List<String> readLines(String filename, String start, String end) {
         File file = new File(localFolder, filename);
         if (!file.exists()) {
@@ -232,12 +233,13 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         return readLines(file, start, end);
     }
 
+    // 按行读整个文件
     @SneakyThrows
     protected List<String> readLines(File file) {
         return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
     }
 
-    // 按行读取文件
+    // 按行读取整个文件
     public List<String> readLines(String filename) {
         File file = new File(localFolder, filename);
         if (!file.exists()) {

@@ -29,9 +29,9 @@ public interface DataFeeder extends DataFormat {
     String read(String filename);
 
     /**
-     * 从symbol目录读取最近n条数据
+     * 从symbol目录读取整个clazz文件的数据
      */
-    <T extends DataFormat> List<T> read(String symbol, Class<T> clazz, int count);
+    <T extends DataFormat> List<T> read(String symbol, Class<T> clazz);
 
     /**
      * 按起（含）始（含）位置读取数据
