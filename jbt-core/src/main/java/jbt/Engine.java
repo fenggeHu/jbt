@@ -7,7 +7,7 @@ import jbt.model.Bar;
 import jbt.model.Sequence;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import utils.ClassUtils;
+import utils.ClassUtil;
 
 /**
  * 执行引擎 - 基本能力和支持回测
@@ -37,11 +37,11 @@ public class Engine {
         // 初始化strategy
         if (null != strategy) {
             // 注入属性到strategy
-            ClassUtils.silencedInjection(strategy, "_data", data);
+            ClassUtil.silencedInjection(strategy, "_data", data);
             if (null == eventContainer) {
                 eventContainer = new AContainer();
             }
-            ClassUtils.silencedInjection(strategy, "_notify", eventContainer);
+            ClassUtil.silencedInjection(strategy, "_notify", eventContainer);
         }
     }
 

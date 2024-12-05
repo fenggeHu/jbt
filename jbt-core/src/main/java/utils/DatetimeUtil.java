@@ -15,7 +15,7 @@ import java.util.TimeZone;
  *
  * @author jinfeng.hu  @date 2022/12/1
  **/
-public class DatetimeUtils {
+public class DatetimeUtil {
     public final static String yyyy_MM_dd = "yyyy-MM-dd";
     public final static String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
     public final static String yyyy_MM_dd_HHmmss = "yyyy-MM-dd HHmmss";

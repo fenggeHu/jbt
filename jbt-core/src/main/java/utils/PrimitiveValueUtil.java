@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.regex.Pattern;
 
 /**
@@ -292,6 +293,24 @@ public class PrimitiveValueUtil {
 
     public static boolean boolValue(Object value) {
         return (boolean) warpValue(value, boolean.class);
+    }
+
+    // 扩展NumberUtil
+
+    /**
+     * 保留n位小数 -- org.apache.commons.lang3.math.NumberUtils
+     */
+    public static double scale(double d, int n) {
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(n, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    public static double scale2(double d) {
+        return scale(d, 2);
+    }
+
+    public static double scale3(double d) {
+        return scale(d, 3);
     }
 
 }

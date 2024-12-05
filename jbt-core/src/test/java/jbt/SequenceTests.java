@@ -5,7 +5,7 @@ import jbt.model.Sequence;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import utils.DatetimeUtils;
+import utils.DatetimeUtil;
 
 import java.util.Collection;
 import java.util.Date;
@@ -19,13 +19,13 @@ public class SequenceTests {
 
     @Before
     public void before() {
-        Date start = DatetimeUtils.format("2024-04-10");
+        Date start = DatetimeUtil.format("2024-04-10");
 
         for (int i = 50; i >= 0; i--) {
-            Date day = DatetimeUtils.addDays(start, -i);
-            if (DatetimeUtils.isWeekend(day)) continue;
+            Date day = DatetimeUtil.addDays(start, -i);
+            if (DatetimeUtil.isWeekend(day)) continue;
             Bar bar = new Bar();
-            bar.setDatetime(DatetimeUtils.format(day));
+            bar.setDatetime(DatetimeUtil.format(day));
             bar.setOpen(123.1 + i);
             bar.setHigh(130.12 + i);
             bar.setLow(90.89 + i);

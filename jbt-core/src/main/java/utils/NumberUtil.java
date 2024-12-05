@@ -6,7 +6,7 @@ import java.math.RoundingMode;
 /**
  * @author jinfeng.hu  @date 2022/11/2
  **/
-public class NumberUtils {
+public class NumberUtil {
 
     /**
      * 保留n位小数 -- org.apache.commons.lang3.math.NumberUtils

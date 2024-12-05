@@ -8,7 +8,7 @@ import jbt.model.Stats;
 import jbt.performance.Returns;
 import lombok.Getter;
 import lombok.Setter;
-import utils.DatetimeUtils;
+import utils.DatetimeUtil;
 
 import java.util.List;
 
@@ -41,12 +41,12 @@ public class PerformanceHandler implements Handler {
         List<Double> dailyReturns = Returns.getReturns(ranges);
 
         // 分析账单
-        long d1 = DatetimeUtils.parseDate(sdt).getTime();
-        long d2 = DatetimeUtils.parseDate(edt).getTime();
+        long d1 = DatetimeUtil.parseDate(sdt).getTime();
+        long d2 = DatetimeUtil.parseDate(edt).getTime();
         return Stats.builder()
                 .start(this.getStart().getDatetime())
                 .end(this.getEnd().getDatetime())
-                .duration((d2 - d1) / DatetimeUtils.A_DAY_MS)  // days
+                .duration((d2 - d1) / DatetimeUtil.A_DAY_MS)  // days
                 .position(this.getPosition().summary(this.getEnd().getClose()))
                 .tradeTimes(this.getBills().size())
                 .rangeReturn(Returns.rangeReturns(ranges) * 100)

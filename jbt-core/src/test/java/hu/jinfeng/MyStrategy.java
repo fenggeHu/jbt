@@ -3,7 +3,7 @@ package hu.jinfeng;
 import jbt.Strategy;
 import jbt.model.Bar;
 import lombok.extern.slf4j.Slf4j;
-import utils.NumberUtils;
+import utils.NumberUtil;
 
 import static talib.Overlap.Ema;
 
@@ -47,7 +47,7 @@ public class MyStrategy extends Strategy {
             sell();
         }
         // 封盘
-        if (NumberUtils.compare3(now.open, now.high) == 0 && NumberUtils.compare3(now.open, now.close) == 0) {
+        if (NumberUtil.compare3(now.open, now.high) == 0 && NumberUtil.compare3(now.open, now.close) == 0) {
             log.info("封盘了");
             return;
         }
@@ -71,7 +71,7 @@ public class MyStrategy extends Strategy {
             return;
         }
         // 最近1日上涨和阳线
-        if (NumberUtils.compare3(now.close, now.open) < 0 || NumberUtils.compare3(now.close, pre.close) < 0) {
+        if (NumberUtil.compare3(now.close, now.open) < 0 || NumberUtil.compare3(now.close, pre.close) < 0) {
             log.info("阴线，昨收价{}, 开盘价{} 现价{}", pre.getClose(), now.getOpen(), now.getClose());
             return;
         }
@@ -94,8 +94,8 @@ public class MyStrategy extends Strategy {
             return;
         }
         // 5日均线高于前2天，有向上趋势
-        if (NumberUtils.compare3(now.d("ma5"), pre.d("ma5")) < 0
-                || NumberUtils.compare3(now.d("ma5"), pre2.d("ma5")) < 0) {
+        if (NumberUtil.compare3(now.d("ma5"), pre.d("ma5")) < 0
+                || NumberUtil.compare3(now.d("ma5"), pre2.d("ma5")) < 0) {
             log.info("5日均线{}低于前2个交易日的5日均线", now.d("ma5"));
             return;
         }

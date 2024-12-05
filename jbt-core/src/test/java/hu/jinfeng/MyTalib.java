@@ -2,7 +2,7 @@ package hu.jinfeng;
 
 import jbt.model.Bar;
 import jbt.model.Sequence;
-import utils.NumberUtils;
+import utils.NumberUtil;
 import utils.PrimitiveValueUtil;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class MyTalib {
             if (null == his) {
                 break;
             }
-            if (NumberUtils.compare3(his.getLow(), ret.getLow()) < 0) {
+            if (NumberUtil.compare3(his.getLow(), ret.getLow()) < 0) {
                 ret = his;
             }
         }
@@ -42,7 +42,7 @@ public class MyTalib {
             if (null == his) {
                 break;
             }
-            if (NumberUtils.compare3(his.getHigh(), ret.getHigh()) > 0) {
+            if (NumberUtil.compare3(his.getHigh(), ret.getHigh()) > 0) {
                 ret = his;
             }
         }
@@ -56,7 +56,7 @@ public class MyTalib {
         for (int i = 1; i < seq.length(); i++) {
             Bar his = seq.row(-i);
             if (null == his || his.getDatetime().compareTo(now.getDatetime()) > 0 //到底了
-                    || NumberUtils.compare3(his.getLow(), price) < 0) {  //与历史最低价比较
+                    || NumberUtil.compare3(his.getLow(), price) < 0) {  //与历史最低价比较
                 return i - 1;
             }
         }
@@ -70,7 +70,7 @@ public class MyTalib {
         for (int i = 1; i < seq.length(); i++) {
             Bar his = seq.row(-i);
             if (null == his || his.getDatetime().compareTo(now.getDatetime()) > 0 //到底了
-                    || NumberUtils.compare3(his.getHigh(), price) > 0) {  //与历史最高价比较
+                    || NumberUtil.compare3(his.getHigh(), price) > 0) {  //与历史最高价比较
                 return i - 1;
             }
         }
@@ -84,7 +84,7 @@ public class MyTalib {
         for (int i = 1; i < seq.length(); i++) {
             Bar his = seq.row(-i);
             if (null == his || his.getDatetime().compareTo(now.getDatetime()) > 0 //到底了
-                    || NumberUtils.compare3(his.getVolume(), vol) > 0) {
+                    || NumberUtil.compare3(his.getVolume(), vol) > 0) {
                 return i - 1;
             }
         }

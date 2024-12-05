@@ -3,7 +3,7 @@ package utils;
 /**
  * @author hujinfeng  @Date 2020/11/28
  **/
-public class NameStringUtils {
+public class NameStringUtil {
 
     /**
      * 属性命名 - 首字母小写
@@ -90,11 +90,4 @@ public class NameStringUtils {
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        String s = "data-source-config";
-        System.out.println(toCamelCase(s));
-        System.out.println(toPropertyName(s));
-        System.out.println(toClassName(s));
-        System.out.println(toSnakeName(s));
-    }
 }
