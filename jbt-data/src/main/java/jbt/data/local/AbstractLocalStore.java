@@ -154,6 +154,14 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     /**
      * 读取整个文件
      */
+    // 按对象的名从根目录读取 - 写入见：void write(Object obj)
+    public <T> T readObject(Class<T> clazz) {
+        String filename = String.format("%s/%s.txt", region, clazz.getSimpleName());
+        String json = this.read(filename);
+        if (null == json) return null;
+        return JacksonUtil.toObject(json, clazz);
+    }
+
     @Override
     public String read(String filename) {
         File file = new File(localFolder, filename);
@@ -171,6 +179,12 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         byte[] fileBytes = Files.readAllBytes(file.toPath());
         // 将字节数组转换为字符串（根据文件编码）
         return new String(fileBytes, StandardCharsets.UTF_8);
+    }
+
+    // 按对象的名存储到根目录 - 读取见：String readObject(Class<?> clazz)
+    public void write(Object obj) {
+        String filename = String.format("%s/%s.txt", region, obj.getClass().getSimpleName());
+        this.writeJson(filename, obj);
     }
 
     // 转成json字符串
