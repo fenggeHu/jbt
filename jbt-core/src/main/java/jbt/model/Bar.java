@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import utils.PrimitiveValueUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -171,5 +172,17 @@ public class Bar {
         if (vs.length > 9) bar.setTurnoverRatio(PrimitiveValueUtil.toDouble(vs[9]));
 
         return bar;
+    }
+
+    // 加入使用最新的数据 - lst的顺序按datetime从小到大
+    public static void plus(List<Bar> lst, Bar bar) {
+        Bar last = lst.get(lst.size() - 1);
+        int compare = last.getDatetime().compareTo(bar.getDatetime());
+        if (compare < 0) {
+            lst.add(bar);
+        } else if (compare == 0) {
+            lst.remove(last);
+            lst.add(bar);
+        }
     }
 }
