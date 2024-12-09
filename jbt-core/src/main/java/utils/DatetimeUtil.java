@@ -172,6 +172,11 @@ public class DatetimeUtil {
         return format(dateStr, null);
     }
 
+    public static String[] toDayAndTime(Date date, TimeZone zone) {
+        String dt = format(date, yyyy_MM_dd_HHmmss, zone);
+        return dt.split(" ");
+    }
+
     /**
      * yyyyMMdd - 8个字符格式
      *
