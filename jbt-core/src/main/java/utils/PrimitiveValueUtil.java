@@ -275,7 +275,7 @@ public class PrimitiveValueUtil {
         } catch (Exception e) {
             log.warn("value: " + value, e);
         }
-        return 0L;
+        return 0.0;
     }
 
 
