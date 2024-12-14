@@ -1,5 +1,7 @@
 package jbt.data.utils;
 
+import java.util.Arrays;
+
 /**
  * string tools
  *
@@ -21,5 +23,10 @@ public class StringUtil {
     public static String[] splitBySpace(String str) {
         if (null == str) return new String[0];
         return str.split(SPACE);
+    }
+
+    // 字符串s含words中的任一个
+    public static boolean include(String s, String... words) {
+        return Arrays.stream(words).anyMatch(s::contains);
     }
 }
