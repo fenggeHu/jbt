@@ -32,8 +32,6 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
     @Setter
     @Getter
     protected String region = "cn";
-    // 不可变空List
-    protected List EmptyList = Collections.emptyList();
 
     // 根目录
     public String root() {
@@ -242,7 +240,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         File file = new File(localFolder, filename);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
-            return EmptyList;
+            return Collections.emptyList();
         }
         return readLines(file, start, end);
     }
@@ -258,7 +256,7 @@ public abstract class AbstractLocalStore implements DataFeeder, DataStorage {
         File file = new File(localFolder, filename);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
-            return EmptyList;
+            return Collections.emptyList();
         }
         return this.readLines(file);
     }

@@ -52,7 +52,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         File file = getBarFile(symbol);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
-            return EmptyList;
+            return Collections.emptyList();
         }
         String title = null;
         try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
@@ -76,7 +76,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         } catch (Exception e) {
             log.error("LocalFeeder.read", e);
         }
-        return EmptyList;
+        return Collections.emptyList();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         File file = getBarFile(symbol);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
-            return EmptyList;
+            return Collections.emptyList();
         }
         List<Bar> ret = new LinkedList<>();
         String title = null;
@@ -194,7 +194,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
 
     @SneakyThrows
     protected <T extends DataFormat> List<T> parse(List<String> lines, Class<T> clazz) {
-        if (null == lines || lines.isEmpty()) return EmptyList;
+        if (null == lines || lines.isEmpty()) return Collections.emptyList();
         Object object = clazz.getDeclaredConstructor().newInstance();
         Method method = clazz.getDeclaredMethod("format", String.class);
         List<T> ret = new LinkedList<>();
