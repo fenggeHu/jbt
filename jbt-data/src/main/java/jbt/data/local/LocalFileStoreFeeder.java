@@ -49,11 +49,19 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
 
     @Override
     public List<Bar> getBar(String symbol, String start, String end) {
+        List<Bar> all = getBar(symbol);
+        return all.stream().filter(e -> e.datetime.compareTo(start) >= 0 && e.datetime.compareTo(end) <= 0)
+                .collect(Collectors.toList());
+    }
+
+    // 读取所有的数据
+    public List<Bar> getBar(String symbol) {
         File file = getBarFile(symbol);
         if (!file.exists()) {
             log.debug("file is not exists: {}", file.getPath());
             return Collections.emptyList();
         }
+
         String title = null;
         try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
             String line;
@@ -68,9 +76,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                 }
 
                 Bar bar = Bar.of(line);
-                if (bar.datetime.compareTo(start) >= 0 && bar.datetime.compareTo(end) <= 0) {
-                    ret.add(bar);
-                }
+                ret.add(bar);
             }
             return ret;
         } catch (Exception e) {
@@ -133,7 +139,8 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         //数据顺序 - 按datetime顺序
         Map<String, String> treeMap = new TreeMap<>();
         String title = null;
-        if (!overwrite) { // 如果要放弃历史数据就不读入历史数据
+        if (!overwrite) { // 读入历史数据再合并 -- 注意出现复权问题
+            Map<String, Bar> oldMap = new HashMap<>();
             try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -142,10 +149,24 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                         continue;
                     }
                     Bar bar = Bar.of(line);
-                    treeMap.put(bar.datetime, line + newlineChar);
+                    oldMap.put(bar.datetime, bar);
                 }
             } catch (Exception e) {
                 log.error("{}: read file", symbol, e);
+            }
+            // 数据整合前检查
+            boolean isOk = true;
+            for (Bar bar : chartBar) {
+                Bar hb = oldMap.get(bar.datetime);
+                if (null != hb) {
+                    if (bar.getClose() != hb.getClose()) {
+                        isOk = false;
+                        break;
+                    }
+                }
+            }
+            if (isOk) {
+                oldMap.forEach((k, v) -> treeMap.put(k, v.line() + newlineChar));
             }
         }
         // 数据整合重写
@@ -160,6 +181,9 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                 bw.append(title + newlineChar);
             }
             for (String value : treeMap.values()) {
+                if (null == value || value.trim().length() == 0){
+                    continue;
+                }
                 bw.append(value).append(newlineChar);
             }
         } catch (Exception e) {
