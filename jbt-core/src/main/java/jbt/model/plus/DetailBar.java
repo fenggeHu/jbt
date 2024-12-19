@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import utils.PrimitiveValueUtil;
 
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class DetailBar extends Bar {
     public double dynamicPERatio;    // f9
     // 市净率 f167
     public double pbRatio;
-//    // 换手率 Turnover Ratio f168/100 (%)
+    //    // 换手率 Turnover Ratio f168/100 (%)
 //    public double turnoverRatio;
     // 52周最高 52-Week High f174 /100
     public double w52high;
@@ -132,5 +133,18 @@ public class DetailBar extends Bar {
             prices += vp.getPrice() * vp.getVolume();
         }
         return prices;
+    }
+
+    /**
+     * 补充方法
+     */
+    public double getHighRate() {
+        if (this.getPreClose() <= 0) return 0;
+        return PrimitiveValueUtil.scale2(100 * (this.getHigh() - this.getPreClose()) / this.getPreClose());
+    }
+
+    public double getLowRate() {
+        if (this.getPreClose() <= 0) return 0;
+        return PrimitiveValueUtil.scale2(100 * (this.getLow() - this.getPreClose()) / this.getPreClose());
     }
 }
