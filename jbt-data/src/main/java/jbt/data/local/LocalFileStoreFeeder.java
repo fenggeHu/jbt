@@ -130,6 +130,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     @SneakyThrows
     @Override
     public void storeBar(String symbol, Collection<Bar> chartBar, boolean overwrite) {
+        if(null == chartBar || chartBar.isEmpty()) return;
         File file = getBarFile(symbol);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
