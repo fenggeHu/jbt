@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
  **/
 public class ExtLocalFileStoreFeeder extends LocalFileStoreFeeder {
 
-    public ExtLocalFileStoreFeeder(String s, String cn) {
-        super(s, cn);
+    public ExtLocalFileStoreFeeder(String s, String region) {
+        super(s, region);
     }
 
     // 读取本地的数据，如果数据不完整，则调用func获取数据
