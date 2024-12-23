@@ -130,7 +130,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
     @SneakyThrows
     @Override
     public void storeBar(String symbol, Collection<Bar> chartBar, boolean overwrite) {
-        if(null == chartBar || chartBar.isEmpty()) return;
+        if (null == chartBar || chartBar.isEmpty()) return;
         File file = getBarFile(symbol);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -141,7 +141,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
         Map<String, String> treeMap = new TreeMap<>();
         String title = null;
         if (!overwrite) { // 读入历史数据再合并 -- 注意出现复权问题
-            Map<String, Bar> oldMap = new HashMap<>();
+            TreeMap<String, Bar> oldMap = new TreeMap<>();
             try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -156,18 +156,24 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                 log.error("{}: read file", symbol, e);
             }
             // 数据整合前检查
-            boolean isOk = true;
-            for (Bar bar : chartBar) {
-                Bar hb = oldMap.get(bar.datetime);
-                if (null != hb) {
-                    if (bar.getClose() != hb.getClose()) {
-                        isOk = false;
-                        break;
+            if (oldMap.size() > 0) {
+                // 判断前后数据重合
+                String finalMaxDate = oldMap.lastKey(); // 最后一个时间
+                if (chartBar.stream().filter(e -> e.datetime.equals(finalMaxDate)).count() == 1) {
+                    boolean isOk = true;
+                    for (Bar bar : chartBar) {
+                        Bar hb = oldMap.get(bar.datetime);
+                        if (null != hb) {
+                            if (bar.getClose() != hb.getClose()) {
+                                isOk = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (isOk) {
+                        oldMap.forEach((k, v) -> treeMap.put(k, v.line()));
                     }
                 }
-            }
-            if (isOk) {
-                oldMap.forEach((k, v) -> treeMap.put(k, v.line() + newlineChar));
             }
         }
         // 数据整合重写
@@ -182,7 +188,7 @@ public class LocalFileStoreFeeder extends AbstractLocalStore {
                 bw.append(title + newlineChar);
             }
             for (String value : treeMap.values()) {
-                if (null == value || value.trim().length() == 0){
+                if (null == value || value.trim().length() == 0) {
                     continue;
                 }
                 bw.append(value).append(newlineChar);
